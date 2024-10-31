@@ -10,13 +10,13 @@ import org.apache.logging.log4j.Logger;
 import baseclass.Baseclass;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
-import pageobjectclass.b2bFlightPOM;
+import pageobjectclass.B2BFlightPOM;
 import utils.commonMethodes;
 import utils.excelReader;
 
 public class B2BFlightStep extends Baseclass {
 
-	private b2bFlightPOM home;
+	private B2BFlightPOM home;
 	private excelReader reader;
 	private List<Map<String, String>> testData;
 	private int row;
@@ -27,7 +27,7 @@ public class B2BFlightStep extends Baseclass {
 	private static final Logger logger = LogManager.getLogger(B2BFlightStep.class);
 	@Then("User is Click On Flight")
 	public void userClicksOnFlight() throws InterruptedException {
-		home = new b2bFlightPOM(driver);
+		home = new B2BFlightPOM(driver);
 		home.clickFlightModule();
 	}
 
@@ -44,7 +44,7 @@ public class B2BFlightStep extends Baseclass {
 
 		logger.info("---- user travel details --- TRIPTYPE: {}, Origin: {}, Destination: {}", tripType, origin, destination);
 
-		home = new b2bFlightPOM(driver);
+		home = new B2BFlightPOM(driver);
 		home.selectthecity(driver, tripType, origin, destination);
 	}
 
@@ -66,12 +66,12 @@ public class B2BFlightStep extends Baseclass {
 		String tripType = testData.get(row).get(TRIPTYPE);
 		String flightClass = testData.get(row).get(CLASS);
 
-		home.selectClassforTrip(driver, tripType, flightClass);
+		home.selectClassforTrip(driver, flightClass);
 	}
 
 	@Then("select the supplier from list")
 	public void selectSupplierFromList() throws InterruptedException {
-		home.select_supplier(driver);
+		home.selectsupplier(driver);
 	}
 
 	@Then("The user should able to select Business, First Class, Premium Economy cabin class details")
@@ -88,14 +88,14 @@ public class B2BFlightStep extends Baseclass {
 		String childPax = testData.get(row).get("CHILD_PAX");
 		String infantsPax = testData.get(row).get("INFANTS_PAX");
 
-		home.Selectpassangerfortrip(driver, adultPax, childPax, infantsPax);
+		home.selectpassangerfortrip(driver, adultPax, childPax, infantsPax);
 	}
 
 	@And("User clicks on the search button for flight")
 	public void clickOnSearchButtonForFlight() throws InterruptedException {
-		home = new b2bFlightPOM(driver);
+		home = new B2BFlightPOM(driver);
 		String tripType = testData.get(row).get(TRIPTYPE);
-		home.click_Search(driver, tripType);
+		home.clickSearch();
 	}
 	
 	@And("user selects departure time from")
@@ -139,7 +139,7 @@ public class B2BFlightStep extends Baseclass {
 
 	@Then("User handle the Price Change Alert Popup")
 	public void userHandlePriceChangeAlertPopup(){
-	    home.HandelThePriceChangeAlert(driver);
+	    home.handelThePriceChangeAlert(driver);
 	}
 
 	@Then("user select search filter number of stops")
@@ -195,7 +195,7 @@ public class B2BFlightStep extends Baseclass {
 		String localTax = testData.get(row).get("LOCAL_TAX");
 		logger.info("Local tax value is --- {}", localTax);
 
-		home.enterLocalTaxes(driver, localTax);
+		home.enterLocalTaxes(localTax);
 	}
 
 
@@ -206,7 +206,7 @@ public class B2BFlightStep extends Baseclass {
 	
 	@And("User select the Advanced Search option")
 	public void userSelectAdvancedSearchOption() throws InterruptedException {
-	    home = new b2bFlightPOM(driver);
+	    home = new B2BFlightPOM(driver);
 	    home.clickAdvancebooking(driver);
 	}
 	
@@ -215,7 +215,7 @@ public class B2BFlightStep extends Baseclass {
 	public void userSelectRBDClasses() throws InterruptedException {
 	    String rbd = testData.get(row).get("RBD");
 	    String tripType = testData.get(row).get(TRIPTYPE);
-	    home.SelectRBDClases(driver, rbd, tripType);
+	    home.selectRBDClases(driver, rbd, tripType);
 	}
 	
 
@@ -227,7 +227,7 @@ public class B2BFlightStep extends Baseclass {
 		String cLASS = testData.get(row).get(CLASS);
 		String tripType = testData.get(row).get(TRIPTYPE);
 
-		home.SelectCabin(driver,cLASS,tripType);	
+		home.selectCabin(driver,cLASS,tripType);	
 
 	}
 	
@@ -236,7 +236,7 @@ public class B2BFlightStep extends Baseclass {
 	{
 		String supplier = testData.get(row).get("Supplier");
 
-		home.SelectSupplier(driver,supplier);	
+		home.selectSupplier(driver,supplier);	
 
 	}
 	
@@ -246,7 +246,7 @@ public class B2BFlightStep extends Baseclass {
 		String departureTime = testData.get(row).get("DepartureTime");
 		String tripType = testData.get(row).get(TRIPTYPE);
 
-		home.SelectDepartureTime(driver,departureTime,tripType);	
+		home.selectDepartureTime(driver,departureTime,tripType);	
 
 	}
 	

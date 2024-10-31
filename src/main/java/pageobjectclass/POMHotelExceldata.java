@@ -30,14 +30,40 @@ import org.testng.Assert; // For assertion methods in test cases.
 import utils.commonMethodes; // Importing common methods used across tests.
 
 
-public class pomHotelExceldata { // Class for handling hotel data and interactions in the hotel booking system
+public class PomHotelExcelData { // Class for handling hotel data and interactions in the hotel booking system
 
     // Logger instance for logging events and messages
-    private static final Logger logger = LogManager.getLogger(pomHotelExceldata.class);
+    private static final Logger logger = LogManager.getLogger(PomHotelExcelData.class);
+    private static final String EMAIL_INPUT_XPATH = "//input[@id='email']";
+ // Define a constant for the JavaScript click script
+    private static final String CLICK_SCRIPT = "arguments[0].click();";
+    
+    private static final String SCROLL_TO_ELEMENT_SCRIPT = "arguments[0].scrollIntoView(true);";
+    
+ // Define a constant for the JavaScript command
+    private static final String SCROLL_SCRIPT = "document.querySelector('div[class=\"theme4_hotel_room_list_main__jYmrt\"]').scrollTop=100";
+ // Define a constant for the scroll command
+    private static final String SCROLL_SCRIPT500 = "document.querySelector('div[class=\"theme4_hotel_room_list_main__jYmrt\"]').scrollTop=500";
+    // Define the XPath constant
+    private static final String POPUP_XPATH = "(//p[@class='theme4_ax_hotels_result_number__S7di4'])[1]";
+    
+    private static final String HOTEL_NOT_AVAILABLE_MESSAGE = "The element is not available for select Hotel {}";
+    
+    private static final String STARTING_FROM_XPATH = "//*[text()='Starting From']";
+    
+ // Define the XPath expression as a constant
+    private static final String POPUP_XPATH1 = "/html[1]/body[1]/div[1]/div[1]/div[1]/main[1]/div[1]/div[1]/div[1]/div[3]/div[1]/div[1]/div[1]/div[2]/h2[1]";
+
+
+
+;
+
+
+
 
     // WebElements representing various fields on the hotel booking webpage
 
-    @FindBy(xpath="//input[@id='email']") // Locator for the email input field
+    @FindBy(xpath=EMAIL_INPUT_XPATH) // Locator for the email input field
     private WebElement email;
 
     @FindBy(xpath="//input[@id='pass']") // Locator for the password input field
@@ -77,22 +103,22 @@ public class pomHotelExceldata { // Class for handling hotel data and interactio
     private WebElement adultsubtract;
 
     @FindBy(xpath="//tbody/tr/td[3]/div[1]/span[2]//*[name()='svg']") // Locator for increasing the number of children
-    private WebElement child;
+    private WebElement childs;
 
-    @FindBy(xpath="//input[@placeholder='Child 1 Age']") // Locator for inputting the age of the first child
+    @FindBy(xpath="//input[@placeholder='child 1 Age']") // Locator for inputting the age of the first child
     private WebElement room1chilage1;
 
-    @FindBy(xpath="//input[@placeholder='Child 2 Age']") // Locator for inputting the age of the second child
+    @FindBy(xpath="//input[@placeholder='child 2 Age']") // Locator for inputting the age of the second child
     private WebElement room1chilage2;
 
-    @FindBy(xpath="//input[@placeholder='Child 3 Age']") // Locator for inputting the age of the third child
+    @FindBy(xpath="//input[@placeholder='child 3 Age']") // Locator for inputting the age of the third child
     private WebElement room1chilage3;
 
-    @FindBy(xpath="//input[@placeholder='Child 4 Age']") // Locator for inputting the age of the fourth child
+    @FindBy(xpath="//input[@placeholder='child 4 Age']") // Locator for inputting the age of the fourth child
     private WebElement room1chilage4;
 
     @FindBy(xpath="(//div[@class='theme4_age_list_ele__qEwZi'])[3]") // Locator for selecting the age of children in room 1
-    private WebElement childAgeRoom1;
+    private WebElement childAgeroom1;
 
     // Additional WebElements for more functionalities would follow...
 
@@ -101,8 +127,8 @@ public class pomHotelExceldata { // Class for handling hotel data and interactio
 	
     // WebElements for adding and managing rooms in the hotel booking process
 
-    @FindBy(xpath="//p[normalize-space()='ADD ROOM']") // Locator for the 'Add Room' button for the second room
-    private WebElement addRoom2;
+    @FindBy(xpath="//p[normalize-space()='ADD room']") // Locator for the 'Add room' button for the second room
+    private WebElement addroom2;
 
     @FindBy(xpath="/html[1]/body[1]/div[1]/div[1]/div[1]/main[1]/div[1]/div[2]/div[2]/div[3]/div[1]/div[1]/div[1]/div[1]/div[1]/div[3]/div[1]/div[1]/div[3]/div[2]/div[1]/div[2]/table[1]/tbody[1]/tr[1]/td[2]/div[1]/span[2]/*[name()='svg'][1]") // Locator for increasing the number of adults in the second room
     private WebElement room2Adult;
@@ -110,10 +136,10 @@ public class pomHotelExceldata { // Class for handling hotel data and interactio
     @FindBy(xpath="/html[1]/body[1]/div[1]/div[1]/div[1]/main[1]/div[1]/div[2]/div[2]/div[3]/div[1]/div[1]/div[1]/div[1]/div[1]/div[3]/div[1]/div[1]/div[3]/div[2]/div[1]/div[2]/table[1]/tbody[1]/tr[1]/td[3]/div[1]/span[2]/*[name()='svg'][1]") // Locator for increasing the number of children in the second room
     private WebElement room2child;
 
-    @FindBy(xpath="(//input[@placeholder='Child 1 Age'])[2]") // Locator for the age input of the first child in the second room
+    @FindBy(xpath="(//input[@placeholder='child 1 Age'])[2]") // Locator for the age input of the first child in the second room
     private WebElement room2chilage1;
 
-    @FindBy(xpath="(//input[@placeholder='Child 2 Age'])[2]") // Locator for the age input of the second child in the second room
+    @FindBy(xpath="(//input[@placeholder='child 2 Age'])[2]") // Locator for the age input of the second child in the second room
     private WebElement room2chilage2;	
 
     @FindBy(xpath="(//*[name()='svg'][@id='Layer_1'])[6]") // Locator for adding another child in the second room
@@ -122,8 +148,8 @@ public class pomHotelExceldata { // Class for handling hotel data and interactio
     @FindBy(xpath="(//div[@class='theme4_age_list_ele__qEwZi'])[2]") // Locator for selecting the age of children in the second room
     private WebElement room2selectAge;
 
-    @FindBy(xpath="//p[normalize-space()='ADD ROOM']") // Locator for the 'Add Room' button for the third room
-    private WebElement addRoom3;
+    @FindBy(xpath="//p[normalize-space()='ADD room']") // Locator for the 'Add room' button for the third room
+    private WebElement addroom3;
 
     @FindBy(xpath="/html[1]/body[1]/div[1]/div[1]/div[1]/main[1]/div[1]/div[2]/div[2]/div[3]/div[1]/div[1]/div[1]/div[1]/div[1]/div[3]/div[1]/div[1]/div[3]/div[2]/div[1]/div[3]/table[1]/tbody[1]/tr[1]/td[2]/div[1]/span[2]/*[name()='svg'][1]") // Locator for increasing the number of adults in the third room
     private WebElement room3Adult;
@@ -143,8 +169,8 @@ public class pomHotelExceldata { // Class for handling hotel data and interactio
     @FindBy(xpath="(//div[@class='theme5_age_list_ele__xy8s7'])[4]") // Locator for selecting the age of children in the third room
     private WebElement room3selectAge;
 
-    @FindBy(xpath="//p[normalize-space()='ADD ROOM']") // Locator for the 'Add Room' button for the fourth room
-    private WebElement addRoom4;
+    @FindBy(xpath="//p[normalize-space()='ADD room']") // Locator for the 'Add room' button for the fourth room
+    private WebElement addroom4;
 
     @FindBy(xpath="/html[1]/body[1]/div[1]/div[1]/div[1]/main[1]/div[1]/div[2]/div[2]/div[3]/div[1]/div[1]/div[1]/div[1]/div[1]/div[3]/div[1]/div[1]/div[3]/div[2]/div[1]/div[4]/table[1]/tbody[1]/tr[1]/td[2]/div[1]/span[2]") // Locator for increasing the number of adults in the fourth room
     private WebElement room4Adult;
@@ -164,8 +190,8 @@ public class pomHotelExceldata { // Class for handling hotel data and interactio
     @FindBy(xpath="(//div[@class='theme5_age_list_ele__xy8s7'])[4]") // Locator for selecting the age of children in the fourth room
     private WebElement room4selectAge;
 
-    @FindBy(xpath="(//p[normalize-space()='ADD ROOM'])[1]") // Locator for the 'Add Room' button for the fifth room
-    private WebElement addRoom5;
+    @FindBy(xpath="(//p[normalize-space()='ADD room'])[1]") // Locator for the 'Add room' button for the fifth room
+    private WebElement addroom5;
 
     @FindBy(xpath="(//*[name()='svg'][@id='Layer_1'])[31]") // Locator for increasing the number of adults in the fifth room
     private WebElement room5Adult;
@@ -203,7 +229,7 @@ public class pomHotelExceldata { // Class for handling hotel data and interactio
     private WebElement selectHotel;
 
     @FindBy(xpath="(//button[@class='theme4_srp_desktop_btn__aQOWM theme4_srp_tab_btn__slXIC'][normalize-space()='Select'])[1]") // Locator for selecting the first room from the hotel
-    private WebElement selectRoom;
+    private WebElement selectroom;
 
     @FindBy(xpath="(//button[normalize-space()='Continue'])[1]") // Locator for the 'Continue' button to proceed with booking
     private WebElement continueBooking;
@@ -220,16 +246,16 @@ public class pomHotelExceldata { // Class for handling hotel data and interactio
     // WebElements for selecting adults for each room
 
     @FindBy(xpath="(//input[@placeholder='Select Traveller'])[1]") // Locator for selecting the traveler for the first room
-    private WebElement adultFoeRoom1;
+    private WebElement adultFoeroom1;
 
     @FindBy(xpath="(//input[@placeholder='Select Traveller'])[2]") // Locator for selecting the traveler for the second room
-    private WebElement adultFoeRoom2;
+    private WebElement adultFoeroom2;
 
     @FindBy(xpath="(//input[@placeholder='Select Traveller'])[3]") // Locator for selecting the traveler for the third room
-    private WebElement adultFoeRoom3;
+    private WebElement adultFoeroom3;
 
     @FindBy(xpath="(//input[@placeholder='Select Traveller'])[4]") // Locator for selecting the traveler for the fourth room
-    private WebElement adultFoeRoom4;
+    private WebElement adultFoeroom4;
 
     // WebElements for selecting adults based on the room booking
 
@@ -440,7 +466,7 @@ public class pomHotelExceldata { // Class for handling hotel data and interactio
 	
 
  // Constructor to initialize the page elements
-    public pomHotelExceldata(WebDriver driver) {	
+    public PomHotelExcelData(WebDriver driver) {	
         PageFactory.initElements(driver, this);	
     }
 
@@ -449,7 +475,7 @@ public class pomHotelExceldata { // Class for handling hotel data and interactio
         switch (environment.toLowerCase()) { // Switch case for different environments
             case "prodb2b2": 
                 WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(100)); // Initialize WebDriverWait
-                WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@id='email']"))); // Wait for email input field
+                WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(EMAIL_INPUT_XPATH))); // Wait for email input field
                 email.sendKeys(commonMethodes.readDataFromPropertyFile("usernameB2B2")); // Enter username
                 Thread.sleep(100); // Wait for a short duration
                 pass.sendKeys(commonMethodes.readDataFromPropertyFile("passB2B2")); // Enter password
@@ -460,7 +486,7 @@ public class pomHotelExceldata { // Class for handling hotel data and interactio
               
             case "prodb2b": 
                 WebDriverWait wait1 = new WebDriverWait(driver, Duration.ofSeconds(100));
-                WebElement popup1 = wait1.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@id='email']"))); // Wait for email input field
+                WebElement popup1 = wait1.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(EMAIL_INPUT_XPATH))); // Wait for email input field
                 email.sendKeys(commonMethodes.readDataFromPropertyFile("usernameB2B")); // Enter username
                 Thread.sleep(100); // Wait for a short duration
                 pass.sendKeys(commonMethodes.readDataFromPropertyFile("passB2B")); // Enter password
@@ -471,7 +497,7 @@ public class pomHotelExceldata { // Class for handling hotel data and interactio
               
             case "uatb2b":
                 WebDriverWait wait2 = new WebDriverWait(driver, Duration.ofSeconds(100));
-                WebElement popup2 = wait2.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@id='email']"))); // Wait for email input field
+                WebElement popup2 = wait2.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(EMAIL_INPUT_XPATH))); // Wait for email input field
                 email.sendKeys(commonMethodes.readDataFromPropertyFile("usernameB2BUAT")); // Enter username
                 Thread.sleep(100); // Wait for a short duration
                 pass.sendKeys(commonMethodes.readDataFromPropertyFile("passB2BUAT")); // Enter password
@@ -512,12 +538,12 @@ public class pomHotelExceldata { // Class for handling hotel data and interactio
     }
 
     // Method for selecting fare type based on user input
-    public void selecttheFareType(WebDriver driver, String Fare_Type) throws InterruptedException {
+    public void selecttheFareType(String fareType) throws InterruptedException {
         selectFareType.click(); // Click on fare type selection
         Thread.sleep(500); // Wait for a short duration
         
         // Conditional selection of fare type
-        if (Fare_Type.contentEquals("Refundable")) {
+        if (fareType.contentEquals("Refundable")) {
             refundable.click(); // Click on refundable option
             Thread.sleep(500); // Wait for a short duration
         } else {
@@ -527,7 +553,7 @@ public class pomHotelExceldata { // Class for handling hotel data and interactio
     }
 	
  // Method to select breakfast options
-    public void selecttheBrekfastoption(WebDriver driver) throws InterruptedException {
+    public void selecttheBrekfastoption( ) throws InterruptedException {
         selectBrekfast.click(); // Click on the breakfast selection option
         Thread.sleep(500); // Wait for half a second to ensure the action is completed
         withBrekfast.click(); // Click on the option for breakfast included
@@ -535,7 +561,7 @@ public class pomHotelExceldata { // Class for handling hotel data and interactio
     }
 
     // Method to select hotel star ratings based on user input
-    public void selecttherating(WebDriver driver, String STAR_RATING) throws InterruptedException {
+    public void selecttherating(WebDriver driver, String starratings) throws InterruptedException {
         Thread.sleep(500); // Wait for half a second to ensure the UI is ready
         selectStarRating.click(); // Click on the star rating selection element
         Thread.sleep(500); // Wait for the star rating options to appear
@@ -545,9 +571,9 @@ public class pomHotelExceldata { // Class for handling hotel data and interactio
         
         // Iterate through each star rating checkbox
         for (WebElement rating : starrating) {
-            String Star = rating.getAttribute("id"); // Get the ID of the current star rating checkbox
+            String star = rating.getAttribute("id"); // Get the ID of the current star rating checkbox
             
-            if (Star.equals(STAR_RATING)) { // Check if the current rating matches the desired rating
+            if (star.equals(starratings)) { // Check if the current rating matches the desired rating
                 rating.click(); // Click on the matching star rating checkbox
             } else {
                 // If the current rating does not match, click all checkboxes (possibly to uncheck others)
@@ -559,7 +585,7 @@ public class pomHotelExceldata { // Class for handling hotel data and interactio
     }
 
     // Method to click on a hotel selection
-    public void clickOnHotel(WebDriver driver) throws InterruptedException {
+    public void clickOnHotel( ) throws InterruptedException {
         clickHotel.click(); // Click on the hotel element to proceed
         Thread.sleep(1000); // Wait for one second to ensure the action is completed
     }
@@ -585,7 +611,7 @@ public class pomHotelExceldata { // Class for handling hotel data and interactio
             // Check if the suggestion matches the desired city
             if (Citys.getText().contains(city)) {
                 // Click on the matching city suggestion using JavaScript to ensure proper interaction
-                ((JavascriptExecutor) driver).executeScript("arguments[0].click();", Citys);
+                ((JavascriptExecutor) driver).executeScript(CLICK_SCRIPT, Citys);
                 break; // Exit the loop after clicking the city
             }
             
@@ -600,7 +626,7 @@ public class pomHotelExceldata { // Class for handling hotel data and interactio
 	
 	
  // Method to select dates for a trip, using the WebDriver to interact with the web elements.
-    public void SelectDatefortrip(WebDriver driver, String month, String rmonth, String departureDate,
+    public void selectDatefortrip(WebDriver driver,String month, String rmonth, String departureDate,
                                    String returnDate) throws InterruptedException {
         
         // Create a Random object to generate random numbers.
@@ -616,9 +642,7 @@ public class pomHotelExceldata { // Class for handling hotel data and interactio
         int randomNumberInRange = random.nextInt(max - min) + min; // Random departure date
         int randomNumberInRange1 = random.nextInt(max1 - min1) + min1; // Random return date
         
-        // Convert the random numbers to string for usage.
-        String strNumber = String.valueOf(randomNumberInRange);
-        String strNumber1 = String.valueOf(randomNumberInRange1);
+    
 
         // Wait for the departure calendar element to be visible.
         commonMethodes.waitForElementToBeVisible(driver, departureCalander, 1);
@@ -651,14 +675,14 @@ public class pomHotelExceldata { // Class for handling hotel data and interactio
     }
 
     // Method to select a date from the calendar.
-    private void selectDate(WebDriver driver, String month, String date) throws InterruptedException {
+    private void selectDate(WebDriver driver, String month, String date)   {
 
         // Infinite loop until the desired month is found in the calendar.
         int index;
         while (true) {
-            logger.info("checking while loop");
+            logger.info("checking while loop {}");
             String text = driver.findElement(By.xpath("//h3")).getText(); // Get the current displayed month.
-            logger.info("while current month is " + text);
+            logger.info("while current month is {}" + text);
 
             // Find all month/year labels in the calendar header.
             List<WebElement> monthYearLabels = driver
@@ -667,21 +691,18 @@ public class pomHotelExceldata { // Class for handling hotel data and interactio
             // Check if the desired month is found in the labels.
             boolean isMonthFound = monthYearLabels.stream().anyMatch(ele -> ele.getText().equalsIgnoreCase(month));
 
-            logger.info("while given input month is " + month);
-            logger.info("isMonthFound status is " + isMonthFound);
+            logger.info("while given input month is {}" + month);
+            logger.info("isMonthFound status is {}" + isMonthFound);
 
             // Get the index of the matching month.
             index = getIndexOfMatchingElement(monthYearLabels, month);
-            logger.info("index value is " + index);
+            logger.info("index value is {}" + index);
 
             // If the desired month is found, exit the loop.
             if (isMonthFound) {
                 break;
             } else {
-                // If not found, click the button to move to the next month.
-                logger.info(driver.findElements(By.xpath(
-                        "//div[@class='theme4_calendar_head_right_side__o16VX']//span[@class='theme4_calendar_head_icon__Y4clh']//*[name()='svg']"))
-                        .size());
+        
                 commonMethodes.waitForElementToBeVisible(driver, nextMonthLable, 3);
             }
         }
@@ -691,7 +712,7 @@ public class pomHotelExceldata { // Class for handling hotel data and interactio
             // Select a date from the left side of the calendar.
             List<WebElement> letftSideDates = driver.findElements(By.xpath(
                     "//div[@class='theme4_calendar_whole_body__8QLJU'][1]//div[@class='theme4_calendar_day_list__fSlRj']//div[@class='theme4_day_cell_center__uTvYe']//span[@class='']"));
-            logger.info("user given date is 1 option " + date);
+            logger.info("user given date is 1 option {}" + date);
 
             // Filter the left side dates to find the matching date and click it.
             letftSideDates.stream().filter(ele -> ele.getText().contentEquals(date)).findFirst().ifPresent(element -> {
@@ -706,10 +727,9 @@ public class pomHotelExceldata { // Class for handling hotel data and interactio
             List<WebElement> rightSideDates = driver.findElements(By.xpath(
                     "//div[@class='theme4_calendar_whole_body__8QLJU'][2]//div[@class='theme4_calendar_day_list__fSlRj']//div[@class='theme4_day_cell_center__uTvYe']//span[@class='']"));
 
-            logger.info("user given date is 2 option " + date);
+            logger.info("user given date is 2 option {}" + date);
             
-            // Filter the right side dates to find the matching date and click it.
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30)); // Wait for up to 30 seconds
+        
 
             rightSideDates.stream().filter(ele -> ele.getText().contentEquals(date)).findFirst().ifPresent(element -> {
                 ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element); // Scroll to the element.
@@ -722,24 +742,24 @@ public class pomHotelExceldata { // Class for handling hotel data and interactio
 
 
 	
-	public void selectRoomPass(WebDriver driver,String AdultString,String childString,String RoomString) throws InterruptedException
-	{
+    public void selectroomPass(WebDriver driver, String adultString, String childString, String roomString) throws InterruptedException {
+        // Method implementation
 		commonMethodes.waitForElementToBeVisible(driver, passanger, 1);
-		String stringadult =AdultString;
+		String stringadult =adultString;
 		Integer adult = Integer.valueOf(stringadult);
-		logger.info("No of  Adult is :"+stringadult);
+		logger.info("No of  Adult is : {}"+stringadult);
 		
 		String stringchild = childString;
-		Integer Child = Integer.valueOf(stringchild);
-		logger.info("No of  Child is :"+stringchild);
+		Integer child = Integer.valueOf(stringchild);
+		logger.info("No of  child is : {}"+stringchild);
 
-		String stringRoom=RoomString;
-		Integer Room = Integer.valueOf(stringRoom);
+		String stringroom=roomString;
+		Integer room = Integer.valueOf(stringroom);
 		Thread.sleep(500);
-		logger.info("No of  Room is :"+stringRoom);
+		logger.info("No of  room is :{}"+stringroom);
 
 		
-		if(Room==1)
+		if(room==1)
 		{
 			
 		if(adult<=1)
@@ -756,64 +776,63 @@ public class pomHotelExceldata { // Class for handling hotel data and interactio
 							
 				        }}
 		
-		for (int i = 0; i < Child; i++) {
-		child.click(); 
+		for (int i = 0; i < child; i++) {
+		childs.click(); 
 			
         }
 		
-		if(Child==1)
+		if(child==1)
 		{
 			room1chilage1.click();
 			Thread.sleep(100);
-			WebElement element1 = childAgeRoom1;
-			((JavascriptExecutor) driver).executeScript("document.querySelector('div[class=\"theme4_hotel_room_list_main__jYmrt\"]').scrollTop=100");
+			WebElement element1 = childAgeroom1;
+			((JavascriptExecutor) driver).executeScript(SCROLL_SCRIPT);
 			Thread.sleep(100);
 			element1.click();
 			Thread.sleep(300);
 			
 		}
-		else if(Child==2)
+		else if(child==2)
 		{
 			room1chilage1.click();
 			Thread.sleep(100);
-			WebElement element1 = childAgeRoom1;
-			((JavascriptExecutor) driver).executeScript("document.querySelector('div[class=\"theme4_hotel_room_list_main__jYmrt\"]').scrollTop=100");
+			WebElement element1 = childAgeroom1;
+			((JavascriptExecutor) driver).executeScript(SCROLL_SCRIPT);
 			Thread.sleep(100);
 			element1.click();
 			Thread.sleep(100);
 			room1chilage2.click();
 			Thread.sleep(100);
-			childAgeRoom1.click();
+			childAgeroom1.click();
 			
 		}
-		else if(Child==3)
+		else if(child==3)
 		{
 			room1chilage1.click();
 			Thread.sleep(100);
-			WebElement element1 = childAgeRoom1;
-			((JavascriptExecutor) driver).executeScript("document.querySelector('div[class=\"theme4_hotel_room_list_main__jYmrt\"]').scrollTop=100");
+			WebElement element1 = childAgeroom1;
+			((JavascriptExecutor) driver).executeScript(SCROLL_SCRIPT);
 			Thread.sleep(100);
 			element1.click();
 			room1chilage2.click();
 			Thread.sleep(100);
-			childAgeRoom1.click();
+			childAgeroom1.click();
 			Thread.sleep(100);
 			room1chilage3.click();
 			Thread.sleep(100);
-			childAgeRoom1.click();
+			childAgeroom1.click();
 
 		}
 		
 		Thread.sleep(500);
 		WebElement element1 = done;
-		//((JavascriptExecutor) driver).executeScript("window.scrollBy(0,100)", "");
 		Thread.sleep(100);
 		element1.click();
 		Thread.sleep(1000);
 		
 		}
 			
-		else if(Room==2)
+		else if(room==2)
 		{
 			if(adult<=1)
 			{for (int i = 0; i < adult; i++) 
@@ -827,55 +846,55 @@ public class pomHotelExceldata { // Class for handling hotel data and interactio
 		{adult1.click();	}}
 			Thread.sleep(200);
 
-			for (int i = 0; i < Child; i++) 
+			for (int i = 0; i < child; i++) 
 			{
-			child.click(); 
+			childs.click(); 
 			Thread.sleep(200);
 }
-			if(Child==1)
+			if(child==1)
 			{
 				room1chilage1.click();
 				Thread.sleep(100);
-				WebElement element1 = childAgeRoom1;
-				((JavascriptExecutor) driver).executeScript("document.querySelector('div[class=\"theme4_hotel_room_list_main__jYmrt\"]').scrollTop=100");
+				WebElement element1 = childAgeroom1;
+				((JavascriptExecutor) driver).executeScript(SCROLL_SCRIPT);
 				Thread.sleep(100);
 				element1.click();
 				Thread.sleep(300);
 				
 			}
-			else if(Child==2)
+			else if(child==2)
 			{
 				room1chilage1.click();
 				Thread.sleep(100);
-				WebElement element1 = childAgeRoom1;
-				((JavascriptExecutor) driver).executeScript("document.querySelector('div[class=\"theme4_hotel_room_list_main__jYmrt\"]').scrollTop=100");
+				WebElement element1 = childAgeroom1;
+				((JavascriptExecutor) driver).executeScript(SCROLL_SCRIPT);
 				Thread.sleep(100);
 				element1.click();
 				Thread.sleep(100);
 				room1chilage2.click();
 				Thread.sleep(100);
-				childAgeRoom1.click();
+				childAgeroom1.click();
 				
 			}
-			else if(Child==3)
+			else if(child==3)
 			{
 				room1chilage1.click();
 				Thread.sleep(100);
-				WebElement element1 = childAgeRoom1;
-				((JavascriptExecutor) driver).executeScript("document.querySelector('div[class=\"theme4_hotel_room_list_main__jYmrt\"]').scrollTop=100");
+				WebElement element1 = childAgeroom1;
+				((JavascriptExecutor) driver).executeScript(SCROLL_SCRIPT);
 				Thread.sleep(100);
 				element1.click();
 				room1chilage2.click();
 				Thread.sleep(100);
-				childAgeRoom1.click();
+				childAgeroom1.click();
 				Thread.sleep(100);
 				room1chilage3.click();
 				Thread.sleep(100);
-				childAgeRoom1.click();
+				childAgeroom1.click();
 
 			}
 			
-			addRoom2.click();
+			addroom2.click();
 			Thread.sleep(100);
 			((JavascriptExecutor) driver).executeScript("window.scrollBy(0,300)", "");
 			Thread.sleep(500);
@@ -887,7 +906,7 @@ public class pomHotelExceldata { // Class for handling hotel data and interactio
 								
 					        }
 			
-	   for (int i = 0; i < Child; i++) {
+	   for (int i = 0; i < child; i++) {
 			
 			room2child.click();
 			
@@ -896,48 +915,48 @@ public class pomHotelExceldata { // Class for handling hotel data and interactio
 	        }
 
 	   
-	   if(Child==1)
+	   if(child==1)
 		{
 			room1chilage1.click();
 			Thread.sleep(1000);
-			WebElement element1 = childAgeRoom1;
-			((JavascriptExecutor) driver).executeScript("document.querySelector('div[class=\"theme4_hotel_room_list_main__jYmrt\"]').scrollTop=500");
+			WebElement element1 = childAgeroom1;
+			((JavascriptExecutor) driver).executeScript(SCROLL_SCRIPT500);
 			Thread.sleep(500);
 			element1.sendKeys(Keys.ENTER);
 			Thread.sleep(500);
 			
 		}
-		else if(Child==2)
+		else if(child==2)
 		{
 			room1chilage1.click();
 			Thread.sleep(1000);
-			WebElement element1 = childAgeRoom1;
-			((JavascriptExecutor) driver).executeScript("document.querySelector('div[class=\"theme4_hotel_room_list_main__jYmrt\"]').scrollTop=500");
+			WebElement element1 = childAgeroom1;
+			((JavascriptExecutor) driver).executeScript(SCROLL_SCRIPT500);
 			Thread.sleep(500);
 			element1.click();
 			Thread.sleep(500);
 			room1chilage2.click();
 			Thread.sleep(500);
-			childAgeRoom1.click();
+			childAgeroom1.click();
 			Thread.sleep(500);
 	
 		}
-		else if(Child==3)
+		else if(child==3)
 		{
 			room1chilage1.click();
 			Thread.sleep(1000);
-			WebElement element1 = childAgeRoom1;
-			((JavascriptExecutor) driver).executeScript("document.querySelector('div[class=\"theme4_hotel_room_list_main__jYmrt\"]').scrollTop=500");
+			WebElement element1 = childAgeroom1;
+			((JavascriptExecutor) driver).executeScript(SCROLL_SCRIPT500);
 			Thread.sleep(100);
 			element1.click();
 			Thread.sleep(500);
 			room1chilage2.click();
 			Thread.sleep(500);
-			childAgeRoom1.click();
+			childAgeroom1.click();
 			Thread.sleep(500);
 			room1chilage3.click();
 			Thread.sleep(500);
-			childAgeRoom1.click();
+			childAgeroom1.click();
 			Thread.sleep(500);
 
 		}
@@ -950,7 +969,7 @@ public class pomHotelExceldata { // Class for handling hotel data and interactio
 		
 	   
 		}
-		else if(Room==3)
+		else if(room==3)
 		{
 
 			if(adult<=1)
@@ -965,55 +984,55 @@ public class pomHotelExceldata { // Class for handling hotel data and interactio
 		{adult1.click();	}}
 			Thread.sleep(200);
 
-			for (int i = 0; i < Child; i++) 
+			for (int i = 0; i < child; i++) 
 			{
-			child.click(); 
+			childs.click(); 
 			Thread.sleep(200);
 }
-			if(Child==1)
+			if(child==1)
 			{
 				room1chilage1.click();
 				Thread.sleep(100);
-				WebElement element1 = childAgeRoom1;
-				((JavascriptExecutor) driver).executeScript("document.querySelector('div[class=\"theme4_hotel_room_list_main__jYmrt\"]').scrollTop=100");
+				WebElement element1 = childAgeroom1;
+				((JavascriptExecutor) driver).executeScript(SCROLL_SCRIPT);
 				Thread.sleep(100);
 				element1.click();
 				Thread.sleep(300);
 				
 			}
-			else if(Child==2)
+			else if(child==2)
 			{
 				room1chilage1.click();
 				Thread.sleep(100);
-				WebElement element1 = childAgeRoom1;
-				((JavascriptExecutor) driver).executeScript("document.querySelector('div[class=\"theme4_hotel_room_list_main__jYmrt\"]').scrollTop=100");
+				WebElement element1 = childAgeroom1;
+				((JavascriptExecutor) driver).executeScript(SCROLL_SCRIPT);
 				Thread.sleep(100);
 				element1.click();
 				Thread.sleep(100);
 				room1chilage2.click();
 				Thread.sleep(100);
-				childAgeRoom1.click();
+				childAgeroom1.click();
 				
 			}
-			else if(Child==3)
+			else if(child==3)
 			{
 				room1chilage1.click();
 				Thread.sleep(100);
-				WebElement element1 = childAgeRoom1;
-				((JavascriptExecutor) driver).executeScript("document.querySelector('div[class=\"theme4_hotel_room_list_main__jYmrt\"]').scrollTop=100");
+				WebElement element1 = childAgeroom1;
+				((JavascriptExecutor) driver).executeScript(SCROLL_SCRIPT);
 				Thread.sleep(100);
 				element1.click();
 				room1chilage2.click();
 				Thread.sleep(100);
-				childAgeRoom1.click();
+				childAgeroom1.click();
 				Thread.sleep(100);
 				room1chilage3.click();
 				Thread.sleep(100);
-				childAgeRoom1.click();
+				childAgeroom1.click();
 
 			}
 			
-			addRoom2.click();
+			addroom2.click();
 			Thread.sleep(100);
 			((JavascriptExecutor) driver).executeScript("window.scrollBy(0,300)", "");
 			Thread.sleep(500);
@@ -1025,7 +1044,7 @@ public class pomHotelExceldata { // Class for handling hotel data and interactio
 								
 					        }
 			
-	   for (int i = 0; i < Child; i++) {
+	   for (int i = 0; i < child; i++) {
 			
 			room2child.click();
 			
@@ -1034,48 +1053,48 @@ public class pomHotelExceldata { // Class for handling hotel data and interactio
 	        }
 
 	   
-	   if(Child==1)
+	   if(child==1)
 		{
 			room1chilage1.click();
 			Thread.sleep(1000);
-			WebElement element1 = childAgeRoom1;
-			((JavascriptExecutor) driver).executeScript("document.querySelector('div[class=\"theme4_hotel_room_list_main__jYmrt\"]').scrollTop=500");
+			WebElement element1 = childAgeroom1;
+			((JavascriptExecutor) driver).executeScript(SCROLL_SCRIPT500);
 			Thread.sleep(500);
 			element1.sendKeys(Keys.ENTER);
 			Thread.sleep(500);
 			
 		}
-		else if(Child==2)
+		else if(child==2)
 		{
 			room1chilage1.click();
 			Thread.sleep(1000);
-			WebElement element1 = childAgeRoom1;
-			((JavascriptExecutor) driver).executeScript("document.querySelector('div[class=\"theme4_hotel_room_list_main__jYmrt\"]').scrollTop=500");
+			WebElement element1 = childAgeroom1;
+			((JavascriptExecutor) driver).executeScript(SCROLL_SCRIPT500);
 			Thread.sleep(500);
 			element1.click();
 			Thread.sleep(500);
 			room1chilage2.click();
 			Thread.sleep(500);
-			childAgeRoom1.click();
+			childAgeroom1.click();
 			Thread.sleep(500);
 	
 		}
-		else if(Child==3)
+		else if(child==3)
 		{
 			room1chilage1.click();
 			Thread.sleep(1000);
-			WebElement element1 = childAgeRoom1;
-			((JavascriptExecutor) driver).executeScript("document.querySelector('div[class=\"theme4_hotel_room_list_main__jYmrt\"]').scrollTop=500");
+			WebElement element1 = childAgeroom1;
+			((JavascriptExecutor) driver).executeScript(SCROLL_SCRIPT500);
 			Thread.sleep(100);
 			element1.click();
 			Thread.sleep(500);
 			room1chilage2.click();
 			Thread.sleep(500);
-			childAgeRoom1.click();
+			childAgeroom1.click();
 			Thread.sleep(500);
 			room1chilage3.click();
 			Thread.sleep(500);
-			childAgeRoom1.click();
+			childAgeroom1.click();
 			Thread.sleep(500);
 
 		}
@@ -1083,7 +1102,7 @@ public class pomHotelExceldata { // Class for handling hotel data and interactio
    
 			
 	   
-		addRoom3.click();
+		addroom3.click();
 		
 		
 	for (int i = 0; i < adult-1; i++) 
@@ -1092,54 +1111,54 @@ public class pomHotelExceldata { // Class for handling hotel data and interactio
 							
 				        }
 		
-  for (int i = 0; i < Child; i++) {
+  for (int i = 0; i < child; i++) {
 	   room3child.click(); 
 			
        }
 		
   
-  if(Child==1)
+  if(child==1)
 	{
 		room1chilage1.click();
 		Thread.sleep(1000);
-		WebElement element1 = childAgeRoom1;
-		((JavascriptExecutor) driver).executeScript("document.querySelector('div[class=\"theme4_hotel_room_list_main__jYmrt\"]').scrollTop=500");
+		WebElement element1 = childAgeroom1;
+		((JavascriptExecutor) driver).executeScript(SCROLL_SCRIPT500);
 		Thread.sleep(500);
 		element1.click();
 		Thread.sleep(500);
 		
 	}
-	else if(Child==2)
+	else if(child==2)
 	{
 		room1chilage1.click();
 		Thread.sleep(1000);
-		WebElement element1 = childAgeRoom1;
-		((JavascriptExecutor) driver).executeScript("document.querySelector('div[class=\"theme4_hotel_room_list_main__jYmrt\"]').scrollTop=500");
+		WebElement element1 = childAgeroom1;
+		((JavascriptExecutor) driver).executeScript(SCROLL_SCRIPT500);
 		Thread.sleep(500);
 		element1.click();
 		Thread.sleep(500);
 		room1chilage2.click();
 		Thread.sleep(500);
-		childAgeRoom1.click();
+		childAgeroom1.click();
 		Thread.sleep(500);
 
 	}
-	else if(Child==3)
+	else if(child==3)
 	{
 		room1chilage1.click();
 		Thread.sleep(1000);
-		WebElement element1 = childAgeRoom1;
-		((JavascriptExecutor) driver).executeScript("document.querySelector('div[class=\"theme4_hotel_room_list_main__jYmrt\"]').scrollTop=500");
+		WebElement element1 = childAgeroom1;
+		((JavascriptExecutor) driver).executeScript(SCROLL_SCRIPT500);
 		Thread.sleep(100);
 		element1.click();
 		Thread.sleep(500);
 		room1chilage2.click();
 		Thread.sleep(500);
-		childAgeRoom1.click();
+		childAgeroom1.click();
 		Thread.sleep(500);
 		room1chilage3.click();
 		Thread.sleep(500);
-		childAgeRoom1.click();
+		childAgeroom1.click();
 		Thread.sleep(500);
 
 	}
@@ -1148,7 +1167,7 @@ public class pomHotelExceldata { // Class for handling hotel data and interactio
 	   
 		Thread.sleep(500);
 		WebElement element1 = done;
-		//((JavascriptExecutor) driver).executeScript("window.scrollBy(0,100)", "");
+		
 		Thread.sleep(100);
 		element1.click();
 		Thread.sleep(1000);
@@ -1158,7 +1177,7 @@ public class pomHotelExceldata { // Class for handling hotel data and interactio
 			
 			
 		}
-		else if(Room==4)
+		else if(room==4)
 		{
 
 			if(adult<=1)
@@ -1173,55 +1192,55 @@ public class pomHotelExceldata { // Class for handling hotel data and interactio
 		        {adult1.click();	}}
 			Thread.sleep(200);
 
-			for (int i = 0; i < Child; i++) 
+			for (int i = 0; i < child; i++) 
 			{
-			child.click(); 
+			childs.click(); 
 			Thread.sleep(200);
 }
-			if(Child==1)
+			if(child==1)
 			{
 				room1chilage1.click();
 				Thread.sleep(100);
-				WebElement element1 = childAgeRoom1;
-				((JavascriptExecutor) driver).executeScript("document.querySelector('div[class=\"theme4_hotel_room_list_main__jYmrt\"]').scrollTop=100");
+				WebElement element1 = childAgeroom1;
+				((JavascriptExecutor) driver).executeScript(SCROLL_SCRIPT);
 				Thread.sleep(100);
 				element1.click();
 				Thread.sleep(300);
 				
 			}
-			else if(Child==2)
+			else if(child==2)
 			{
 				room1chilage1.click();
 				Thread.sleep(100);
-				WebElement element1 = childAgeRoom1;
-				((JavascriptExecutor) driver).executeScript("document.querySelector('div[class=\"theme4_hotel_room_list_main__jYmrt\"]').scrollTop=100");
+				WebElement element1 = childAgeroom1;
+				((JavascriptExecutor) driver).executeScript(SCROLL_SCRIPT);
 				Thread.sleep(100);
 				element1.click();
 				Thread.sleep(100);
 				room1chilage2.click();
 				Thread.sleep(100);
-				childAgeRoom1.click();
+				childAgeroom1.click();
 				
 			}
-			else if(Child==3)
+			else if(child==3)
 			{
 				room1chilage1.click();
 				Thread.sleep(100);
-				WebElement element1 = childAgeRoom1;
-				((JavascriptExecutor) driver).executeScript("document.querySelector('div[class=\"theme4_hotel_room_list_main__jYmrt\"]').scrollTop=100");
+				WebElement element1 = childAgeroom1;
+				((JavascriptExecutor) driver).executeScript(SCROLL_SCRIPT);
 				Thread.sleep(100);
 				element1.click();
 				room1chilage2.click();
 				Thread.sleep(100);
-				childAgeRoom1.click();
+				childAgeroom1.click();
 				Thread.sleep(100);
 				room1chilage3.click();
 				Thread.sleep(100);
-				childAgeRoom1.click();
+				childAgeroom1.click();
 
 			}
 			
-			addRoom2.click();
+			addroom2.click();
 			Thread.sleep(100);
 			((JavascriptExecutor) driver).executeScript("window.scrollBy(0,300)", "");
 			Thread.sleep(500);
@@ -1233,7 +1252,7 @@ public class pomHotelExceldata { // Class for handling hotel data and interactio
 								
 					        }
 			
-	   for (int i = 0; i < Child; i++) {
+	   for (int i = 0; i < child; i++) {
 			
 			room2child.click();
 			
@@ -1242,48 +1261,48 @@ public class pomHotelExceldata { // Class for handling hotel data and interactio
 	        }
 
 	   
-	   if(Child==1)
+	   if(child==1)
 		{
 			room1chilage1.click();
 			Thread.sleep(1000);
-			WebElement element1 = childAgeRoom1;
-			((JavascriptExecutor) driver).executeScript("document.querySelector('div[class=\"theme4_hotel_room_list_main__jYmrt\"]').scrollTop=500");
+			WebElement element1 = childAgeroom1;
+			((JavascriptExecutor) driver).executeScript(SCROLL_SCRIPT500);
 			Thread.sleep(500);
 			element1.sendKeys(Keys.ENTER);
 			Thread.sleep(500);
 			
 		}
-		else if(Child==2)
+		else if(child==2)
 		{
 			room1chilage1.click();
 			Thread.sleep(1000);
-			WebElement element1 = childAgeRoom1;
-			((JavascriptExecutor) driver).executeScript("document.querySelector('div[class=\"theme4_hotel_room_list_main__jYmrt\"]').scrollTop=500");
+			WebElement element1 = childAgeroom1;
+			((JavascriptExecutor) driver).executeScript(SCROLL_SCRIPT500);
 			Thread.sleep(500);
 			element1.click();
 			Thread.sleep(500);
 			room1chilage2.click();
 			Thread.sleep(500);
-			childAgeRoom1.click();
+			childAgeroom1.click();
 			Thread.sleep(500);
 	
 		}
-		else if(Child==3)
+		else if(child==3)
 		{
 			room1chilage1.click();
 			Thread.sleep(1000);
-			WebElement element1 = childAgeRoom1;
-			((JavascriptExecutor) driver).executeScript("document.querySelector('div[class=\"theme4_hotel_room_list_main__jYmrt\"]').scrollTop=500");
+			WebElement element1 = childAgeroom1;
+			((JavascriptExecutor) driver).executeScript(SCROLL_SCRIPT500);
 			Thread.sleep(100);
 			element1.click();
 			Thread.sleep(500);
 			room1chilage2.click();
 			Thread.sleep(500);
-			childAgeRoom1.click();
+			childAgeroom1.click();
 			Thread.sleep(500);
 			room1chilage3.click();
 			Thread.sleep(500);
-			childAgeRoom1.click();
+			childAgeroom1.click();
 			Thread.sleep(500);
 
 		}
@@ -1291,7 +1310,7 @@ public class pomHotelExceldata { // Class for handling hotel data and interactio
    
 			
 	   
-		addRoom3.click();
+		addroom3.click();
 		
 		
 	for (int i = 0; i < adult-1; i++) 
@@ -1300,60 +1319,60 @@ public class pomHotelExceldata { // Class for handling hotel data and interactio
 							
 				        }
 		
-  for (int i = 0; i < Child; i++) {
+  for (int i = 0; i < child; i++) {
 	   room3child.click(); 
 			
        }
 		
   
-  if(Child==1)
+  if(child==1)
 	{
 		room1chilage1.click();
 		Thread.sleep(1000);
-		WebElement element1 = childAgeRoom1;
-		((JavascriptExecutor) driver).executeScript("document.querySelector('div[class=\"theme4_hotel_room_list_main__jYmrt\"]').scrollTop=500");
+		WebElement element1 = childAgeroom1;
+		((JavascriptExecutor) driver).executeScript(SCROLL_SCRIPT500);
 		Thread.sleep(500);
 		element1.click();
 		Thread.sleep(500);
 		
 	}
-	else if(Child==2)
+	else if(child==2)
 	{
 		room1chilage1.click();
 		Thread.sleep(1000);
-		WebElement element1 = childAgeRoom1;
-		((JavascriptExecutor) driver).executeScript("document.querySelector('div[class=\"theme4_hotel_room_list_main__jYmrt\"]').scrollTop=500");
+		WebElement element1 = childAgeroom1;
+		((JavascriptExecutor) driver).executeScript(SCROLL_SCRIPT500);
 		Thread.sleep(500);
 		element1.click();
 		Thread.sleep(500);
 		room1chilage2.click();
 		Thread.sleep(500);
-		childAgeRoom1.click();
+		childAgeroom1.click();
 		Thread.sleep(500);
 
 	}
-	else if(Child==3)
+	else if(child==3)
 	{
 		room1chilage1.click();
 		Thread.sleep(1000);
-		WebElement element1 = childAgeRoom1;
-		((JavascriptExecutor) driver).executeScript("document.querySelector('div[class=\"theme4_hotel_room_list_main__jYmrt\"]').scrollTop=500");
+		WebElement element1 = childAgeroom1;
+		((JavascriptExecutor) driver).executeScript(SCROLL_SCRIPT500);
 		Thread.sleep(100);
 		element1.click();
 		Thread.sleep(500);
 		room1chilage2.click();
 		Thread.sleep(500);
-		childAgeRoom1.click();
+		childAgeroom1.click();
 		Thread.sleep(500);
 		room1chilage3.click();
 		Thread.sleep(500);
-		childAgeRoom1.click();
+		childAgeroom1.click();
 		Thread.sleep(500);
 
 	}
 	   
 	   
-	addRoom4.click();
+	addroom4.click();
 	
 	
 for (int i = 0; i < adult-1; i++) 
@@ -1362,60 +1381,60 @@ for (int i = 0; i < adult-1; i++)
 						
 			        }
 	
-for (int i = 0; i < Child; i++) {
+for (int i = 0; i < child; i++) {
  room4child.click(); 
 		
  }
 	
-if(Child==1)
+if(child==1)
 	{
 		room1chilage1.click();
 		Thread.sleep(1000);
-		WebElement element1 = childAgeRoom1;
-		((JavascriptExecutor) driver).executeScript("document.querySelector('div[class=\"theme4_hotel_room_list_main__jYmrt\"]').scrollTop=500");
+		WebElement element1 = childAgeroom1;
+		((JavascriptExecutor) driver).executeScript(SCROLL_SCRIPT500);
 		Thread.sleep(500);
 		element1.sendKeys(Keys.ENTER);
 		Thread.sleep(500);
 		
 	}
-	else if(Child==2)
+	else if(child==2)
 	{
 		room1chilage1.click();
 		Thread.sleep(1000);
-		WebElement element1 = childAgeRoom1;
-		((JavascriptExecutor) driver).executeScript("document.querySelector('div[class=\"theme4_hotel_room_list_main__jYmrt\"]').scrollTop=500");
+		WebElement element1 = childAgeroom1;
+		((JavascriptExecutor) driver).executeScript(SCROLL_SCRIPT500);
 		Thread.sleep(500);
 		element1.click();
 		Thread.sleep(500);
 		room1chilage2.click();
 		Thread.sleep(500);
-		childAgeRoom1.click();
+		childAgeroom1.click();
 		Thread.sleep(500);
 
 	}
-	else if(Child==3)
+	else if(child==3)
 	{
 		room1chilage1.click();
 		Thread.sleep(1000);
-		WebElement element1 = childAgeRoom1;
-		((JavascriptExecutor) driver).executeScript("document.querySelector('div[class=\"theme4_hotel_room_list_main__jYmrt\"]').scrollTop=500");
+		WebElement element1 = childAgeroom1;
+		((JavascriptExecutor) driver).executeScript(SCROLL_SCRIPT500);
 		Thread.sleep(100);
 		element1.click();
 		Thread.sleep(500);
 		room1chilage2.click();
 		Thread.sleep(500);
-		childAgeRoom1.click();
+		childAgeroom1.click();
 		Thread.sleep(500);
 		room1chilage3.click();
 		Thread.sleep(500);
-		childAgeRoom1.click();
+		childAgeroom1.click();
 		Thread.sleep(500);
 
 	}
 	   
 		Thread.sleep(500);
 		WebElement element1 = done;
-		//((JavascriptExecutor) driver).executeScript("window.scrollBy(0,100)", "");
+		
 		Thread.sleep(100);
 		element1.click();
 		Thread.sleep(1000);
@@ -1426,7 +1445,7 @@ if(Child==1)
 			
 		
 		}
-		else if(Room==5)
+		else if(room==5)
 		{
 
 
@@ -1445,45 +1464,45 @@ if(Child==1)
 								
 					        }}
 			
-			for (int i = 0; i < Child; i++) {
-			child.click(); 
+			for (int i = 0; i < child; i++) {
+			childs.click(); 
 				
 	        }
 			
-			if(Child==1)
+			if(child==1)
 			{
 				room1chilage1.click();
 				Thread.sleep(100);
-				childAgeRoom1.click();
+				childAgeroom1.click();
 			}
-			else if(Child==2)
+			else if(child==2)
 			{
 				room1chilage1.click();
 				Thread.sleep(100);
-				childAgeRoom1.click();
+				childAgeroom1.click();
 				Thread.sleep(100);
 				room1chilage2.click();
 				Thread.sleep(100);
-				childAgeRoom1.click();
+				childAgeroom1.click();
 				
 			}
-			else if(Child==3)
+			else if(child==3)
 			{
 				room1chilage1.click();
 				Thread.sleep(100);
-				childAgeRoom1.click();
+				childAgeroom1.click();
 				Thread.sleep(100);
 				room1chilage2.click();
 				Thread.sleep(100);
-				childAgeRoom1.click();
+				childAgeroom1.click();
 				Thread.sleep(100);
 				room1chilage3.click();
 				Thread.sleep(100);
-				childAgeRoom1.click();
+				childAgeroom1.click();
 
 			}	
 			
-			addRoom2.click();
+			addroom2.click();
 			
 		
 		for (int i = 0; i < adult-1; i++) 
@@ -1492,18 +1511,18 @@ if(Child==1)
 								
 					        }
 			
-	   for (int i = 0; i < Child; i++) {
+	   for (int i = 0; i < child; i++) {
 		   room2child.click(); 
 				
 	        }
 			
-	   if(Child==1)
+	   if(child==1)
 		{
 		   room2chilage1.click();
 			Thread.sleep(100);
 			room2selectAge.click();
 		}
-		else if(Child==2)
+		else if(child==2)
 		{
 			room2chilage1.click();
 			Thread.sleep(100);
@@ -1514,7 +1533,7 @@ if(Child==1)
 			room2selectAge.click();
 			
 		}
-		else if(Child==3)
+		else if(child==3)
 		{
 			room2chilage1.click();
 			Thread.sleep(100);
@@ -1530,7 +1549,7 @@ if(Child==1)
 
 		}	
 	   
-		addRoom3.click();
+		addroom3.click();
 		
 		
 	for (int i = 0; i < adult-1; i++) 
@@ -1539,18 +1558,18 @@ if(Child==1)
 							
 				        }
 		
-  for (int i = 0; i < Child; i++) {
+  for (int i = 0; i < child; i++) {
 	   room3child.click(); 
 			
        }
 		
-  if(Child==1)
+  if(child==1)
 	{
 	   room3chilage1.click();
 		Thread.sleep(100);
 		room3selectAge.click();
 	}
-	else if(Child==2)
+	else if(child==2)
 	{
 		room3chilage1.click();
 		Thread.sleep(100);
@@ -1561,7 +1580,7 @@ if(Child==1)
 		room3selectAge.click();
 		
 	}
-	else if(Child==3)
+	else if(child==3)
 	{
 		room3chilage1.click();
 		Thread.sleep(100);
@@ -1577,7 +1596,7 @@ if(Child==1)
 
 	}	
 	   
-	addRoom4.click();
+	addroom4.click();
 	
 	
 for (int i = 0; i < adult-1; i++) 
@@ -1586,18 +1605,18 @@ for (int i = 0; i < adult-1; i++)
 						
 			        }
 	
-for (int i = 0; i < Child; i++) {
+for (int i = 0; i < child; i++) {
  room4child.click(); 
 		
  }
 	
-if(Child==1)
+if(child==1)
 {
  room4chilage1.click();
 	Thread.sleep(100);
 	room4selectAge.click();
 }
-else if(Child==2)
+else if(child==2)
 {
 	room4chilage1.click();
 	Thread.sleep(100);
@@ -1608,7 +1627,7 @@ else if(Child==2)
 	room4selectAge.click();
 	
 }
-else if(Child==3)
+else if(child==3)
 {
 	room4chilage1.click();
 	Thread.sleep(100);
@@ -1624,7 +1643,7 @@ else if(Child==3)
 
 } 
 	   
-addRoom5.click();
+addroom5.click();
 
 
 for (int i = 0; i < adult-1; i++) 
@@ -1633,18 +1652,18 @@ room5Adult.click();
 					
 		        }
 
-for (int i = 0; i < Child; i++) {
+for (int i = 0; i < child; i++) {
 room5child.click(); 
 	
 }
 
-if(Child==1)
+if(child==1)
 {
 room5chilage1.click();
 Thread.sleep(100);
 room5selectAge.click();
 }
-else if(Child==2)
+else if(child==2)
 {
 room5chilage1.click();
 Thread.sleep(100);
@@ -1655,7 +1674,7 @@ Thread.sleep(100);
 room5selectAge.click();
 
 }
-else if(Child==3)
+else if(child==3)
 {
 room5chilage1.click();
 Thread.sleep(100);
@@ -1672,7 +1691,6 @@ room5selectAge.click();
 } 
 		Thread.sleep(500);
 		WebElement element1 = done;
-		//((JavascriptExecutor) driver).executeScript("window.scrollBy(0,100)", "");
 		Thread.sleep(100);
 		element1.click();
 		Thread.sleep(100);
@@ -1713,19 +1731,19 @@ room5selectAge.click();
 	    element.click();
 	}
 
-	public void clickQuickfilter(WebDriver driver) throws InterruptedException
+	public void clickQuickfilter(WebDriver driver)  
 	{
 	    // Initialize WebDriverWait for waiting for elements to be visible
 	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(100));
 	    
 	    // Wait until the specific popup element is visible
-	    WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//p[@class='theme4_ax_hotels_result_number__S7di4'])[1]")));
+	    WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(POPUP_XPATH)));
 	    
 	    // Scroll the view to the free breakfast filter
 	    ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", freeBreakfast);
 	    
 	    // Click on the free breakfast filter
-	    ((JavascriptExecutor) driver).executeScript("arguments[0].click();", freeBreakfast);
+	    ((JavascriptExecutor) driver).executeScript(CLICK_SCRIPT, freeBreakfast);
 	}
 
 	public void clickStarRating(WebDriver driver) throws InterruptedException
@@ -1735,17 +1753,17 @@ room5selectAge.click();
 	        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(100));
 	        
 	        // Wait until the specific popup element is visible
-	        WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//p[@class='theme4_ax_hotels_result_number__S7di4'])[1]")));
+	        WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(POPUP_XPATH)));
 	        
 	        // Scroll the view to the star rating element
 	        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", selectstar);
 	        
 	        // Click on the star rating filter
-	        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", selectstar);
+	        ((JavascriptExecutor) driver).executeScript(CLICK_SCRIPT, selectstar);
 	        
 	    } catch (Exception e) {
 	        // Log if the element is not available for selecting the hotel
-	        logger.info("The element is not available for select Hotel");
+	        logger.info("The element is not available for select Hotel {}");
 	    }
 	}
 
@@ -1756,7 +1774,7 @@ room5selectAge.click();
 	        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(100));
 	        
 	        // Wait until the specific popup element is visible
-	        WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//p[@class='theme4_ax_hotels_result_number__S7di4'])[1]")));
+	        WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(POPUP_XPATH)));
 	        
 	        // Scroll to the drag start element to set price range
 	        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", dragStart);
@@ -1766,7 +1784,6 @@ room5selectAge.click();
 	        
 	        // Get the width of the drag start and drag end elements
 	        int xside = dragStart.getSize().width;
-	        int xside1 = dragEnd.getSize().width;
 	        
 	        // Create an Actions object for drag and drop
 	        Actions act = new Actions(driver);
@@ -1779,70 +1796,70 @@ room5selectAge.click();
 	        
 	    } catch (Exception e) {
 	        // Log if the element is not available for selecting the hotel
-	        logger.info("The element is not available for select Hotel");
+	        logger.info(HOTEL_NOT_AVAILABLE_MESSAGE);
 	    }
 	}
 
-	public void clickPriceAmenities(WebDriver driver) throws InterruptedException
+	public void clickPriceAmenities(WebDriver driver)  
 	{
 	    try {
 	        // Initialize WebDriverWait for waiting for elements to be visible
 	        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(100));
 	        
 	        // Wait until the specific popup element is visible
-	        WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//p[@class='theme4_ax_hotels_result_number__S7di4'])[1]")));
+	        WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(POPUP_XPATH)));
 	        
 	        // Scroll to the amenities element
 	        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", amenities);
 	        
 	        // Click on the amenities filter
-	        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", amenities);
+	        ((JavascriptExecutor) driver).executeScript(CLICK_SCRIPT, amenities);
 	        
 	    } catch (Exception e) {
 	        // Log if the element is not available for selecting the hotel
-	        logger.info("The element is not available for select Hotel");
+	        logger.info(HOTEL_NOT_AVAILABLE_MESSAGE);
 	    }
 	}
 
-	public void clickPriceVacationTypefilter(WebDriver driver) throws InterruptedException
+	public void clickPriceVacationTypefilter(WebDriver driver)  
 	{
 	    try {
 	        // Initialize WebDriverWait for waiting for elements to be visible
 	        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(100));
 	        
 	        // Wait until the specific popup element is visible
-	        WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//p[@class='theme4_ax_hotels_result_number__S7di4'])[1]")));
+	        WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(POPUP_XPATH)));
 	        
 	        // Scroll to the vacation type filter
 	        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", vacationType);
 	        
 	        // Click on the vacation type filter
-	        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", vacationType);
+	        ((JavascriptExecutor) driver).executeScript(CLICK_SCRIPT, vacationType);
 	        
 	    } catch (Exception e) {
 	        // Log if the element is not available for selecting the hotel
-	        logger.info("The element is not available for select Hotel");
+	        logger.info(HOTEL_NOT_AVAILABLE_MESSAGE);
 	    }
 	}
 
-	public void clickPricePropertyTypefilter(WebDriver driver) throws InterruptedException
+	public void clickPricePropertyTypefilter(WebDriver driver)  
 	{
 	    try {
 	        // Initialize WebDriverWait for waiting for elements to be visible
 	        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(100));
 	        
 	        // Wait until the specific popup element is visible
-	        WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//p[@class='theme4_ax_hotels_result_number__S7di4'])[1]")));
+	        WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(POPUP_XPATH)));
 	        
 	        // Scroll to the property type filter
 	        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", propertyType);
 	        
 	        // Click on the property type filter
-	        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", propertyType);
+	        ((JavascriptExecutor) driver).executeScript(CLICK_SCRIPT, propertyType);
 	        
 	    } catch (Exception e) {
 	        // Log if the element is not available for selecting the hotel
-	        logger.info("The element is not available for select Hotel");
+	        logger.info(HOTEL_NOT_AVAILABLE_MESSAGE);
 	    }
 	}
 
@@ -1855,22 +1872,22 @@ room5selectAge.click();
 	    Thread.sleep(5000);
 	}
 
-	public void selectHotel(WebDriver driver) throws InterruptedException
+	public void selectHotel(WebDriver driver)  
 	{
 	    try {
 	        // Initialize WebDriverWait for waiting for elements to be visible
 	        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(50));
 	        
 	        // Wait until the specific popup element is visible
-	        WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//p[@class='theme4_ax_hotels_result_number__S7di4'])[1]")));
+	        WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(POPUP_XPATH)));
 	        
 	        // Scroll to the select hotel element and click it
 	        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", selectHotel);
-	        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", selectHotel);
+	        ((JavascriptExecutor) driver).executeScript(CLICK_SCRIPT, selectHotel);
 	        
 	    } catch (Exception e) {
 	        // Log the error if no matching fare type is found
-	        logger.error("Error: No matching fare type found for");
+	        logger.error("Error: No matching fare type found for{}");
 	        
 	        // Fail the test case and close the driver
 	        Assert.fail("Error: No matching fare type found for: ");
@@ -1878,7 +1895,7 @@ room5selectAge.click();
 	    }
 	}
 
-	public void handelRoomnotavailablePopup(WebDriver driver) throws InterruptedException
+	public void handelroomnotavailablePopup(WebDriver driver)  
 	{
 	    try {
 	        // Initialize WebDriverWait for waiting for elements to be visible
@@ -1892,18 +1909,17 @@ room5selectAge.click();
 	        
 	    } catch (Exception e) {
 	        // Log if the popup is not available
-	        logger.info("The popup is not Available");
+	        logger.info("The popup is not Available {}");
 	    }
 	}
 
-	public void selectRoom(WebDriver driver, String FareType) throws InterruptedException
+	public void selectroom(WebDriver driver, String fareType) throws InterruptedException
 	{
 		
 		
 
 	    Set<String> handel = driver.getWindowHandles();  
 	    Iterator<String> it = handel.iterator();   
-	    String parantwindow = it.next();
 	    String childwindow = it.next(); 
 	    driver.switchTo().window(childwindow);
 	    Thread.sleep(500);
@@ -1914,20 +1930,19 @@ room5selectAge.click();
 		   	 WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//img[@alt='calender'])[1]")));
 		     Thread.sleep(500);
 
-		     String Name = hotelName.getText();
-		     System.out.println("The Currant Hotel Name is :"+Name);
+		     String name = hotelName.getText();
+		     logger.info("The Currant Hotel Name is : {}"+name);
 		     
 		     Thread.sleep(500);
 
 		     ((JavascriptExecutor) driver).executeScript("window.scrollBy(0,850)", "");
 		     Thread.sleep(500);
-		     //selectRoom.click();
-		    // Thread.sleep(2000);
+		    
 		     
 		  // Locate the list of rooms
-		     List<WebElement> rooms = driver.findElements(By.xpath("//*[text()='Starting From']"));
+		     List<WebElement> rooms = driver.findElements(By.xpath(STARTING_FROM_XPATH));
 
-		     System.out.println("Number of rooms: " + rooms.size());
+		     logger.info("Number of rooms: {}" + rooms.size());
 
 		     boolean ticketFound = false;
 
@@ -1951,24 +1966,24 @@ room5selectAge.click();
 		                 WebElement selectButton = selectors.get(i);
 
 		                 String text = ticket.getText();
-		                 System.out.println("The ticket Fare Type is: " + text);
-		                 System.out.println("The ticket Fare Type from the excel sheet is: " + FareType);
+		                 logger.info("The ticket Fare Type is: {}" + text);
+		                 logger.info("The ticket Fare Type from the excel sheet is: {}" + fareType);
 
-		                 if (text.equals(FareType)) {
+		                 if (text.equals(fareType)) {
 		                     try {
 		                    	 
 		                         if (i == 0) {
 		                             // Directly click the select button if i == 0
-			 							((JavascriptExecutor) driver).executeScript("arguments[0].click();", selectors.get(i));
+			 							((JavascriptExecutor) driver).executeScript(CLICK_SCRIPT, selectors.get(i));
 		                         } else {
 		                        	 ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);",selectors.get(i));
-		 							((JavascriptExecutor) driver).executeScript("arguments[0].click();", selectors.get(i));
+		 							((JavascriptExecutor) driver).executeScript(CLICK_SCRIPT, selectors.get(i));
 		                         }
 		                         ticketFound = true;
 		                         continueIteration = false; // Stop the outer loop
 		                         break; // Exit the  inner loop if the ticket is found
 		                     } catch (Exception e) {
-		                         System.out.println("Failed to click the select button: " + e.getMessage());
+		                         logger.info("Failed to click the select button: {}" + e.getMessage());
 		                     }
 		                 }
 		             }
@@ -2001,23 +2016,23 @@ room5selectAge.click();
 
 		        	             try {
 		        	                 // Wait for the new elements to load after clicking the next button
-		        	                 wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//*[text()='Starting From']")));
+		        	                 wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath(STARTING_FROM_XPATH)));
 
 		        	                 // Re-locate the list of rooms after clicking next
-		        	                 List<WebElement> room = driver.findElements(By.xpath("//*[text()='Starting From']"));
+		        	                 List<WebElement> room = driver.findElements(By.xpath(STARTING_FROM_XPATH));
 
-		        	                 System.out.println("Number of rooms after clicking next: " + room.size());
+		        	                 logger.info("Number of rooms after clicking next: {}" + room.size());
 		        	             } catch (Exception e) {
-		        	                 System.out.println("Failed to find rooms after clicking next: " + e.getMessage());
+		        	                 logger.info("Failed to find rooms after clicking next: {}" + e.getMessage());
 		        	                 continueIteration = false; // Stop the loop if rooms are not found after clicking next
 		        	             }
 		        	         } catch (Exception e) {
-		        	             System.out.println("Failed to find or click the next button using XPath: " + nextButtonXPath);
+		        	             logger.info("Failed to find or click the next button using XPath: {}" + nextButtonXPath);
 		        	             continueIteration = false; // Stop the loop if next button is not found or fails to click
 		        	         }
 
 		        	     } catch (Exception e) {
-		        	         System.out.println("Exception occurred: " + e.getMessage());
+		        	         logger.info("Exception occurred: {}" + e.getMessage());
 		        	         continueIteration = false; // Stop the loop in case of an exception
 		        	     }
 		        	 }
@@ -2025,12 +2040,12 @@ room5selectAge.click();
 		     }
 
 		     if (ticketFound) {
-		         System.out.println("Ticket matching the Fare Type found and clicked.");
+		         logger.info("Ticket matching the Fare Type found and clicked.{}");
 		     } else {
 		   	 
-		    	 System.err.println("The matching ticket is not found "+FareType);
+		    	 logger.error("The matching ticket is not found {}"+fareType);
 			     // Fail the test case
-			        Assert.fail("Error: The matching ticket is not found  for :"+FareType);
+			        Assert.fail("Error: The matching ticket is not found  for :"+fareType);
 			        driver.close();		     }
 	     
 
@@ -2038,20 +2053,20 @@ room5selectAge.click();
 	
 	
 	// Method to add a percentage markup based on whether it is a markdown
-	public void AddMarkupinpercentage(WebDriver driver, boolean isMark_Down) throws InterruptedException {
-	    // Check if it is a markdown operation
-	    if (isMark_Down) {
+	public void AddMarkupinpercentage(WebDriver driver, boolean isMarkDown) throws InterruptedException {
+		    // Check if it is a markdown operation
+	    if (isMarkDown) {
 	        // Initialize WebDriverWait to wait for a maximum of 100 seconds for the popup to become visible
 	        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(100));
 	        // Wait until the specific popup element is visible
-	        WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html[1]/body[1]/div[1]/div[1]/div[1]/main[1]/div[1]/div[1]/div[1]/div[3]/div[1]/div[1]/div[1]/div[2]/h2[1]")));
+	        WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(POPUP_XPATH1)));
 	        
 	        // Sleep for 500 milliseconds to allow for UI updates
 	        Thread.sleep(500);
 	        
 	        // Scroll to the selectMarkdown element and click it
 	        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", selectMarkdown);
-	        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", selectMarkdown);
+	        ((JavascriptExecutor) driver).executeScript(CLICK_SCRIPT, selectMarkdown);
 	        
 	        // Sleep for 1000 milliseconds to ensure the click action is registered and UI is updated
 	        Thread.sleep(1000);
@@ -2059,24 +2074,24 @@ room5selectAge.click();
 	}
 
 	// Method to add a fixed type markup based on percentage or flat value
-	public void AddMarkupinFixedtype(WebDriver driver, boolean ispersent, String percentflatvalue) throws InterruptedException {     
+	public void AddMarkupinFixedtype(WebDriver driver, boolean ispersent, String percentflatvalue)   {     
 	    // Check if the markup is based on percentage
 	    if (ispersent) {
 	        // Initialize WebDriverWait to wait for a maximum of 100 seconds for the popup to become visible
 	        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(100));
 	        // Wait until the specific popup element is visible
-	        WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html[1]/body[1]/div[1]/div[1]/div[1]/main[1]/div[1]/div[1]/div[1]/div[3]/div[1]/div[1]/div[1]/div[2]/h2[1]")));
+	        WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(POPUP_XPATH1)));
 	        
 	        // Scroll to the selectpercent element and click it
 	        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", selectpercent);
-	        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", selectpercent);   
+	        ((JavascriptExecutor) driver).executeScript(CLICK_SCRIPT, selectpercent);   
 	        
 	        // Enter the percentage flat value into the input field
 	        passpercent.sendKeys(percentflatvalue); 
 	    } else {
 	        // Same waiting mechanism for the case where it is not a percentage
 	        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(100));
-	        WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html[1]/body[1]/div[1]/div[1]/div[1]/main[1]/div[1]/div[1]/div[1]/div[3]/div[1]/div[1]/div[1]/div[2]/h2[1]")));
+	        WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(POPUP_XPATH1)));
 	        
 	        // Scroll to the selectpercent element (not clicked in this case)
 	        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", selectpercent);
@@ -2092,7 +2107,7 @@ room5selectAge.click();
 	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(100));
 	    
 	    // Wait until the specific popup element is visible
-	    WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html[1]/body[1]/div[1]/div[1]/div[1]/main[1]/div[1]/div[1]/div[1]/div[3]/div[1]/div[1]/div[1]/div[2]/h2[1]")));
+	    WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(POPUP_XPATH1)));
 	    
 	    // Scroll to the passlocaltaxes input field to ensure it's in view
 	    ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", passlocaltaxes);
@@ -2102,7 +2117,7 @@ room5selectAge.click();
 	}
 
 	// Method to calculate the total amount displayed on the review page
-	public void calculatetheAmountOnReviewPage(WebDriver driver) throws InterruptedException {
+	public void calculatetheAmountOnReviewPage(WebDriver driver)   {
 
 	    // Scroll down to the fare detail section to ensure it's in view
 	    ((JavascriptExecutor) driver).executeScript("window.scrollBy(0,300)", "");
@@ -2118,19 +2133,16 @@ room5selectAge.click();
 	    List<WebElement> labelList = driver.findElements(By.xpath("//div[@class='theme4_booking_summary_grid_container__nXlBT']//p[normalize-space()='Hotel Charges']"));
 	    int labelSize = labelList.size();
 	    List<WebElement> priceList = driver.findElements(By.xpath("//div[@class='theme4_booking_summary_grid_container__nXlBT']//div[@class='theme4_person_count__JUIb8']"));
-	    int priceSize = priceList.size();
 
 	    // Retrieve Taxes and their amounts
 	    List<WebElement> labelList1 = driver.findElements(By.xpath("//div[@class='theme4_booking_summary_grid_container__nXlBT']//div[@class='theme4_taxes_1__uDttO']"));
 	    int labelSize1 = labelList1.size();
 	    List<WebElement> priceList1 = driver.findElements(By.xpath("//div[@class='theme4_booking_summary_grid_container__nXlBT']//div[@class='theme4_tax_amount__dKcnP']"));
-	    int priceSize1 = priceList1.size();
 
 	    // Retrieve My Earnings (Incl. of Taxes) and their amounts
 	    List<WebElement> labelList2 = driver.findElements(By.xpath("(//div[@class='theme4_booking_summary_grid_container__nXlBT']//div[@class='theme4_hotel_base_ticket_fare__rDSQG'])[2]"));
 	    int labelSize2 = labelList2.size();
 	    List<WebElement> priceList2 = driver.findElements(By.xpath("//div[@class='theme4_booking_summary_grid_container__nXlBT']//div[@class='theme4_flight_base_ticket_price__5HTvF']"));
-	    int priceSize2 = priceList2.size();
 
 	    // Loop through the label lists and populate fareDetails map with their corresponding amounts
 	    for (int i = 0; i < labelSize; i++) {
@@ -2159,9 +2171,11 @@ room5selectAge.click();
 	            }
 	        }
 	    }
+	 // Fetch the elements matching the specified XPath
+	    List<WebElement> elements = driver.findElements(By.xpath("//p[normalize-space()='Local Taxes (if applicable)']"));
 
 	    // Check if local taxes are applicable and add to fareDetails if present
-	    if (driver.findElements(By.xpath("//p[normalize-space()='Local Taxes (if applicable)']")).size() > 0) {
+	    if (!elements.isEmpty()) {
 	        double localTax = Double.parseDouble(driver.findElement(By.xpath(
 	                "//div[@class='theme4_booking_summary_grid_container__nXlBT']//input[@id='inputId']"))
 	                .getAttribute("value"));
@@ -2200,8 +2214,8 @@ room5selectAge.click();
 	}
 
 	
-	public void selectAdultForRoom(WebDriver driver, String RoomString) throws InterruptedException {
-	    Integer room = Integer.valueOf(RoomString);
+	public void selectAdultForroom(WebDriver driver, String roomString) throws InterruptedException {
+	    Integer room = Integer.valueOf(roomString);
 	    Thread.sleep(500);
 	    
 	    // Handle potential pop-up
@@ -2218,23 +2232,23 @@ room5selectAge.click();
 	    Thread.sleep(300);
 
 	    for (int i = 1; i <= room; i++) {
-	        WebElement element = getElementForRoom(i);
+	        WebElement element = getElementForroom(i);
 	        Thread.sleep(500);
 	        element.click();
 	        selectAdult(i);
 	    }
 	}
 
-	private WebElement getElementForRoom(int roomNumber) {
+	private WebElement getElementForroom(int roomNumber) {
 	    switch (roomNumber) {
 	        case 1:
-	            return adultFoeRoom1;
+	            return adultFoeroom1;
 	        case 2:
-	            return adultFoeRoom2;
+	            return adultFoeroom2;
 	        case 3:
-	            return adultFoeRoom3;
+	            return adultFoeroom3;
 	        case 4:
-	            return adultFoeRoom4;
+	            return adultFoeroom4;
 	        default:
 	            throw new IllegalArgumentException("Invalid room number: " + roomNumber);
 	    }
@@ -2264,7 +2278,7 @@ room5selectAge.click();
 	    }
 	}
 
-	public void selectAdultForRoomWithoutLogin(WebDriver driver, String roomString) throws InterruptedException {
+	public void selectAdultForroomWithoutLogin(WebDriver driver, String roomString) throws InterruptedException {
 	    // Convert roomString to Integer for easier handling
 	    Integer room = Integer.valueOf(roomString);
 	    Thread.sleep(500); // Allow time for any UI elements to load
@@ -2374,8 +2388,8 @@ room5selectAge.click();
 
 	public void clickContinueButtonAndProceedPayment(WebDriver driver, String roomString) throws InterruptedException {
 	    // Convert roomString to Integer for easier handling
-	    String stringRoom = roomString;
-	    Integer room = Integer.valueOf(stringRoom);
+	    String stringroom = roomString;
+	    Integer room = Integer.valueOf(stringroom);
 	    Thread.sleep(500); // Allow time for UI elements to load
 
 	    // Handle actions based on the number of rooms
@@ -2449,6 +2463,8 @@ room5selectAge.click();
 	        Thread.sleep(15000); // Allow time for processing after clicking continue
 	    }
 	}
+
+
 
 	
 	

@@ -13,14 +13,14 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import pageobjectclass.pomHotelExceldata;
+import pageobjectclass.PomHotelExcelData;
 import utils.commonMethodes;
 import utils.excelReader;
 
 public class sdHotelExcel extends Baseclass{
 	 
 	
-	pomHotelExceldata home;
+	PomHotelExcelData home;
 	excelReader reder;
 	List<Map<String, String>> testData;
 	 private int row;
@@ -40,7 +40,7 @@ public class sdHotelExcel extends Baseclass{
 	   @When("User SighnIn with username and password for {string}")
 	    public void loginwithUsernamePassword(String environment) throws InterruptedException, IOException {
 
-		   home=new pomHotelExceldata(driver);
+		   home=new PomHotelExcelData(driver);
 		   home.validLogin(environment,driver);
 		
 
@@ -48,22 +48,22 @@ public class sdHotelExcel extends Baseclass{
 	    }
 	    
 	    @Then("User selct the Hotel option on home page")
-	    public void userSelectsHotelOption() throws InterruptedException {
-	    	home=new pomHotelExceldata(driver);
-	    	home.clickOnHotel(driver);
+	    public void userSelectsHotelOption() throws InterruptedException   {
+	    	home=new PomHotelExcelData(driver);
+	    	home.clickOnHotel();
 	    }
 	
 	    
 	    @Then("Select the Nationality")
 	    public void selecttheNationality() throws InterruptedException {
-	    	home=new pomHotelExceldata(driver);
+	    	home=new PomHotelExcelData(driver);
 	    	home.selecttheNationality(driver);
 	    }
 	    
 	    
 	    @Then("selec the Advanced Search")
 	    public void selectheAdvanced_Search() throws InterruptedException {
-	    	home=new pomHotelExceldata(driver);
+	    	home=new PomHotelExcelData(driver);
 	    	home.selectAdvancedSearch(driver);
 	    }
 	    
@@ -92,7 +92,7 @@ public class sdHotelExcel extends Baseclass{
 	@When("User select the brekfast option frome select breakfast")
 	public void userselectthebrekfastoptionfromeselectbreakfast() throws InterruptedException {
 	 	
-	 	home.selecttheBrekfastoption(driver);
+	 	home.selecttheBrekfastoption();
 
 	}
 	
@@ -106,7 +106,7 @@ public class sdHotelExcel extends Baseclass{
 	
 	
 	@Then("User select the date for hotle booking INdate and Outdate")
-	public void userselectthedateforhotlebookingindateandoutdate() throws InterruptedException {
+	public void userselectthedateforhotlebookingindateandoutdate() throws InterruptedException   {
 	 
 	 	String monthyear = testData.get(row).get("MONT&YEAR");
 	 	String rmonthyear = testData.get(row).get("RMONT&YEAR");
@@ -115,7 +115,7 @@ public class sdHotelExcel extends Baseclass{
 
 	 	
 	 	
-	 	home.SelectDatefortrip(driver, monthyear,rmonthyear, indate, outdate);
+	 	home.selectDatefortrip(driver,monthyear,rmonthyear, indate, outdate);
 
 	}
 	
@@ -125,19 +125,19 @@ public class sdHotelExcel extends Baseclass{
 		   
 		   String faretype = testData.get(row).get(FARETYPE);
 		   logger.info("FARE_TYPE :"+faretype);
-	    	home.selecttheFareType(driver,faretype);
+	    	home.selecttheFareType(faretype);
 	    }
 	
 	@Then("User select the Adult and child and room as per requirment")
-	public void userselecttheadultandchildandroomasperrequirment() throws InterruptedException {
+	public void userselecttheadultandchildandroomasperrequirment() throws InterruptedException  {
 		String adultpax = testData.get(row).get("ADULT_PAX");
 	 	String childpax = testData.get(row).get("CHILD_PAX");
 	 	String roompax = testData.get(row).get("ROOM_PAX");
 	 	
-	 	home.selectRoomPass(driver, adultpax, childpax, roompax);
+	 	home.selectroomPass(driver, adultpax, childpax, roompax);
 		
 	 	
-		
+		 
 	}
 	
 	  @And("User clicks on the search button")
@@ -192,7 +192,7 @@ public class sdHotelExcel extends Baseclass{
 	    public void userSelectsRoomrefundable() throws InterruptedException {
 		   
 		   String faretype = testData.get(row).get(FARETYPE);
-	    	home.selectRoom(driver,faretype);
+	    	home.selectroom(driver,faretype);
 	    	
 	    }
 	   
@@ -200,13 +200,13 @@ public class sdHotelExcel extends Baseclass{
 	    public void userSelectsRoomnonrefundable() throws InterruptedException {
 		   
 		   String faretype = testData.get(row).get("FARE_TYPE2");
-	    	home.selectRoom(driver,faretype);
+	    	home.selectroom(driver,faretype);
 	    	
 	    }
 	   
 	   @And("User handle the Room not available Popup")
 	    public void userhandletheRoomnotavailablePopup() throws InterruptedException {
-	    	home.handelRoomnotavailablePopup(driver);
+	    	home.handelroomnotavailablePopup(driver);
 	    }  
 	   
 	   @Then("Add Mark Up or Makr Down")
@@ -249,7 +249,7 @@ public class sdHotelExcel extends Baseclass{
 	   {
 		 	String roompax = testData.get(row).get("ROOM_PAX");
 
-		   home.selectAdultForRoom(driver, roompax);
+		   home.selectAdultForroom(driver, roompax);
 	    
 	    }
 	   
@@ -258,7 +258,7 @@ public class sdHotelExcel extends Baseclass{
 	   {
 		 	String roompax = testData.get(row).get("ROOM_PAX");
 
-		   home.selectAdultForRoomWithoutLogin(driver, roompax);
+		   home.selectAdultForroomWithoutLogin(driver, roompax);
 	    
 	    }
 	   
