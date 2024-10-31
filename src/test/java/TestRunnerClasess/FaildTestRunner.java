@@ -9,7 +9,7 @@ import org.testng.annotations.AfterClass;
 
 import io.cucumber.testng.AbstractTestNGCucumberTests;
 import io.cucumber.testng.CucumberOptions;
-import stepDefinitions.emailreport;
+import step_definitions.EmailReport;
 
 @CucumberOptions(
  	    
@@ -36,7 +36,7 @@ public class FaildTestRunner extends AbstractTestNGCucumberTests {
 		Runtime r = Runtime.getRuntime();
 		r.addShutdownHook(new Thread() {
 			public void run() {
-				emailreport sm = new emailreport();
+				EmailReport sm = new EmailReport();
 				try {
 					sm.mail();
 					System.out.println("Report has been sent");

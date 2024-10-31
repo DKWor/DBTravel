@@ -19,11 +19,11 @@ import io.github.bonigarcia.wdm.WebDriverManager;  // WebDriverManager to manage
 import utils.commonMethodes;  // Import custom utility class for common methods
 
 // Baseclass extends the utility class CommonMethodes, providing basic setup for WebDriver across multiple browsers
-public class baseclass extends commonMethodes {
+public class Baseclass extends commonMethodes {
 
 	 protected static WebDriver driver; // WebDriver instance that will be used throughout the class
     ExtentReports extent;  // ExtentReports instance for generating reports
-    private static final Logger logger = LogManager.getLogger(baseclass.class);  // Logger instance for logging information
+    private static final Logger logger = LogManager.getLogger(Baseclass.class);  // Logger instance for logging information
     
     // Define constant for allowing cross-origin requests
     private static final String REMOTE_ALLOW_ORIGINS = "--remote-allow-origins=*";

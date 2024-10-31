@@ -27,7 +27,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions; // For waiting for con
 import org.openqa.selenium.support.ui.WebDriverWait; // For managing explicit waits
 import org.testng.Assert; // For TestNG assertions
 
-import baseclass.baseclass;
+import baseclass.Baseclass;
 import bsh.Console; // For console output (if needed)
 import utils.commonMethodes; // For common utility methods
 

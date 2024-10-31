@@ -8,7 +8,8 @@ import org.testng.annotations.AfterClass; // Used for specifying actions to take
 
 import io.cucumber.testng.AbstractTestNGCucumberTests; // Provides TestNG integration with Cucumber
 import io.cucumber.testng.CucumberOptions; // Allows configuration of Cucumber options, like feature locations, glue code, etc.
-import stepDefinitions.emailreport;
+
+import step_definitions.EmailReport;
 
 // @CucumberOptions: Annotation to configure Cucumber framework for the test runner
 
@@ -40,7 +41,7 @@ public class TestNGRunner extends AbstractTestNGCucumberTests {
 			// Adds a shutdown hook to send an email with the report after test execution
 			r.addShutdownHook(new Thread() {
 				public void run() {
-					emailreport sm = new emailreport();
+					EmailReport sm = new EmailReport();
 					try {
 						// Call the mail method to send the report
 						sm.mail();
