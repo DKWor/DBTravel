@@ -12,7 +12,7 @@ import org.apache.poi.ss.usermodel.*; // For working with Excel Workbook, Sheet,
 import org.apache.poi.ss.util.NumberToTextConverter; // For converting numeric values in Excel to text
 
 
-public class ExcelReader {
+public class excelReader {
 
     // Retrieve data from the Excel sheet by sheet name
     public List<Map<String, String>> getData(String excelFilePath, String sheetName)

@@ -1,4 +1,4 @@
-package Baseclass;
+package baseclass;
 
 import java.io.IOException;  // To handle IOExceptions
 
@@ -16,17 +16,24 @@ import org.openqa.selenium.firefox.FirefoxOptions;  // FirefoxOptions to set Fir
 import com.aventstack.extentreports.ExtentReports;  // For reporting test results (Extent Reports)
 
 import io.github.bonigarcia.wdm.WebDriverManager;  // WebDriverManager to manage driver binaries automatically
-import utils.CommonMethodes;  // Import custom utility class for common methods
+import utils.commonMethodes;  // Import custom utility class for common methods
 
 // Baseclass extends the utility class CommonMethodes, providing basic setup for WebDriver across multiple browsers
-public class Baseclass extends CommonMethodes {
+public class baseclass extends commonMethodes {
 
-    protected static WebDriver driver;  // WebDriver instance that will be used throughout the class
+	 protected static WebDriver driver; // WebDriver instance that will be used throughout the class
     ExtentReports extent;  // ExtentReports instance for generating reports
-    private static final Logger logger = LogManager.getLogger(Baseclass.class);  // Logger instance for logging information
+    private static final Logger logger = LogManager.getLogger(baseclass.class);  // Logger instance for logging information
+    
+    // Define constant for allowing cross-origin requests
+    private static final String REMOTE_ALLOW_ORIGINS = "--remote-allow-origins=*";
+    
+    private static final String HEAD_LESS = "--headless=new";
+
+
 
     // Method to launch a browser and navigate to the desired environment's URL
-    public void launchBrowser(String environment) throws IOException {
+    public static void launchBrowser(String environment) throws IOException {
         
         // Variable to store the URL based on the environment passed
         String url;
@@ -35,15 +42,15 @@ public class Baseclass extends CommonMethodes {
         switch (environment.toLowerCase()) {
             case "uatb2b":
                 // Fetch UATB2B URL from the property file
-                url = CommonMethodes.readDataFromPropertyFile("UATB2BURL");
+                url = commonMethodes.readDataFromPropertyFile("UATB2BURL");
                 break;
             case "prodb2b2":
                 // Fetch PRODB2BURL2 from the property file
-                url = CommonMethodes.readDataFromPropertyFile("PRODB2BURL2");
+                url = commonMethodes.readDataFromPropertyFile("PRODB2BURL2");
                 break;
             case "prodb2b":
                 // Fetch PRODB2B URL from the property file
-                url = CommonMethodes.readDataFromPropertyFile("PRODB2BURL");
+                url = commonMethodes.readDataFromPropertyFile("PRODB2BURL");
                 break;
             default:
                 // Log an error and throw an exception if the environment is unsupported
@@ -52,7 +59,7 @@ public class Baseclass extends CommonMethodes {
         }
 
         // Fetch the browser type from the properties file and convert it to lowercase for consistency
-        String browser = CommonMethodes.readDataFromPropertyFile("browser").toLowerCase();
+        String browser = commonMethodes.readDataFromPropertyFile("browser").toLowerCase();
         logger.info("Launching browser: {}", browser);  // Log the browser being used
 
         // Switch case to initialize the correct WebDriver based on the browser type
@@ -63,11 +70,11 @@ public class Baseclass extends CommonMethodes {
                 // Create an instance of ChromeOptions to configure Chrome-specific settings
                 ChromeOptions chromeOptions = new ChromeOptions();
                 // Check if headless mode is enabled in the properties file, and set the option if true
-                if (CommonMethodes.readDataFromPropertyFile("headless").equalsIgnoreCase("true")) {
-                    chromeOptions.addArguments("--headless=new");
+                if (commonMethodes.readDataFromPropertyFile("headless").equalsIgnoreCase("true")) {
+                    chromeOptions.addArguments(HEAD_LESS);
                 }
                 // Allow cross-origin requests, which can be required in certain testing scenarios
-                chromeOptions.addArguments("--remote-allow-origins=*");
+                chromeOptions.addArguments(REMOTE_ALLOW_ORIGINS);
                 // Initialize the Chrome WebDriver with the configured options
                 driver = new ChromeDriver(chromeOptions);
                 break;
@@ -78,7 +85,7 @@ public class Baseclass extends CommonMethodes {
                 // Create an instance of FirefoxOptions to configure Firefox-specific settings
                 FirefoxOptions firefoxOptions = new FirefoxOptions();
                 // Allow cross-origin requests and disable popup blocking
-                firefoxOptions.addArguments("--remote-allow-origins=*", "--disable-popup-blocking");
+                firefoxOptions.addArguments(REMOTE_ALLOW_ORIGINS, "--disable-popup-blocking");
                 // Initialize the Firefox WebDriver with the configured options
                 driver = new FirefoxDriver(firefoxOptions);
                 break;
@@ -89,7 +96,7 @@ public class Baseclass extends CommonMethodes {
                 // Create an instance of EdgeOptions to configure Edge-specific settings
                 EdgeOptions edgeOptions = new EdgeOptions();
                 // Allow cross-origin requests and disable popup blocking
-                edgeOptions.addArguments("--remote-allow-origins=*", "--disable-popup-blocking");
+                edgeOptions.addArguments(REMOTE_ALLOW_ORIGINS, "--disable-popup-blocking");
                 // Initialize the Edge WebDriver with the configured options
                 driver = new EdgeDriver(edgeOptions);
                 break;

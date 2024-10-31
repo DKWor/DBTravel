@@ -27,19 +27,25 @@ import org.openqa.selenium.support.ui.ExpectedConditions; // For waiting for con
 import org.openqa.selenium.support.ui.WebDriverWait; // For managing explicit waits
 import org.testng.Assert; // For TestNG assertions
 
-import Baseclass.Baseclass; // Base class for shared functionality
+import baseclass.baseclass;
 import bsh.Console; // For console output (if needed)
-import utils.CommonMethodes; // For common utility methods
+import utils.commonMethodes; // For common utility methods
 
-public class B2BFlightPOM { // Page Object Model class for B2B Flight functionality
+public class b2bFlightPOM { // Page Object Model class for B2B Flight functionality
 
 	
 	
     // Logger instance for logging information and errors
-    private static final Logger logger = LogManager.getLogger(B2BFlightPOM.class);
+    private static final Logger logger = LogManager.getLogger(b2bFlightPOM.class);
 
     
-    
+	private static final String ONEWAY = "One-Way";
+	private static final String HALFROUNDTRIP = "Half-Round-Trip";
+	private static final String ROUNDWAY = "Round-Way";
+	private static final String MUTICITY = "Multicity";
+
+
+
     // Web elements representing various fields and buttons on the flight search page
     @FindBy(xpath = "/html[1]/body[1]/div[1]/div[1]/div[1]/main[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[4]/div[1]/div[2]/div[1]/div[1]/div[1]")
     private WebElement classElement; // WebElement for selecting the class of service
@@ -146,7 +152,7 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
     private WebElement fareDetailsSection; // WebElement for fare details section
 
     @FindBy(xpath = "/html[1]/body[1]/div[1]/div[1]/div[1]/main[1]/div[2]/div[1]/div[2]/div[3]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[2]/div[3]/span[1]")
-    private WebElement Stopes; // WebElement for displaying the number of stops
+    private WebElement stopes; // WebElement for displaying the number of stops
 
     @FindBy(name = "Continue Booking")
     private WebElement continuBook; // WebElement for continuing the booking process
@@ -233,7 +239,7 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
     private WebElement duration;
 
     // Constructor that initializes the web elements using PageFactory
-    public B2BFlightPOM(WebDriver driver) {
+    public b2bFlightPOM(WebDriver driver) {
         PageFactory.initElements(driver, this);
     }
 
@@ -248,17 +254,17 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
     // Method to select the city based on the type of trip (Round-Way, One-Way, Multicity)
     public void selectthecity(WebDriver driver, String way, String origin, String destination) throws InterruptedException {
         // Check if the trip is of type Round-Way, Half-Round-Trip, or One-Way
-        if (way.equalsIgnoreCase("Round-Way") || way.equalsIgnoreCase("Half-Round-Trip") || way.equalsIgnoreCase("One-Way")) {
+        if (way.equalsIgnoreCase(ROUNDWAY) || way.equalsIgnoreCase(HALFROUNDTRIP) || way.equalsIgnoreCase(ONEWAY)) {
             handleTripSelection(driver, way, origin, destination); // Handle selection for the trip
-        } else if (way.equalsIgnoreCase("Multicity")) {
+        } else if (way.equalsIgnoreCase(MUTICITY)) {
             handleMulticitySelection(driver, origin, destination); // Handle selection for multicity trips
         }
     }
 
     // Private method to handle the selection of round-trip or one-way trips
-    private void handleTripSelection(WebDriver driver, String way, String origin, String destination) throws InterruptedException {
+    private void handleTripSelection(WebDriver driver, String way, String origin, String destination) {
         // Click the round-trip radio button if applicable
-        if (way.equalsIgnoreCase("Round-Way") || way.equalsIgnoreCase("Half-Round-Trip")) {
+        if (way.equalsIgnoreCase(ROUNDWAY) || way.equalsIgnoreCase(HALFROUNDTRIP)) {
             roundTrip.click();
         }
         // Wait for the origin input field to be visible and send the origin city
@@ -271,7 +277,7 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
     }
 
     // Private method to handle multicity trip selection
-    private void handleMulticitySelection(WebDriver driver, String origin, String destination) throws InterruptedException {
+    private void handleMulticitySelection(WebDriver driver, String origin, String destination) {
         multicity.click(); // Click the multicity radio button
         waitForElement(driver, By.xpath(ORIGIN_INPUT_XPATH), 2); // Wait for the origin field
         sendKeysWithAutoSuggest(driver, ORIGIN_INPUT_XPATH, origin); // Handle auto-suggest for the origin
@@ -291,11 +297,10 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
             WebElement element = driver.findElement(By.xpath(xpath));
             element.sendKeys(input); // Send the input value to the field
             Thread.sleep(1000); // Pause to allow for suggestions to load
-            CommonMethodes.Autosuggest(driver, input); // Trigger the auto-suggest method
+            commonMethodes.Autosuggest(driver, input); // Trigger the auto-suggest method
         } catch (Exception e) {
             // Log any exceptions encountered during interaction
-            logger.error("Error while sending keys to " + xpath, e);
-        }
+        	logger.error("Error while sending keys to {}", xpath, e);        }
     }
 
     // Private method to wait for an element to become visible
@@ -306,7 +311,7 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
     }
     
  // Method to select travel dates based on the type of trip (one-way, round-way, or multicity)
-    public void SelectDatefortrip(WebDriver driver, String way, String month, String rmonth, String departureDate,
+    public void selectDatefortrip(WebDriver driver, String way, String month, String rmonth, String departureDate,
             String returnDate, boolean searchType) throws InterruptedException {
 
         // Create a Random object to generate random dates
@@ -328,14 +333,14 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
         String strNumber1 = String.valueOf(randomNumberInRange1);
 
         // Log the current journey type for debugging purposes
-        logger.info("Current Journey is --- " + way);
+        logger.info("Current Journey is --- {}", way);
 
         // Check the search type to determine how to proceed with date selection
         if (searchType) {
             // Handle selection for round-trip, half-round-trip, or multicity
-            if (way.equalsIgnoreCase("Round-Way") || way.equalsIgnoreCase("Half-Round-Trip") || way.equalsIgnoreCase("Multicity")) {
+            if (way.equalsIgnoreCase(ROUNDWAY) || way.equalsIgnoreCase(HALFROUNDTRIP) || way.equalsIgnoreCase(MUTICITY)) {
                 // Wait for the departure calendar to be visible before selecting a date
-                CommonMethodes.waitForElementToBeVisible(driver, departureCalander, 1);
+                commonMethodes.waitForElementToBeVisible(driver, departureCalander, 1);
                 Thread.sleep(1000); // Allow time for the calendar to load
                 
                 // Select the departure date based on the randomly generated day
@@ -343,16 +348,16 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
                 Thread.sleep(1000); // Wait after selecting the departure date
                 
                 // Wait for the return calendar to be visible
-                CommonMethodes.waitForElementToBeVisible(driver, returnCalander, 3);
+                commonMethodes.waitForElementToBeVisible(driver, returnCalander, 3);
                 Thread.sleep(500); // Allow time for the calendar to load
-                CommonMethodes.scrollDown1(driver); // Scroll down if necessary
+                commonMethodes.scrollDown1(driver); // Scroll down if necessary
                 Thread.sleep(500); // Wait for scrolling to complete
                 
                 // Select the return date based on the randomly generated day
                 selectDate(driver, rmonth, strNumber1, way);
             } else { // Handle one-way trips
                 // Wait for the departure calendar to be visible before selecting a date
-                CommonMethodes.waitForElementToBeVisible(driver, departureCalander, 1);
+                commonMethodes.waitForElementToBeVisible(driver, departureCalander, 1);
                 Thread.sleep(1000); // Allow time for the calendar to load
                 
                 // Select the departure date based on the randomly generated day
@@ -360,9 +365,9 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
                 Thread.sleep(1000); // Wait after selecting the departure date
             }
 
-        } else if (way.equalsIgnoreCase("Round-Way") || way.equalsIgnoreCase("Half-Round-Trip") || way.equalsIgnoreCase("Multicity")) {
+        } else if (way.equalsIgnoreCase(ROUNDWAY) || way.equalsIgnoreCase(HALFROUNDTRIP) || way.equalsIgnoreCase(MUTICITY)) {
             // If not searching by type, still handle selection for round-trip, half-round-trip, or multicity
-            CommonMethodes.waitForElementToBeVisible(driver, departureCalander, 1);
+            commonMethodes.waitForElementToBeVisible(driver, departureCalander, 1);
             Thread.sleep(1000); // Allow time for the calendar to load
             
             // Select the departure date based on the randomly generated day
@@ -370,11 +375,11 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
             Thread.sleep(1000); // Wait after selecting the departure date
 
             // Wait for the return calendar to be visible and select the return date
-            CommonMethodes.waitForElementToBeVisible(driver, returnCalander, 3);
+            commonMethodes.waitForElementToBeVisible(driver, returnCalander, 3);
             selectDate(driver, rmonth, strNumber1, way); // Select the return date
         } else {
             // Handle one-way trips again if none of the previous conditions were met
-            CommonMethodes.waitForElementToBeVisible(driver, departureCalander, 1);
+            commonMethodes.waitForElementToBeVisible(driver, departureCalander, 1);
             Thread.sleep(1000); // Allow time for the calendar to load
             
             // Select the departure date based on the randomly generated day
@@ -431,7 +436,7 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
                 logger.info(driver.findElements(By.xpath(
                         "//div[@class='theme4_calendar_head_right_side__o16VX']//span[@class='theme4_calendar_head_icon__Y4clh']//*[name()='svg']"))
                         .size()); // Log the number of next buttons found
-                CommonMethodes.waitForElementToBeVisible(driver, nextMonthLable, 3); // Wait for the next month label to be visible
+                commonMethodes.waitForElementToBeVisible(driver, nextMonthLable, 3); // Wait for the next month label to be visible
             }
         }
 
@@ -506,36 +511,36 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
     // Method to select a travel class and validate the selection based on the trip type
     public void selectClassforTripandValidaetheclass(WebDriver driver, String way, String Classess) throws InterruptedException {
 
-        // Check if the trip type is "Round-Way"
-        if (way.contentEquals("Round-Way")) {
+        // Check if the trip type is ROUNDWAY
+        if (way.contentEquals(ROUNDWAY)) {
             // Handle class selection for Round-Way trips
             if (Classess.equalsIgnoreCase("Economy")) {
-                CommonMethodes.waitForElementToBeVisible(driver, apply, 2); // Wait for the apply button to be visible
+                commonMethodes.waitForElementToBeVisible(driver, apply, 2); // Wait for the apply button to be visible
                 logger.info("We select Economy class"); // Log the selected class
 
             // Check if the selected class is "Business"
             } else if (Classess.equalsIgnoreCase("Business")) {
                 businessClass.click(); // Click on the Business class option
-                CommonMethodes.waitForElementToBeVisible(driver, apply, 2); // Wait for the apply button to be visible
+                commonMethodes.waitForElementToBeVisible(driver, apply, 2); // Wait for the apply button to be visible
                 logger.info("The selected Class is :" + businessClass); // Log the selected class
 
             // Check if the selected class is "First Class"
             } else if (Classess.equalsIgnoreCase("First Class")) {
                 firstClass.click(); // Click on the First Class option
-                CommonMethodes.waitForElementToBeVisible(driver, apply, 2); // Wait for the apply button to be visible
+                commonMethodes.waitForElementToBeVisible(driver, apply, 2); // Wait for the apply button to be visible
                 logger.info("The selected Class is :" + firstClass); // Log the selected class
 
             // Check if the selected class is "Premium Economy"
             } else if (Classess.equalsIgnoreCase("Premium Economy")) {
                 premiumEconomy.click(); // Click on the Premium Economy option
-                CommonMethodes.waitForElementToBeVisible(driver, apply, 2); // Wait for the apply button to be visible
+                commonMethodes.waitForElementToBeVisible(driver, apply, 2); // Wait for the apply button to be visible
                 logger.info("The selected Class is :" + premiumEconomy); // Log the selected class
             }
-        } else if (way.equals("One-Way")) { // Handle class selection for One-Way trips
+        } else if (way.equals(ONEWAY)) { // Handle class selection for One-Way trips
             ((JavascriptExecutor) driver).executeScript("window.scrollBy(0,500)", ""); // Scroll down the page
             // Check if the selected class is "Economy"
             if (Classess.equalsIgnoreCase("Economy")) {
-                CommonMethodes.waitForElementToBeVisible(driver, apply, 2); // Wait for the apply button to be visible
+                commonMethodes.waitForElementToBeVisible(driver, apply, 2); // Wait for the apply button to be visible
                 logger.info("We select Economy class"); // Log the selected class
 
                 flightSearch.click(); // Click on the flight search button
@@ -547,7 +552,7 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
             // Check if the selected class is "Business"
             } else if (Classess.equalsIgnoreCase("Business")) {
                 businessClass.click(); // Click on the Business class option
-                CommonMethodes.waitForElementToBeVisible(driver, apply, 2); // Wait for the apply button to be visible
+                commonMethodes.waitForElementToBeVisible(driver, apply, 2); // Wait for the apply button to be visible
                 flightSearch.click(); // Click on the flight search button
 
                 Thread.sleep(4000); // Wait for 4 seconds
@@ -559,7 +564,7 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
             // Check if the selected class is "First Class"
             } else if (Classess.equalsIgnoreCase("First Class")) {
                 firstClass.click(); // Click on the First Class option
-                CommonMethodes.waitForElementToBeVisible(driver, apply, 2); // Wait for the apply button to be visible
+                commonMethodes.waitForElementToBeVisible(driver, apply, 2); // Wait for the apply button to be visible
                 flightSearch.click(); // Click on the flight search button
 
                 Thread.sleep(4000); // Wait for 4 seconds
@@ -571,7 +576,7 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
             // Check if the selected class is "Premium Economy"
             } else if (Classess.equalsIgnoreCase("Premium Economy")) {
                 premiumEconomy.click(); // Click on the Premium Economy option
-                CommonMethodes.waitForElementToBeVisible(driver, apply, 2); // Wait for the apply button to be visible
+                commonMethodes.waitForElementToBeVisible(driver, apply, 2); // Wait for the apply button to be visible
                 flightSearch.click(); // Click on the flight search button
 
                 Thread.sleep(4000); // Wait for 4 seconds
@@ -587,9 +592,9 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
             throws InterruptedException {
 
         // Scroll down to ensure passenger selection elements are visible
-        CommonMethodes.scrollDown2(driver);
+        commonMethodes.scrollDown2(driver);
         Thread.sleep(500); // Wait for a short period to allow scrolling to finish
-        CommonMethodes.waitForElementToBeVisible(driver, passanger, 2); // Wait for the passenger element to be visible
+        commonMethodes.waitForElementToBeVisible(driver, passanger, 2); // Wait for the passenger element to be visible
 
         // Convert input strings for the number of adults, children, and infants into integers
         Integer adult = Integer.valueOf(AdultString); // Number of adults
@@ -599,19 +604,19 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
 
         // Loop to select the specified number of adult passengers
         for (int i = 1; i < adult; i++) {
-            CommonMethodes.waitForElementToBeVisible(driver, adults, 10); // Wait for adult selection element to be visible
+            commonMethodes.waitForElementToBeVisible(driver, adults, 10); // Wait for adult selection element to be visible
         }
         Thread.sleep(500); // Allow time for UI updates
 
         // Loop to select the specified number of child passengers
         for (int i = 0; i < Child; i++) {
-            CommonMethodes.waitForElementToBeVisible(driver, child, 10); // Wait for child selection element to be visible
+            commonMethodes.waitForElementToBeVisible(driver, child, 10); // Wait for child selection element to be visible
         }
         Thread.sleep(500); // Allow time for UI updates
 
         // Loop to select the specified number of infant passengers
         for (int i = 0; i < Infent; i++) {
-            CommonMethodes.waitForElementToBeVisible(driver, infent, 10); // Wait for infant selection element to be visible
+            commonMethodes.waitForElementToBeVisible(driver, infent, 10); // Wait for infant selection element to be visible
         }
         Thread.sleep(1000); // Allow time for UI updates
     }
@@ -733,7 +738,7 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
     	
         // Check if the trip type is One-Way
     	
-        if (way.contains("One-Way")) {
+        if (way.contains(ONEWAY)) {
             // Click on the RBD classes dropdown
             rbdClasses.click();
             Thread.sleep(500); // Wait for the dropdown to become responsive
@@ -765,7 +770,7 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
             }
         } 
         // Check if the trip type is Round-Way, Half-Round-Trip, or Multicity
-        else if (way.contains("Round-Way") || way.contains("Half-Round-Trip") || way.contains("Multicity")) {
+        else if (way.contains(ROUNDWAY) || way.contains(HALFROUNDTRIP) || way.contains(MUTICITY)) {
             rbdClasses.click();
             Thread.sleep(500);
             logger.info("The Current RBD is: " + RBD);
@@ -835,7 +840,7 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
     
     public void SelectCabin(WebDriver driver, String Cabinclass, String way) throws InterruptedException {
         // Check if the trip type is One-Way
-        if (way.contains("One-Way")) {
+        if (way.contains(ONEWAY)) {
             cabin.click(); // Click on the cabin class dropdown
             Thread.sleep(500);
             
@@ -862,7 +867,7 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
             }
         }
         // Check if the trip type is Round-Way, Half-Round-Trip, or Multicity
-        else if (way.contains("Round-Way") || way.contains("Half-Round-Trip") || way.contains("Multicity")) {
+        else if (way.contains(ROUNDWAY) || way.contains(HALFROUNDTRIP) || way.contains(MUTICITY)) {
             cabin.click(); // Click on the cabin class dropdown
             Thread.sleep(500);
             
@@ -928,7 +933,7 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
 		Thread.sleep(500);
 		logger.info("The Currrant Supplier is :"+Suppliers);
         
-        CommonMethodes.scrollDown1(driver);
+        commonMethodes.scrollDown1(driver);
 			   	 WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));   	 
 			   	 WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@id='name-input']")));
 			   	 		
@@ -948,7 +953,7 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
 							logger.info("The Suppliesr check :"+current_dt);
 							if (current_dt.equalsIgnoreCase(Suppliers)) {
 								Suppliername.get(i).click();
-								CommonMethodes.scrollDown1(driver);
+								commonMethodes.scrollDown1(driver);
 								supplier.click();
 								break;
 							}
@@ -965,7 +970,7 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
 public void SelectDepartureTime(WebDriver driver,String Departure,String way) throws InterruptedException {
 	
 		
-	if(way.contains("One-Way"))
+	if(way.contains(ONEWAY))
 	{		
 	departureTime.click();
 	Thread.sleep(500);
@@ -988,7 +993,7 @@ public void SelectDepartureTime(WebDriver driver,String Departure,String way) th
 	}
 	
 	}
-	else if(way.contains("Round-Way")||way.contains("Half-Round-Trip")||way.contains("Multicity"))
+	else if(way.contains(ROUNDWAY)||way.contains(HALFROUNDTRIP)||way.contains(MUTICITY))
 	{		
 		departureTime.click();
 		Thread.sleep(500);
@@ -1054,7 +1059,7 @@ public void checksearchresult(WebDriver driver) throws InterruptedException {
     WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[normalize-space()='Search']")));
     
     // Scroll down to ensure the element is in view
-    CommonMethodes.scrollDown2(driver);
+    commonMethodes.scrollDown2(driver);
 
     // Find the heading element that shows search results
     WebElement ele = driver.findElement(By.xpath("/html[1]/body[1]/div[1]/div[1]/div[1]/main[1]/div[2]/div[3]/h1[1]"));
@@ -1083,17 +1088,17 @@ public void selectFareTypeFlight(WebDriver driver, String fareType, Boolean Sear
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(50));
         WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[normalize-space()='Search']")));
         Thread.sleep(500);
-        CommonMethodes.scrollDown3(driver);
+        commonMethodes.scrollDown3(driver);
         // Wait for the 'Airlines' element to be visible
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[normalize-space()='Airlines']")));
     } else {
         // Handle different trip types for searching flights
-        if (way.contains("One-Way") || way.contains("Round-Way") || way.contains("Multicity")) {
+        if (way.contains(ONEWAY) || way.contains(ROUNDWAY) || way.contains(MUTICITY)) {
             try {
                 WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(50));
                 WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//button[@class='theme4_btn_primary__aMZOB theme4_booknow_btn_mg__f0haC'][normalize-space()='Book'])[1]")));
                 Thread.sleep(100);
-                CommonMethodes.scrollDown2(driver);
+                commonMethodes.scrollDown2(driver);
                 Thread.sleep(100);
             } catch (InterruptedException e) {
                 // Log error and fail the test case if no results found
@@ -1105,7 +1110,7 @@ public void selectFareTypeFlight(WebDriver driver, String fareType, Boolean Sear
     }
 
     // Handle the selection of fare types based on trip type
-    if (way.contains("One-Way") || way.contains("Round-Way") || way.contains("Multicity")) {
+    if (way.contains(ONEWAY) || way.contains(ROUNDWAY) || way.contains(MUTICITY)) {
         // Find all refundable and non-refundable flight elements
         List<WebElement> FareType = driver.findElements(By.xpath("//div[@class='theme4_refundflight__Tk_cD']"));
         // Find all 'Book' buttons
@@ -1145,7 +1150,7 @@ public void selectFareTypeFlight(WebDriver driver, String fareType, Boolean Sear
 
         // Optional wait to observe the click action
         Thread.sleep(5000);
-    } else if (way.contains("Half-Round-Trip")) {
+    } else if (way.contains(HALFROUNDTRIP)) {
         // Handle the case for half-round trips
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(100));
         WebElement radio1 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='theme4_leftWd__BLl63']//div[1]//div[1]//div[1]//div[2]//input[1]")));

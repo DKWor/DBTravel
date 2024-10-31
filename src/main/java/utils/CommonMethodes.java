@@ -9,6 +9,7 @@ import java.util.Properties; // Used for reading from property files
 import java.util.concurrent.TimeUnit; // Handles timeouts
 
 import org.apache.commons.lang.RandomStringUtils; // Generates random strings
+import org.apache.commons.mail.MultiPartEmail;
 import org.apache.poi.EncryptedDocumentException; // Handles encrypted document exceptions
 import org.apache.poi.ss.usermodel.Sheet; // Represents an Excel sheet
 import org.apache.poi.ss.usermodel.WorkbookFactory; // Creates workbook from Excel files
@@ -18,7 +19,7 @@ import org.openqa.selenium.io.FileHandler; // Used to copy files
 import org.openqa.selenium.support.ui.ExpectedConditions; // Used for explicit waits
 import org.openqa.selenium.support.ui.WebDriverWait; // Manages waiting for elements
 
-public class CommonMethodes {
+public class commonMethodes {
 
 	static String resourcePath = null; // Stores the resource path
 	static Boolean isflag = false; // Flag to indicate resource path type
@@ -55,13 +56,14 @@ public class CommonMethodes {
 	}
 
 	// Reads data from a property file based on the given key
-	public static String readDataFromPropertyFile(String key) throws IOException {
+	public static String readDataFromPropertyFile(String email) throws IOException {
 		Properties prop = new Properties(); // Creates a Properties object
 		FileInputStream myfile = new FileInputStream(System.getProperty("user.dir") + resoursePath() + "myproperty.properties"); // Property file path
 		prop.load(myfile); // Loads the properties file
-		String value = prop.getProperty(key); // Reads the value for the given key
+		String value = prop.getProperty(email); // Reads the value for the given key
 		return value;
 	}
+
 
 	// Waits for an element to be visible and clickable, then clicks it
 	public static void waitForElementToBeVisible(WebDriver driver, WebElement element, int timeout) {

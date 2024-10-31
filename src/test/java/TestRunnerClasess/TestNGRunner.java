@@ -5,9 +5,10 @@ import javax.mail.MessagingException; // Handles exceptions specific to JavaMail
 import javax.mail.internet.AddressException; // Handles exceptions related to incorrect email addresses
 
 import org.testng.annotations.AfterClass; // Used for specifying actions to take place after all tests in a class are executed
-import StepDefinitions.Emailreport; // Imports the Emailreport class that handles sending email reports
+
 import io.cucumber.testng.AbstractTestNGCucumberTests; // Provides TestNG integration with Cucumber
 import io.cucumber.testng.CucumberOptions; // Allows configuration of Cucumber options, like feature locations, glue code, etc.
+import stepDefinitions.emailreport;
 
 // @CucumberOptions: Annotation to configure Cucumber framework for the test runner
 
@@ -39,7 +40,7 @@ public class TestNGRunner extends AbstractTestNGCucumberTests {
 			// Adds a shutdown hook to send an email with the report after test execution
 			r.addShutdownHook(new Thread() {
 				public void run() {
-					Emailreport sm = new Emailreport();
+					emailreport sm = new emailreport();
 					try {
 						// Call the mail method to send the report
 						sm.mail();

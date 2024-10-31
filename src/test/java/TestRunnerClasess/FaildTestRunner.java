@@ -7,9 +7,9 @@ import javax.mail.internet.AddressException;
 
 import org.testng.annotations.AfterClass;
 
-import StepDefinitions.Emailreport;
 import io.cucumber.testng.AbstractTestNGCucumberTests;
 import io.cucumber.testng.CucumberOptions;
+import stepDefinitions.emailreport;
 
 @CucumberOptions(
  	    
@@ -36,7 +36,7 @@ public class FaildTestRunner extends AbstractTestNGCucumberTests {
 		Runtime r = Runtime.getRuntime();
 		r.addShutdownHook(new Thread() {
 			public void run() {
-				Emailreport sm = new Emailreport();
+				emailreport sm = new emailreport();
 				try {
 					sm.mail();
 					System.out.println("Report has been sent");

@@ -1,80 +1,83 @@
-package StepDefinitions;
+package stepDefinitions;
 
-import java.text.SimpleDateFormat; // Used for formatting date and time
-import java.util.Date; // Used to get the current system date and time
-import org.apache.commons.mail.DefaultAuthenticator; // Authenticates email server credentials
-import org.apache.commons.mail.EmailAttachment; // Used to attach files to an email
-import org.apache.commons.mail.EmailException; // Handles exceptions during email sending
-import org.apache.commons.mail.MultiPartEmail; // Used to create and send an email with attachments
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import org.apache.commons.mail.DefaultAuthenticator;
+import org.apache.commons.mail.EmailAttachment;
+import org.apache.commons.mail.EmailException;
+import org.apache.commons.mail.MultiPartEmail;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import Baseclass.Baseclass; // Imports Baseclass for shared resources
+import baseclass.baseclass;
+import utils.commonMethodes;
 
-// Emailreport class extends Baseclass to access WebDriver and shared properties
-public class Emailreport extends Baseclass {
+// emailreport class is responsible for sending automated test reports via email
+public class emailreport extends baseclass {
 
-	// Method to configure and send an email with the test report
-	public void mail() throws Exception {
+    // Logger instance to log information and errors
+    private static final Logger logger = LogManager.getLogger(emailreport.class);
+    
+    // Constant for sender email address to avoid duplication
+    private static final String SENDER_EMAIL = "digambar.karande@vernost.com";
 
-		try {
-			// Set the date and time format for the email subject
-			SimpleDateFormat formateDate = new SimpleDateFormat("ddMMMyyyy HH:mm:ss");
-			Date date = new Date(); // Get the current system date and time
-			String datesystem = formateDate.format(date); // Convert date to the specified format
+    // Method to configure and send an email with the test report
+    public void mail() throws EmailException {
+        try {
+            // Set up date format for email subject to include the current timestamp
+            SimpleDateFormat formatDate = new SimpleDateFormat("ddMMMyyyy HH:mm:ss");
+            Date date = new Date();
+            String datesystem = formatDate.format(date);
 
-			// Set mail system properties to use TLSv1.2
-			System.setProperty("mail.smtp.ssl.protocols", "TLSv1.2");
+            // Set the mail system property to use TLS v1.2 protocol for secure email communication
+            System.setProperty("mail.smtp.ssl.protocols", "TLSv1.2");
 
-			// MultiPartEmail allows sending an email with attachments
-			MultiPartEmail email = new MultiPartEmail();
-			email.setHostName("smtp.googlemail.com"); // SMTP server for sending emails via Gmail
-			email.setSmtpPort(587); // Port for secure SMTP communication
+            // Create MultiPartEmail instance to handle the email with attachments
+            MultiPartEmail email = new MultiPartEmail();
+            email.setHostName("smtp.googlemail.com"); // Gmail's SMTP server
+            email.setSmtpPort(587); // Port for TLS-enabled SMTP
 
-			// Set the email authenticator with sender's credentials
-			email.setAuthenticator(new DefaultAuthenticator("digambar.karande@vernost.com", "zgyc ubcy fmnq wxxf"));
+            // Set the email authentication credentials for the sender's email account
+            email.setAuthenticator(new DefaultAuthenticator(SENDER_EMAIL, "zgyc ubcy fmnq wxxf"));
+            email.setStartTLSEnabled(true); // Enable TLS for email security
 
-			// Enable TLS for secure email sending
-			email.setStartTLSEnabled(true);
+            // Set sender email address and email subject, including the current timestamp
+            email.setFrom(SENDER_EMAIL);
+            email.setSubject("DBTrave_All: Automation Testing Report " + datesystem + "( Flight & Hotel)");
 
-			// Set the email's sender address
-			email.setFrom("digambar.karande@vernost.com");
+            // Set the email message body
+            email.setMsg("This is a test mail ... :-)");
 
-			// Set the subject of the email, appending the current date and time
-			email.setSubject("DBTrave_All: Automation Testing Report " + datesystem + "( Flight & Hotel)");
+            // Add recipient email addresses for report distribution
+            email.addTo(SENDER_EMAIL);
+            email.addTo("ansari.wasi@vernost.com");
+            email.addTo("devendra.patil@vernost.com");
+            email.addTo("puja.gupta@vernost.com");
+            email.addTo("kuldeep.ruletiya@vernost.com");
+            email.addTo("sanket.dhamale@vernost.com");
 
-			// Set the body message of the email
-			email.setMsg("This is a test mail ... :-)");
+            // Attach HTML report file to the email
+            EmailAttachment attachment = new EmailAttachment();
+            attachment.setPath(System.getProperty("user.dir") + "\\test-output\\SparkReport\\Index.html"); // Path to HTML report
+            attachment.setDisposition(EmailAttachment.ATTACHMENT); // Mark as attachment
 
-			// Add recipients to the email (multiple people will receive it)
-			email.addTo("digambar.karande@vernost.com");
-			email.addTo("ansari.wasi@vernost.com");
-			email.addTo("devendra.patil@vernost.com");
-			email.addTo("puja.gupta@vernost.com");
-			email.addTo("kuldeep.ruletiya@vernost.com");
-			email.addTo("sanket.dhamale@vernost.com");
+            // Attach PDF report file to the email
+            EmailAttachment attachment1 = new EmailAttachment();
+            attachment1.setPath(System.getProperty("user.dir") + "\\test output\\PdfReport\\ExtentPdf.pdf"); // Path to PDF report
+            attachment1.setDisposition(EmailAttachment.ATTACHMENT); // Mark as attachment
 
-			// Create the first attachment (HTML report) for the email
-			EmailAttachment attachment = new EmailAttachment();
-			attachment.setPath(System.getProperty("user.dir") + "\\test-output\\SparkReport\\Index.html"); // Path to HTML report
-			attachment.setDisposition(EmailAttachment.ATTACHMENT); // Indicates that it's an attachment
+            // Attach both HTML and PDF reports to the email
+            email.attach(attachment);
+            email.attach(attachment1);
 
-			// Create the second attachment (PDF report) for the email
-			EmailAttachment attachment1 = new EmailAttachment();
-			attachment1.setPath(System.getProperty("user.dir") + "\\test output\\PdfReport\\ExtentPdf.pdf"); // Path to PDF report
-			attachment1.setDisposition(EmailAttachment.ATTACHMENT); // Indicates that it's an attachment
+            // Send the email and log the success
+            email.send();
+            logger.info("Email sent successfully.");
 
-			// Attach both files (HTML and PDF reports) to the email
-			email.attach(attachment);
-			email.attach(attachment1);
-
-			// Send the email
-			email.send();
-
-			// Confirmation message when email is successfully sent
-			System.out.println("Email sent successfully.");
-
-		} catch (EmailException e) {
-			// Print the stack trace in case of an email sending failure
-			e.printStackTrace();
-		}
-	}
+        } catch (EmailException e) {
+            // Log error and throw custom EmailSendingException in case of email sending failure
+            logger.error("Failed to send email with the test report.", e);
+            throw new EmailException("Failed to send email with the test report.", e);
+        }
+    }
 }

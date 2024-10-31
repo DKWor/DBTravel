@@ -3,9 +3,9 @@ package utils;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class RegexExpresionPatterns {
+public class regexExpresionPatterns {
 
-	public RegexExpresionPatterns() {
+	public regexExpresionPatterns() {
 
 	}
 

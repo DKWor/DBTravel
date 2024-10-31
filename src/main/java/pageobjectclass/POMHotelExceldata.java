@@ -7,7 +7,6 @@ import java.math.RoundingMode; // For defining rounding behavior in calculations
 import java.time.Duration; // For representing a duration of time.
 import java.util.Iterator; // For iterating over collections.
 import java.util.List; // For using List data structures.
-import java.util.NoSuchElementException; // For handling cases when an element is not found.
 import java.util.Random; // For generating random numbers.
 import java.util.Set; // For using Set data structures.
 
@@ -28,13 +27,13 @@ import org.openqa.selenium.support.ui.ExpectedConditions; // For waiting until a
 import org.openqa.selenium.support.ui.WebDriverWait; // For waiting for a specified time.
 import org.testng.Assert; // For assertion methods in test cases.
 
-import utils.CommonMethodes; // Importing common methods used across tests.
+import utils.commonMethodes; // Importing common methods used across tests.
 
 
-public class POMHotelExceldata { // Class for handling hotel data and interactions in the hotel booking system
+public class pomHotelExceldata { // Class for handling hotel data and interactions in the hotel booking system
 
     // Logger instance for logging events and messages
-    private static final Logger logger = LogManager.getLogger(POMHotelExceldata.class);
+    private static final Logger logger = LogManager.getLogger(pomHotelExceldata.class);
 
     // WebElements representing various fields on the hotel booking webpage
 
@@ -45,7 +44,7 @@ public class POMHotelExceldata { // Class for handling hotel data and interactio
     private WebElement pass;
 
     @FindBy(xpath="//button[normalize-space()='Sign In']") // Locator for the Sign In button
-    private WebElement Login;
+    private WebElement login;
 
     @FindBy(xpath="//span[@class='Desktop_serv_flx__tLpIp']//li[@class='Desktop_inactive__VefRT']") // Locator for clicking on the hotel service
     private WebElement clickHotel;
@@ -103,7 +102,7 @@ public class POMHotelExceldata { // Class for handling hotel data and interactio
     // WebElements for adding and managing rooms in the hotel booking process
 
     @FindBy(xpath="//p[normalize-space()='ADD ROOM']") // Locator for the 'Add Room' button for the second room
-    private WebElement AddRoom2;
+    private WebElement addRoom2;
 
     @FindBy(xpath="/html[1]/body[1]/div[1]/div[1]/div[1]/main[1]/div[1]/div[2]/div[2]/div[3]/div[1]/div[1]/div[1]/div[1]/div[1]/div[3]/div[1]/div[1]/div[3]/div[2]/div[1]/div[2]/table[1]/tbody[1]/tr[1]/td[2]/div[1]/span[2]/*[name()='svg'][1]") // Locator for increasing the number of adults in the second room
     private WebElement room2Adult;
@@ -124,7 +123,7 @@ public class POMHotelExceldata { // Class for handling hotel data and interactio
     private WebElement room2selectAge;
 
     @FindBy(xpath="//p[normalize-space()='ADD ROOM']") // Locator for the 'Add Room' button for the third room
-    private WebElement AddRoom3;
+    private WebElement addRoom3;
 
     @FindBy(xpath="/html[1]/body[1]/div[1]/div[1]/div[1]/main[1]/div[1]/div[2]/div[2]/div[3]/div[1]/div[1]/div[1]/div[1]/div[1]/div[3]/div[1]/div[1]/div[3]/div[2]/div[1]/div[3]/table[1]/tbody[1]/tr[1]/td[2]/div[1]/span[2]/*[name()='svg'][1]") // Locator for increasing the number of adults in the third room
     private WebElement room3Adult;
@@ -145,7 +144,7 @@ public class POMHotelExceldata { // Class for handling hotel data and interactio
     private WebElement room3selectAge;
 
     @FindBy(xpath="//p[normalize-space()='ADD ROOM']") // Locator for the 'Add Room' button for the fourth room
-    private WebElement AddRoom4;
+    private WebElement addRoom4;
 
     @FindBy(xpath="/html[1]/body[1]/div[1]/div[1]/div[1]/main[1]/div[1]/div[2]/div[2]/div[3]/div[1]/div[1]/div[1]/div[1]/div[1]/div[3]/div[1]/div[1]/div[3]/div[2]/div[1]/div[4]/table[1]/tbody[1]/tr[1]/td[2]/div[1]/span[2]") // Locator for increasing the number of adults in the fourth room
     private WebElement room4Adult;
@@ -441,43 +440,43 @@ public class POMHotelExceldata { // Class for handling hotel data and interactio
 	
 
  // Constructor to initialize the page elements
-    public POMHotelExceldata(WebDriver driver) {	
+    public pomHotelExceldata(WebDriver driver) {	
         PageFactory.initElements(driver, this);	
     }
 
     // Method for validating login based on the environment
-    public void ValidLogin(String environment, WebDriver driver) throws InterruptedException, IOException {
+    public void validLogin(String environment, WebDriver driver) throws InterruptedException, IOException {
         switch (environment.toLowerCase()) { // Switch case for different environments
             case "prodb2b2": 
                 WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(100)); // Initialize WebDriverWait
                 WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@id='email']"))); // Wait for email input field
-                email.sendKeys(CommonMethodes.readDataFromPropertyFile("usernameB2B2")); // Enter username
+                email.sendKeys(commonMethodes.readDataFromPropertyFile("usernameB2B2")); // Enter username
                 Thread.sleep(100); // Wait for a short duration
-                pass.sendKeys(CommonMethodes.readDataFromPropertyFile("passB2B2")); // Enter password
+                pass.sendKeys(commonMethodes.readDataFromPropertyFile("passB2B2")); // Enter password
                 Thread.sleep(100); // Wait for a short duration
-                Login.click(); // Click on the login button
+                login.click(); // Click on the login button
                 Thread.sleep(5000); // Wait for the login process to complete
                 break;
               
             case "prodb2b": 
                 WebDriverWait wait1 = new WebDriverWait(driver, Duration.ofSeconds(100));
                 WebElement popup1 = wait1.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@id='email']"))); // Wait for email input field
-                email.sendKeys(CommonMethodes.readDataFromPropertyFile("usernameB2B")); // Enter username
+                email.sendKeys(commonMethodes.readDataFromPropertyFile("usernameB2B")); // Enter username
                 Thread.sleep(100); // Wait for a short duration
-                pass.sendKeys(CommonMethodes.readDataFromPropertyFile("passB2B")); // Enter password
+                pass.sendKeys(commonMethodes.readDataFromPropertyFile("passB2B")); // Enter password
                 Thread.sleep(100); // Wait for a short duration
-                Login.click(); // Click on the login button
+                login.click(); // Click on the login button
                 Thread.sleep(5000); // Wait for the login process to complete
                 break;
               
             case "uatb2b":
                 WebDriverWait wait2 = new WebDriverWait(driver, Duration.ofSeconds(100));
                 WebElement popup2 = wait2.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@id='email']"))); // Wait for email input field
-                email.sendKeys(CommonMethodes.readDataFromPropertyFile("usernameB2BUAT")); // Enter username
+                email.sendKeys(commonMethodes.readDataFromPropertyFile("usernameB2BUAT")); // Enter username
                 Thread.sleep(100); // Wait for a short duration
-                pass.sendKeys(CommonMethodes.readDataFromPropertyFile("passB2BUAT")); // Enter password
+                pass.sendKeys(commonMethodes.readDataFromPropertyFile("passB2BUAT")); // Enter password
                 Thread.sleep(100); // Wait for a short duration
-                Login.click(); // Click on the login button
+                login.click(); // Click on the login button
                 Thread.sleep(5000); // Wait for the login process to complete
                 break;
               
@@ -487,7 +486,7 @@ public class POMHotelExceldata { // Class for handling hotel data and interactio
     }
 
     // Method for selecting nationality
-    public void Select_the_Nationality(WebDriver driver) throws InterruptedException {
+    public void selecttheNationality(WebDriver driver) throws InterruptedException {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(100));
         WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//span[@class='theme4_vt_country_select_container__vp3GT'])[1]"))); // Wait for country select popup
         Thread.sleep(1000); // Wait for a short duration
@@ -507,13 +506,13 @@ public class POMHotelExceldata { // Class for handling hotel data and interactio
     }
 
     // Method for selecting advanced search options
-    public void Select_Advanced_Search(WebDriver driver) throws InterruptedException {
+    public void selectAdvancedSearch(WebDriver driver) throws InterruptedException {
         advancedSearch.click(); // Click on advanced search button
         Thread.sleep(500); // Wait for a short duration
     }
 
     // Method for selecting fare type based on user input
-    public void Select_the_FareType(WebDriver driver, String Fare_Type) throws InterruptedException {
+    public void selecttheFareType(WebDriver driver, String Fare_Type) throws InterruptedException {
         selectFareType.click(); // Click on fare type selection
         Thread.sleep(500); // Wait for a short duration
         
@@ -528,7 +527,7 @@ public class POMHotelExceldata { // Class for handling hotel data and interactio
     }
 	
  // Method to select breakfast options
-    public void Select_the_Brekfastoption(WebDriver driver) throws InterruptedException {
+    public void selecttheBrekfastoption(WebDriver driver) throws InterruptedException {
         selectBrekfast.click(); // Click on the breakfast selection option
         Thread.sleep(500); // Wait for half a second to ensure the action is completed
         withBrekfast.click(); // Click on the option for breakfast included
@@ -536,7 +535,7 @@ public class POMHotelExceldata { // Class for handling hotel data and interactio
     }
 
     // Method to select hotel star ratings based on user input
-    public void Select_the_rating(WebDriver driver, String STAR_RATING) throws InterruptedException {
+    public void selecttherating(WebDriver driver, String STAR_RATING) throws InterruptedException {
         Thread.sleep(500); // Wait for half a second to ensure the UI is ready
         selectStarRating.click(); // Click on the star rating selection element
         Thread.sleep(500); // Wait for the star rating options to appear
@@ -566,7 +565,7 @@ public class POMHotelExceldata { // Class for handling hotel data and interactio
     }
 
     // Method to search and select a city for hotel booking
-    public void Search_selectCity(WebDriver driver, String city) throws InterruptedException {
+    public void searchselectCity(WebDriver driver, String city) throws InterruptedException {
         searchCity.click(); // Click on the city search input field
         Thread.sleep(1000); // Wait for one second to ensure the input field is ready
         searchCityname.sendKeys(city); // Enter the city name into the search field
@@ -622,7 +621,7 @@ public class POMHotelExceldata { // Class for handling hotel data and interactio
         String strNumber1 = String.valueOf(randomNumberInRange1);
 
         // Wait for the departure calendar element to be visible.
-        CommonMethodes.waitForElementToBeVisible(driver, departureCalander, 1);
+        commonMethodes.waitForElementToBeVisible(driver, departureCalander, 1);
         Thread.sleep(1000); // Sleep for a brief moment to allow UI to settle.
         
         // Select the departure date using the selectDate method.
@@ -631,7 +630,7 @@ public class POMHotelExceldata { // Class for handling hotel data and interactio
         Thread.sleep(1000); // Sleep for a brief moment to allow UI to settle.
         
         // Wait for the return calendar element to be visible.
-        CommonMethodes.waitForElementToBeVisible(driver, returnCalander, 3);
+        commonMethodes.waitForElementToBeVisible(driver, returnCalander, 3);
         Thread.sleep(500); // Sleep for a brief moment to allow UI to settle.
         
         // Select the return date using the selectDate method.
@@ -683,7 +682,7 @@ public class POMHotelExceldata { // Class for handling hotel data and interactio
                 logger.info(driver.findElements(By.xpath(
                         "//div[@class='theme4_calendar_head_right_side__o16VX']//span[@class='theme4_calendar_head_icon__Y4clh']//*[name()='svg']"))
                         .size());
-                CommonMethodes.waitForElementToBeVisible(driver, nextMonthLable, 3);
+                commonMethodes.waitForElementToBeVisible(driver, nextMonthLable, 3);
             }
         }
 
@@ -723,9 +722,9 @@ public class POMHotelExceldata { // Class for handling hotel data and interactio
 
 
 	
-	public void Select_1Room_1Pass(WebDriver driver,String AdultString,String childString,String RoomString) throws InterruptedException
+	public void selectRoomPass(WebDriver driver,String AdultString,String childString,String RoomString) throws InterruptedException
 	{
-		CommonMethodes.waitForElementToBeVisible(driver, passanger, 1);
+		commonMethodes.waitForElementToBeVisible(driver, passanger, 1);
 		String stringadult =AdultString;
 		Integer adult = Integer.valueOf(stringadult);
 		logger.info("No of  Adult is :"+stringadult);
@@ -876,7 +875,7 @@ public class POMHotelExceldata { // Class for handling hotel data and interactio
 
 			}
 			
-			AddRoom2.click();
+			addRoom2.click();
 			Thread.sleep(100);
 			((JavascriptExecutor) driver).executeScript("window.scrollBy(0,300)", "");
 			Thread.sleep(500);
@@ -1014,7 +1013,7 @@ public class POMHotelExceldata { // Class for handling hotel data and interactio
 
 			}
 			
-			AddRoom2.click();
+			addRoom2.click();
 			Thread.sleep(100);
 			((JavascriptExecutor) driver).executeScript("window.scrollBy(0,300)", "");
 			Thread.sleep(500);
@@ -1084,7 +1083,7 @@ public class POMHotelExceldata { // Class for handling hotel data and interactio
    
 			
 	   
-		AddRoom3.click();
+		addRoom3.click();
 		
 		
 	for (int i = 0; i < adult-1; i++) 
@@ -1222,7 +1221,7 @@ public class POMHotelExceldata { // Class for handling hotel data and interactio
 
 			}
 			
-			AddRoom2.click();
+			addRoom2.click();
 			Thread.sleep(100);
 			((JavascriptExecutor) driver).executeScript("window.scrollBy(0,300)", "");
 			Thread.sleep(500);
@@ -1292,7 +1291,7 @@ public class POMHotelExceldata { // Class for handling hotel data and interactio
    
 			
 	   
-		AddRoom3.click();
+		addRoom3.click();
 		
 		
 	for (int i = 0; i < adult-1; i++) 
@@ -1354,7 +1353,7 @@ public class POMHotelExceldata { // Class for handling hotel data and interactio
 	}
 	   
 	   
-	AddRoom4.click();
+	addRoom4.click();
 	
 	
 for (int i = 0; i < adult-1; i++) 
@@ -1484,7 +1483,7 @@ if(Child==1)
 
 			}	
 			
-			AddRoom2.click();
+			addRoom2.click();
 			
 		
 		for (int i = 0; i < adult-1; i++) 
@@ -1531,7 +1530,7 @@ if(Child==1)
 
 		}	
 	   
-		AddRoom3.click();
+		addRoom3.click();
 		
 		
 	for (int i = 0; i < adult-1; i++) 
@@ -1578,7 +1577,7 @@ if(Child==1)
 
 	}	
 	   
-	AddRoom4.click();
+	addRoom4.click();
 	
 	
 for (int i = 0; i < adult-1; i++) 
@@ -1699,13 +1698,13 @@ room5selectAge.click();
 	
 	
 	
-	public void click_Search(WebDriver driver) throws InterruptedException
+	public void clickSearch(WebDriver driver) throws InterruptedException
 	{
 	    // Define the search element to be clicked
 	    WebElement element = search;
 	    
 	    // Scroll up the view to ensure the search element is in view
-	    CommonMethodes.scrollUp(driver);
+	    commonMethodes.scrollUp(driver);
 	    
 	    // Pause for a short duration to allow the page to load
 	    Thread.sleep(500);	
@@ -1714,7 +1713,7 @@ room5selectAge.click();
 	    element.click();
 	}
 
-	public void click_Quick_filter(WebDriver driver) throws InterruptedException
+	public void clickQuickfilter(WebDriver driver) throws InterruptedException
 	{
 	    // Initialize WebDriverWait for waiting for elements to be visible
 	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(100));
@@ -1729,7 +1728,7 @@ room5selectAge.click();
 	    ((JavascriptExecutor) driver).executeScript("arguments[0].click();", freeBreakfast);
 	}
 
-	public void click_Star_Rating(WebDriver driver) throws InterruptedException
+	public void clickStarRating(WebDriver driver) throws InterruptedException
 	{
 	    try {
 	        // Initialize WebDriverWait for waiting for elements to be visible
@@ -1750,7 +1749,7 @@ room5selectAge.click();
 	    }
 	}
 
-	public void click_Price_Range(WebDriver driver) throws InterruptedException
+	public void clickPriceRange(WebDriver driver) throws InterruptedException
 	{
 	    try {
 	        // Initialize WebDriverWait for waiting for elements to be visible
@@ -1784,7 +1783,7 @@ room5selectAge.click();
 	    }
 	}
 
-	public void click_Price_Amenities(WebDriver driver) throws InterruptedException
+	public void clickPriceAmenities(WebDriver driver) throws InterruptedException
 	{
 	    try {
 	        // Initialize WebDriverWait for waiting for elements to be visible
@@ -1805,7 +1804,7 @@ room5selectAge.click();
 	    }
 	}
 
-	public void click_Price_Vacation_Type_filter(WebDriver driver) throws InterruptedException
+	public void clickPriceVacationTypefilter(WebDriver driver) throws InterruptedException
 	{
 	    try {
 	        // Initialize WebDriverWait for waiting for elements to be visible
@@ -1826,7 +1825,7 @@ room5selectAge.click();
 	    }
 	}
 
-	public void click_Price_Property_Type_filter(WebDriver driver) throws InterruptedException
+	public void clickPricePropertyTypefilter(WebDriver driver) throws InterruptedException
 	{
 	    try {
 	        // Initialize WebDriverWait for waiting for elements to be visible
@@ -1847,10 +1846,10 @@ room5selectAge.click();
 	    }
 	}
 
-	public void click_Search_For_Rounttrip(WebDriver driver) throws InterruptedException
+	public void clickSearchForRounttrip(WebDriver driver) throws InterruptedException
 	{
 	    // Wait for the search element to be visible
-	    CommonMethodes.waitForElementToBeVisible(driver, search, 1);
+	    commonMethodes.waitForElementToBeVisible(driver, search, 1);
 	    
 	    // Pause for 5 seconds to allow the page to load
 	    Thread.sleep(5000);
@@ -1879,7 +1878,7 @@ room5selectAge.click();
 	    }
 	}
 
-	public void Handel_Room_not_available_Popup(WebDriver driver) throws InterruptedException
+	public void handelRoomnotavailablePopup(WebDriver driver) throws InterruptedException
 	{
 	    try {
 	        // Initialize WebDriverWait for waiting for elements to be visible
@@ -2103,7 +2102,7 @@ room5selectAge.click();
 	}
 
 	// Method to calculate the total amount displayed on the review page
-	public void Calculate_the_AmountOnReviewPage(WebDriver driver) throws InterruptedException {
+	public void calculatetheAmountOnReviewPage(WebDriver driver) throws InterruptedException {
 
 	    // Scroll down to the fare detail section to ensure it's in view
 	    ((JavascriptExecutor) driver).executeScript("window.scrollBy(0,300)", "");
@@ -2215,7 +2214,7 @@ room5selectAge.click();
 	    }
 	    
 	    // Process room selection
-	    CommonMethodes.scrollDown(driver);
+	    commonMethodes.scrollDown(driver);
 	    Thread.sleep(300);
 
 	    for (int i = 1; i <= room; i++) {
@@ -2272,7 +2271,7 @@ room5selectAge.click();
 
 	    // Loop through the number of rooms and fill details for each adult
 	    for (int i = 1; i <= room; i++) {
-	        CommonMethodes.scrollDown(driver); // Scroll down to make sure elements are visible
+	        commonMethodes.scrollDown(driver); // Scroll down to make sure elements are visible
 	        Thread.sleep(500); // Allow time for scrolling effect
 	        fillAdultDetails(driver, i); // Call method to fill details for the current room
 	    }
@@ -2364,9 +2363,9 @@ room5selectAge.click();
 	    Thread.sleep(500); // Allow time for UI elements to load
 
 	    // Scroll down to ensure the continue button is visible
-	    CommonMethodes.scrollDown(driver);
+	    commonMethodes.scrollDown(driver);
 	    Thread.sleep(500); // Allow time for scrolling effect
-	    CommonMethodes.scrollDown(driver); // Scroll down again if necessary
+	    commonMethodes.scrollDown(driver); // Scroll down again if necessary
 	    // Thread.sleep(500); // Additional wait can be added if needed
 
 	    continueBooking.click(); // Click on the continue booking button
@@ -2383,7 +2382,7 @@ room5selectAge.click();
 	    if (room == 1) {
 	        Thread.sleep(500); // Additional wait
 
-	        CommonMethodes.scrollDown2(driver); // Scroll down specifically for the continue button
+	        commonMethodes.scrollDown2(driver); // Scroll down specifically for the continue button
 	        Thread.sleep(500); // Allow time for scrolling effect
 	        continubutton.click(); // Click on the continue button
 

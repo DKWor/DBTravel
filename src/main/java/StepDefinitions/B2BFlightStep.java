@@ -1,81 +1,85 @@
-package StepDefinitions;
+package stepDefinitions;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
-import Baseclass.Baseclass;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import baseclass.baseclass;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
-import pageobjectclass.B2BFlightPOM;
-import utils.CommonMethodes;
-import utils.ExcelReader;
+import pageobjectclass.b2bFlightPOM;
+import utils.commonMethodes;
+import utils.excelReader;
 
-public class B2BFlightStep extends Baseclass {
+public class b2bFlightStep extends baseclass {
 
-	private B2BFlightPOM HOME;
-	private ExcelReader reader;
+	private b2bFlightPOM home;
+	private excelReader reader;
 	private List<Map<String, String>> testData;
 	private int row;
  
-   
-
+	private static final String TRIPTYPE = "TRIP TYPE";
+	private static final String CLASS="CLASS";
+	
+	private static final Logger logger = LogManager.getLogger(b2bFlightStep.class);
 	@Then("User is Click On Flight")
 	public void userClicksOnFlight() throws InterruptedException {
-		HOME = new B2BFlightPOM(driver);
-		HOME.clickFlightModule();
+		home = new b2bFlightPOM(driver);
+		home.clickFlightModule();
 	}
 
 	@Then("^User select the trip and pass origin and destination from given sheetName (.+) and rowNumber (.+)$")
 	public void userSelectTripAndPassOriginDestination(int sheetName, int rowNumber)
 			throws InvalidFormatException, IOException, InterruptedException {
-		reader = new ExcelReader();
-		testData = reader.getData(CommonMethodes.Excelpath(), sheetName);
+		reader = new excelReader();
+		testData = reader.getData(commonMethodes.Excelpath(), sheetName);
 		row = rowNumber;
 
-		String tripType = testData.get(row).get("TRIP TYPE");
+		String tripType = testData.get(row).get(TRIPTYPE);
 		String origin = testData.get(row).get("ORIGIN");
 		String destination = testData.get(row).get("DESTINATION");
 
-		System.out.println("---- user travel details ---" + "TRIP TYPE" + tripType + "origin" + origin + "destination"
+		logger.info("---- user travel details ---" + TRIPTYPE + tripType + "origin" + origin + "destination"
 				+ destination);
-		HOME = new B2BFlightPOM(driver);
-		//HOME.Selecttrippassoriginanddestination(driver, tripType, origin, destination);
-		HOME.selectthecity(driver, tripType, origin, destination);
+		home = new b2bFlightPOM(driver);
+		home.selectthecity(driver, tripType, origin, destination);
 	}
 
 	@Then("select the date for trip")
 	public void selectDateForTrip() throws InterruptedException {
-		String tripType = testData.get(row).get("TRIP TYPE");
+		String tripType = testData.get(row).get(TRIPTYPE);
 		String inDate = testData.get(row).get("IN_DATE");
 		String returnDate = testData.get(row).get("OUT_DATE");
 		String monthYear = testData.get(row).get("MONT&YEAR");
 		String rmonthrYear = testData.get(row).get("RMONT&YEAR");
-		boolean SearchType = Boolean.parseBoolean(testData.get(row).get("Advanced_Search"));
+		boolean searchType = Boolean.parseBoolean(testData.get(row).get("Advanced_Search"));
 
 
-		HOME.SelectDatefortrip(driver, tripType, monthYear, rmonthrYear, inDate, returnDate,SearchType);
+		home.selectDatefortrip(driver, tripType, monthYear, rmonthrYear, inDate, returnDate,searchType);
 	}
 
 	@Then("select the class for trip")
-	public void selectClassForTrip() throws InterruptedException, IOException {
-		String tripType = testData.get(row).get("TRIP TYPE");
-		String flightClass = testData.get(row).get("CLASS");
+	public void selectClassForTrip() throws InterruptedException {
+		String tripType = testData.get(row).get(TRIPTYPE);
+		String flightClass = testData.get(row).get(CLASS);
 
-		HOME.selectClassforTrip(driver, tripType, flightClass);
+		home.selectClassforTrip(driver, tripType, flightClass);
 	}
 
 	@Then("select the supplier from list")
-	public void selectSupplierFromList() throws InterruptedException, IOException {
-		HOME.select_supplier(driver);
+	public void selectSupplierFromList() throws InterruptedException {
+		home.select_supplier(driver);
 	}
 
 	@Then("The user should able to select Business, First Class, Premium Economy cabin class details")
 	public void selectCabinClassDetails() throws InterruptedException {
-		String tripType = testData.get(row).get("TRIP TYPE");
-		String flightClass = testData.get(row).get("CLASS");
+		String tripType = testData.get(row).get(TRIPTYPE);
+		String flightClass = testData.get(row).get(CLASS);
 
-		HOME.selectClassforTripandValidaetheclass(driver, tripType, flightClass);
+		home.selectClassforTripandValidaetheclass(driver, tripType, flightClass);
 	}
 
 	@Then("User select the passenger for trip")
@@ -84,174 +88,164 @@ public class B2BFlightStep extends Baseclass {
 		String childPax = testData.get(row).get("CHILD_PAX");
 		String infantsPax = testData.get(row).get("INFANTS_PAX");
 
-		HOME.Selectpassangerfortrip(driver, adultPax, childPax, infantsPax);
+		home.Selectpassangerfortrip(driver, adultPax, childPax, infantsPax);
 	}
 
 	@And("User clicks on the search button for flight")
 	public void clickOnSearchButtonForFlight() throws InterruptedException {
-		HOME = new B2BFlightPOM(driver);
-		String tripType = testData.get(row).get("TRIP TYPE");
-		HOME.click_Search(driver, tripType);
+		home = new b2bFlightPOM(driver);
+		String tripType = testData.get(row).get(TRIPTYPE);
+		home.click_Search(driver, tripType);
 	}
 	
 	@And("user selects departure time from")
 	public void selectDepartureFrom() throws InterruptedException {
-		HOME.selectDepartureTimeFrom(driver);
+		home.selectDepartureTimeFrom(driver);
 	}
 
 	@And("user selects Onward airlines")
 	public void selectOnwardAirlines() throws InterruptedException {
-		HOME.selectAirlineFromOnwards(driver);
+		home.selectAirlineFromOnwards(driver);
 	}
 	
 	@And("user selects return airlines")
 	public void selectreturnAirlines() throws InterruptedException {
-		HOME.selectAirlineFromReturns(driver);
+		home.selectAirlineFromReturns(driver);
 	}
 	
 	@And("user selects Layover onwards")
 	public void selectLayoverOnwards() throws InterruptedException {
-		HOME.selectLayoverOnward(driver);	}
+		home.selectLayoverOnward(driver);	}
 	
 	@And("user selects Layover returns")
 	public void selectLayoverreturns() throws InterruptedException {
-		HOME.selectLayoverreturns(driver);	}
+		home.selectLayoverreturns(driver);	}
 	
 
 
 	@Then("select the Flight and click on book")
 	public void selectRefundableFlight() throws InterruptedException {
-		String tripType = testData.get(row).get("TRIP TYPE");
-		String flightType = testData.get(row).get("FLIGHT_TYPE");
+		String tripType = testData.get(row).get(TRIPTYPE);
 		String fareType = testData.get(row).get("FARE_TYPE");
-		boolean SearchType = Boolean.parseBoolean(testData.get(row).get("Advanced_Search"));
-		HOME.selectFareTypeFlight(driver, fareType,SearchType,tripType);
+		boolean searchType = Boolean.parseBoolean(testData.get(row).get("Advanced_Search"));
+		home.selectFareTypeFlight(driver, fareType,searchType,tripType);
 	}
 	
 	
 	@Then("User check search result")
-	public void User_check_search_result() throws InterruptedException {
-		HOME.checksearchresult(driver);
+	public void userCheckSearchResult() throws InterruptedException {
+	    home.checksearchresult(driver);
 	}
 
-
-	@Then("User handel the Price Change Alert Popup")
-	public void User_handel_the_Price_Change_Alert_Popup() throws InterruptedException {
-		HOME.HandelThePriceChangeAlert(driver);
+	@Then("User handle the Price Change Alert Popup")
+	public void userHandlePriceChangeAlertPopup(){
+	    home.HandelThePriceChangeAlert(driver);
 	}
 
 	@Then("user select search filter number of stops")
 	public void selectNoOFStops() throws InterruptedException {
 		String noOfStops = testData.get(row).get("noOfStops");
-		HOME.selectStops(driver, noOfStops);
+		home.selectStops(driver, noOfStops);
 	}
 
 	@Then("user select search filter fare type")
 	public void selectFareType() throws InterruptedException {
 		String fareType = testData.get(row).get("FARE_TYPE");
-		HOME.selectFareType(driver, fareType);
+		home.selectFareType(driver, fareType);
 	}
 
 	@Then("user select marktype radio button")
 	public void selectMarkUpType() throws InterruptedException {
 		boolean markType = Boolean.parseBoolean(testData.get(row).get("isMark_Down"));
 
-		HOME.selectMarkType(driver, markType);
+		home.selectMarkType(driver, markType);
 	}
 
 	@Then("user select either percent or flat toggle")
 	public void selectPercentAndEnterPercent() throws InterruptedException {
 		
 		boolean isPercentToggle = Boolean.parseBoolean(testData.get(row).get("isPercentage"));
-		String Percentage =testData.get(row).get("Percentage");
+		String percentage =testData.get(row).get("Percentage");
 
-		HOME.selectPercentOrFlat(driver, isPercentToggle,Percentage);
+		home.selectPercentOrFlat(driver, isPercentToggle,percentage);
 	}
 
  
 
 	@Then("user enter flat value in text box")
 	public void enterFlatValue() throws InterruptedException {
-//		int flat = Integer.parseInt(testData.get(row).get("FLAT"));
 		String flat = testData.get(row).get("FLAT");
 
-		HOME.enterFlatValue(driver, flat);
+		home.enterFlatValue(driver, flat);
 	}
 
 	@Then("user apply pricerange filters")
 	public void selectPriceRangeValues() throws InterruptedException {
 ;
-		HOME.selectDynamicPriceRange(driver);
+		home.selectDynamicPriceRange(driver);
 	}
 
 	@Then("user apply trip duration filters")
 	public void applyTimeRaneFilters() throws InterruptedException {
-		HOME.selectDynamicTimeRange(driver);
+		home.selectDynamicTimeRange(driver);
 	}
 
 	@Then("user enter local taxes")
 	public void enterLocalTaxValues() throws InterruptedException {
-//		int localTax = Integer.parseInt(testData.get(row).get("LOCAL_TAXC"));
 		String localTax = testData.get(row).get("LOCAL_TAX");
-		System.out.println("local tsx value is ---" + localTax);
-		HOME.enterLocalTaxes(driver, localTax);
+		logger.info("local tsx value is ---" + localTax);
+		home.enterLocalTaxes(driver, localTax);
 	}
 
 
 	@Then("check for Fare Details total amounts calculation")
 	public void checkFareDetailsTotalAmounts() throws InterruptedException {
-		HOME.checkFareDetails(driver);
+		home.checkFareDetails(driver);
 	}
 	
 	@And("User select the Advanced Search option")
-	public void User_select_the_Advanced_Search_option() throws InterruptedException 
-	{		HOME = new B2BFlightPOM(driver);
-
-		HOME.clickAdvancebooking(driver);	
-
+	public void userSelectAdvancedSearchOption() throws InterruptedException {
+	    home = new b2bFlightPOM(driver);
+	    home.clickAdvancebooking(driver);
 	}
 	
 	
 	@Then("User select the RBD classes")
-	public void User_select_the_RBD_classes() throws InterruptedException 
-	{
-		String RBD = testData.get(row).get("RBD");
-		String TRIP_TYPE = testData.get(row).get("TRIP TYPE");
-
-
-		HOME.SelectRBDClases(driver,RBD,TRIP_TYPE);	
-
+	public void userSelectRBDClasses() throws InterruptedException {
+	    String rbd = testData.get(row).get("RBD");
+	    String tripType = testData.get(row).get(TRIPTYPE);
+	    home.SelectRBDClases(driver, rbd, tripType);
 	}
 	
 
 	
 	
 	@Then("User select the Cabin classes")
-	public void User_select_the_Cabin_classes() throws InterruptedException 
+	public void UserselecttheCabinclasses() throws InterruptedException 
 	{
-		String CLASS = testData.get(row).get("CLASS");
-		String TRIP_TYPE = testData.get(row).get("TRIP TYPE");
+		String cLASS = testData.get(row).get(CLASS);
+		String tripType = testData.get(row).get(TRIPTYPE);
 
-		HOME.SelectCabin(driver,CLASS,TRIP_TYPE);	
+		home.SelectCabin(driver,cLASS,tripType);	
 
 	}
 	
 	@Then("User select the Supplier name")
-	public void User_select_the_Supplier_name() throws InterruptedException 
+	public void UserselecttheSuppliername() throws InterruptedException 
 	{
-		String Supplier = testData.get(row).get("Supplier");
+		String supplier = testData.get(row).get("Supplier");
 
-		HOME.SelectSupplier(driver,Supplier);	
+		home.SelectSupplier(driver,supplier);	
 
 	}
 	
 	@Then("User select the Depature Time")
-	public void  User_select_the_Depature_Time() throws InterruptedException 
+	public void  UserselecttheDepatureTime() throws InterruptedException 
 	{
-		String DepartureTime = testData.get(row).get("DepartureTime");
-		String TRIP_TYPE = testData.get(row).get("TRIP TYPE");
+		String departureTime = testData.get(row).get("DepartureTime");
+		String tripType = testData.get(row).get(TRIPTYPE);
 
-		HOME.SelectDepartureTime(driver,DepartureTime,TRIP_TYPE);	
+		home.SelectDepartureTime(driver,departureTime,tripType);	
 
 	}
 	
