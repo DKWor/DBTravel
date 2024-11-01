@@ -12,7 +12,7 @@ import java.util.HashMap; // For storing key-value pairs
 import java.util.List; // For handling lists of objects
 import java.util.Map; // For storing mappings of keys to values
 import java.util.Random; // For generating random numbers
-
+import java.text.MessageFormat;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager; // For logging framework
@@ -462,14 +462,13 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
 
     // Method to select a date from a calendar based on the trip type and desired date
     private void selectDate(WebDriver driver, String month, String date, String way) {
-        logger.info("Trip type is {}" + way); // Log the trip type
+    	logger.info("Trip type is {}", way); // Log the trip type
 
         int index; // Variable to store the index of the matching month
         while (true) {
-            logger.info("Checking while loop {}"); // Log entry into the loop
             // Get the currently displayed month and year from the calendar
             String text = driver.findElement(By.xpath("//h3")).getText();
-            logger.info("While current month is {}" + text); // Log the current month being checked
+            logger.info("While current month is {}", text); // Log the current month being checked
 
             // Locate the month/year labels in the calendar header
             List<WebElement> monthYearLabels = driver
@@ -478,12 +477,12 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
             // Check if the desired month is found in the displayed labels
             boolean isMonthFound = monthYearLabels.stream().anyMatch(ele -> ele.getText().equalsIgnoreCase(month));
 
-            logger.info("While given input month is {}" + month); // Log the input month
-            logger.info("isMonthFound status is {}" + isMonthFound); // Log the status of month found
+            logger.info("While given input month is {}", month); // Log the input month
+            logger.info("isMonthFound status is {}", isMonthFound); // Log the status of month found
 
             // Get the index of the matching month using the helper method
             index = getIndexOfMatchingElement(monthYearLabels, month);
-            logger.info("Index value is {}" + index); // Log the index value
+            logger.info("Index value is {}",index); // Log the index value
 
             if (isMonthFound) {
                 break; // Exit the loop if the month is found
@@ -499,7 +498,7 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
             // Locate all available dates in the left-side calendar
             List<WebElement> leftSideDates = driver.findElements(By.xpath(
                     "//div[@class='theme4_calendar_whole_body__ZTJsd'][1]//div[@class='theme4_calendar_day_list__MByr8'][1]//div[@class='theme4_day_cell_center__bpS9l' or 'theme4_day_cell_center__bpS9l theme4_selected_calendar_date__z_ZjS']//span[@class='']"));
-            logger.info("User given date is option 1: {}" + date); // Log the user’s desired date
+            logger.info("User given date is option 1: {}", date); // Log the user’s desired date
 
             // Stream through the list to find the desired date and click it if found
             leftSideDates.stream().filter(ele -> ele.getText().contentEquals(date)).findFirst().ifPresent(element -> {
@@ -514,7 +513,7 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
             // Locate all available dates in the right-side calendar
             List<WebElement> rightSideDates = driver.findElements(By.xpath(
                     "//div[@class='theme4_calendar_whole_body__ZTJsd'][2]//div[@class='theme4_calendar_day_list__MByr8'][1]//div[@class='theme4_day_cell_center__bpS9l' or 'theme4_day_cell_center__bpS9l theme4_selected_calendar_date__z_ZjS']//span[@class='']"));
-            logger.info("User given date is option 2: {}" + date); // Log the user’s desired date
+            logger.info("User given date is option 2: {}", date); // Log the user’s desired date
 
 
             // Stream through the list to find the desired date and click it if found
@@ -533,28 +532,28 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
 
         // Check if the selected class is CLASS_ECONOMY
         if (classess.equalsIgnoreCase(CLASS_ECONOMY)) {
-            logger.info(SELECTED_CLASS_LOG_MESSAGE + economy.getText()); // Log the selected class
+        	logger.info("{} {}", SELECTED_CLASS_LOG_MESSAGE, economy.getText()); // Log the selected class
             WebElement element1 = economy; // Reference to the Economy class element
             ((JavascriptExecutor) driver).executeScript(CLICK_SCRIPT, element1); // Click on the Economy class element
             ((JavascriptExecutor) driver).executeScript(CLICK_SCRIPT, apply); // Click on the apply button
 
         // Check if the selected class is BUSINESS_CLASS
         } else if (classess.equalsIgnoreCase(BUSINESS_CLASS)) {
-            logger.info(SELECTED_CLASS_LOG_MESSAGE + businessClass.getText()); // Log the selected class
+        	logger.info("%s %s".formatted(SELECTED_CLASS_LOG_MESSAGE, businessClass.getText())); // Log the selected class
             WebElement element1 = businessClass; // Reference to the Business class element
             ((JavascriptExecutor) driver).executeScript(CLICK_SCRIPT, element1); // Click on the Business class element
             ((JavascriptExecutor) driver).executeScript(CLICK_SCRIPT, apply); // Click on the apply button
 
         // Check if the selected class is FIRST_CLASS
         } else if (classess.equalsIgnoreCase(FIRST_CLASS)) {
-            logger.info(SELECTED_CLASS_LOG_MESSAGE + firstClass.getText()); // Log the selected class
+        	logger.info("{}{}", SELECTED_CLASS_LOG_MESSAGE, firstClass.getText()); // Log the selected class
             WebElement element1 = firstClass; // Reference to the First Class element
             ((JavascriptExecutor) driver).executeScript(CLICK_SCRIPT, element1); // Click on the First Class element
             ((JavascriptExecutor) driver).executeScript(CLICK_SCRIPT, apply); // Click on the apply button
 
         // Check if the selected class is PREMIUM_ECONOMY
         } else if (classess.equalsIgnoreCase(PREMIUM_ECONOMY)) {
-            logger.info(SELECTED_CLASS_LOG_MESSAGE + premiumEconomy.getText()); // Log the selected class
+        	logger.info("{}{}", SELECTED_CLASS_LOG_MESSAGE, premiumEconomy.getText()); // Log the selected class
             WebElement element1 = premiumEconomy; // Reference to the Premium Economy element
             ((JavascriptExecutor) driver).executeScript(CLICK_SCRIPT, element1); // Click on the Premium Economy element
             ((JavascriptExecutor) driver).executeScript(CLICK_SCRIPT, apply); // Click on the apply button
@@ -569,32 +568,33 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
             // Handle class selection for Round-Way trips
             if (classess.equalsIgnoreCase(CLASS_ECONOMY)) {
                 commonMethodes.waitForElementToBeVisible(driver, apply, 2); // Wait for the apply button to be visible
-                logger.info("We select Economy class {}"); // Log the selected class
+                logger.info("We select Economy class"); // Log the selected class
 
             // Check if the selected class is BUSINESS_CLASS
             } else if (classess.equalsIgnoreCase(BUSINESS_CLASS)) {
                 businessClass.click(); // Click on the Business class option
                 commonMethodes.waitForElementToBeVisible(driver, apply, 2); // Wait for the apply button to be visible
-                logger.info(SELECTED_CLASS_LOG_MESSAGE + businessClass); // Log the selected class
+                logger.info("{} {}", SELECTED_CLASS_LOG_MESSAGE, businessClass); // Log the selected class
 
             // Check if the selected class is FIRST_CLASS
             } else if (classess.equalsIgnoreCase(FIRST_CLASS)) {
                 firstClass.click(); // Click on the First Class option
                 commonMethodes.waitForElementToBeVisible(driver, apply, 2); // Wait for the apply button to be visible
-                logger.info(SELECTED_CLASS_LOG_MESSAGE + firstClass); // Log the selected class
+                logger.info("{} {}", SELECTED_CLASS_LOG_MESSAGE, firstClass); // Log the selected class
+
 
             // Check if the selected class is PREMIUM_ECONOMY
             } else if (classess.equalsIgnoreCase(PREMIUM_ECONOMY)) {
                 premiumEconomy.click(); // Click on the Premium Economy option
                 commonMethodes.waitForElementToBeVisible(driver, apply, 2); // Wait for the apply button to be visible
-                logger.info(SELECTED_CLASS_LOG_MESSAGE + premiumEconomy); // Log the selected class
+                logger.info("{} {}", SELECTED_CLASS_LOG_MESSAGE, premiumEconomy); // Log the selected class
             }
         } else if (way.equals(ONEWAY)) { // Handle class selection for One-Way trips
             ((JavascriptExecutor) driver).executeScript("window.scrollBy(0,500)", ""); // Scroll down the page
             // Check if the selected class is CLASS_ECONOMY
             if (classess.equalsIgnoreCase(CLASS_ECONOMY)) {
                 commonMethodes.waitForElementToBeVisible(driver, apply, 2); // Wait for the apply button to be visible
-                logger.info("We select Economy class{}"); // Log the selected class
+                logger.info("We select Economy class"); // Log the selected class
 
                 flightSearch.click(); // Click on the flight search button
                 Thread.sleep(4000); // Wait for 4 seconds
@@ -610,7 +610,7 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
 
                 Thread.sleep(4000); // Wait for 4 seconds
 
-                logger.info(SELECTED_CLASS_LOG_MESSAGE + businessClass); // Log the selected class
+                logger.info("{} {}", SELECTED_CLASS_LOG_MESSAGE, businessClass); // Log the selected class
                 String text = classElement.getText(); // Get the text of the class element
                 Assert.assertEquals(text, BUSINESS_CLASS); // Validate that the selected class is Business
 
@@ -622,7 +622,7 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
 
                 Thread.sleep(4000); // Wait for 4 seconds
 
-                logger.info(SELECTED_CLASS_LOG_MESSAGE + firstClass); // Log the selected class
+                logger.info("{} {}", SELECTED_CLASS_LOG_MESSAGE, firstClass); // Log the selected class
                 String text = classElement.getText(); // Get the text of the class element
                 Assert.assertEquals(text, FIRST_CLASS); // Validate that the selected class is First Class
 
@@ -633,7 +633,7 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
                 flightSearch.click(); // Click on the flight search button
 
                 Thread.sleep(4000); // Wait for 4 seconds
-                logger.info(SELECTED_CLASS_LOG_MESSAGE + premiumEconomy); // Log the selected class
+                logger.info("{} {}", SELECTED_CLASS_LOG_MESSAGE, premiumEconomy); // Log the selected class
                 String text = classElement.getText(); // Get the text of the class element
                 Assert.assertEquals(text, PREMIUM_ECONOMY); // Validate that the selected class is Premium Economy
             }
@@ -795,7 +795,7 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
             // Click on the RBD classes dropdown
             rbdClasses.click();
             Thread.sleep(500); // Wait for the dropdown to become responsive
-            logger.info(RBD_LOG_MESSAGE + rbd);
+            logger.info(RBD_LOG_MESSAGE,rbd);
             
             // Set up an explicit wait for the popup containing RBD options
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));   
@@ -826,7 +826,7 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
         else if (way.contains(ROUNDWAY) || way.contains(HALFROUNDTRIP) || way.contains(MUTICITY)) {
             rbdClasses.click();
             Thread.sleep(500);
-            logger.info(RBD_LOG_MESSAGE + rbd);
+            logger.info(RBD_LOG_MESSAGE,rbd);
             
             // Set up an explicit wait for the popup containing RBD options
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));   
@@ -858,7 +858,7 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
             // Click on the return RBD classes dropdown
             retunRBDClasses.click();
             Thread.sleep(500);
-            logger.info(RBD_LOG_MESSAGE + rbd);
+            logger.info(RBD_LOG_MESSAGE,rbd);
             
             // Find all checkboxes and RBD names for the return trip
             List<WebElement> checkbox1 = driver.findElements(By.xpath(CHECKBOX_XPATH));
@@ -897,7 +897,8 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
             cabin.click(); // Click on the cabin class dropdown
             Thread.sleep(500);
             
-            logger.info("The current Cabin class is: {}" + cabinclass);
+            logger.info("The current Cabin class is: {}", cabinclass);
+
             
             // Find all radio buttons for cabin classes
             List<WebElement> rediobutton = driver.findElements(By.xpath("//div[@class='theme4_flight_cabin_class_list__tLDeD']//input[@type='radio']"));
@@ -908,9 +909,9 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
                 // Iterate through the cabin classes to find a match
                 for (int i = 0; i < cabinclasses.size(); i++) {
                     WebElement searchText = cabinclasses.get(i);
-                    String current_dt = searchText.getText();
+                    String currentdt = searchText.getText();
                     // If the current cabin class matches the input, click it
-                    if (current_dt.equalsIgnoreCase(cabinclass)) {
+                    if (currentdt.equalsIgnoreCase(cabinclass)) {
                         cabinclasses.get(i).click();
                         break; // Exit loop once the desired cabin class is selected
                     }
@@ -924,7 +925,7 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
             cabin.click(); // Click on the cabin class dropdown
             Thread.sleep(500);
             
-            logger.info("The current Cabin class is: {}" + cabinclass);
+            logger.info("The current Cabin class is: {}", cabinclass);
             
             // Find all cabin classes
             List<WebElement> cabinclasses = driver.findElements(By.xpath("//div[@class='theme4_flight_cabin_class_list__tLDeD']//label[@class='theme4_flight_cabin_class_ele__hsTDk theme4_CabinLabel__9y5cf']"));
@@ -950,7 +951,7 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
             // Click on the return cabin class dropdown
             retunCabin.click();
             Thread.sleep(500);
-            logger.info("The Current Cabin is: {}" + cabinclass);
+            logger.info("The current Cabin class is: {}", cabinclass);
             Thread.sleep(500);
             
             // Find all cabin classes for the return trip
@@ -984,7 +985,7 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
 		
 		supplier.click();
 		Thread.sleep(500);
-		logger.info("The Currrant Supplier is : {}"+suppliers);
+		logger.info("The Currrant Supplier is : {}",suppliers);
         
         commonMethodes.scrollDown1(driver);
 			   	 WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));   	 
@@ -1027,7 +1028,7 @@ public void selectDepartureTime(WebDriver driver,String departure,String way) th
 	{		
 	departureTime.click();
 	Thread.sleep(500);
-	logger.info("The Currrant Departure Time is : {}"+departure);
+	logger.info("The Currrant Departure Time is : {}",departure);
 	// All RBD Names
 	List<WebElement> allDeparture= driver.findElements(By.xpath(DEPARTURE_XPATH));
 	 if (!allDeparture.isEmpty()){
@@ -1050,7 +1051,7 @@ public void selectDepartureTime(WebDriver driver,String departure,String way) th
 	{		
 		departureTime.click();
 		Thread.sleep(500);
-		logger.info("The Currrant Departure Time is : {}"+departure);
+		logger.info("The Currrant Departure Time is : {}",departure);
 		// All RBD Names
 		List<WebElement> allDeparture= driver.findElements(By.xpath(DEPARTURE_XPATH));
 		if (!allDeparture.isEmpty()) {
@@ -1071,7 +1072,7 @@ public void selectDepartureTime(WebDriver driver,String departure,String way) th
 
 		returnDepartureTime.click();
 		Thread.sleep(500);
-	    logger.info("The Currrant Departure Time is :"+departure);
+	    logger.info("The Currrant Departure Time is :",departure);
 		// All RBD Names
 		List<WebElement> allDeparture1= driver.findElements(By.xpath(DEPARTURE_XPATH));
 		if (!allDeparture.isEmpty()){
@@ -1133,8 +1134,8 @@ public void checksearchresult(WebDriver driver) throws InterruptedException {
 
 public void selectFareTypeFlight(WebDriver driver, String fareType, Boolean searchType, String way) throws InterruptedException {
     // Log the current fare type and trip type
-    logger.info("Current fare Type is : {}" + fareType);
-    logger.info("Current Trip Type is : {}" + way);
+    logger.info("Current fare Type is : {}" ,fareType);
+    logger.info("Current Trip Type is : {}" ,way);
 
     // If the search type is true, wait for the search button to be visible
     if (searchType) {
@@ -1178,7 +1179,7 @@ public void selectFareTypeFlight(WebDriver driver, String fareType, Boolean sear
                 WebElement searchText = fareTypes.get(i);
                 String currentdt = searchText.getText();
                 if (currentdt.equalsIgnoreCase(fareType)) {
-                    logger.info("Fare type match condition true for: {}" + currentdt);
+                    logger.info("Fare type match condition true for: {}", currentdt);
 
                     // Click the appropriate book button based on the match
                     if (i == 0) {
@@ -1195,7 +1196,7 @@ public void selectFareTypeFlight(WebDriver driver, String fareType, Boolean sear
 
             // Log error and fail the test case if no matching fare type found
             if (!isMatchFound) {
-                logger.error("Error: No matching fare type found for: {}" + fareType);
+                logger.error("Error: No matching fare type found for: {}" , fareType);
                 Assert.fail("Error: No matching fare type found for: {}" + fareType);
                 driver.close();
             }
@@ -1286,12 +1287,12 @@ public void selectsupplier(WebDriver driver) throws InterruptedException {
 
         // Check if the current supplier matches the target supplier
         if (name.equalsIgnoreCase("galileobah_37TN")) {
-            logger.info("Supplier Name Match Found! {}"); // Log a match
+            logger.info("Supplier Name Match Found!"); // Log a match
             checkBoxList.get(i).click(); // Click the checkbox for the supplier
             Thread.sleep(3000); // Wait for the action to complete
             break; // Exit the loop after clicking
         } else {
-            logger.info("Supplier Name Match Not Found. {}"); // Log if no match is found
+            logger.info("Supplier Name Match Not Found"); // Log if no match is found
         }
     }
 }
@@ -1352,7 +1353,7 @@ public void selectMarkType(WebDriver driver, boolean markType)   {
 }
 
 public void selectStops(WebDriver driver, String noStops) throws InterruptedException {
-    logger.info("------ User select number of stops ---------- {}");
+    logger.info("------ User select number of stops ---------- ");
 
     // Wait for the search button to be visible
     WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(100));
@@ -1389,7 +1390,7 @@ public void selectStops(WebDriver driver, String noStops) throws InterruptedExce
 public void handelThePriceChangeAlert(WebDriver driver) {
     try {
         // Log the action of handling the Price Change Alert Popup
-        logger.info("------ User handle the Price Change Alert Popup ---------- {}");
+        logger.info("------ User handle the Price Change Alert Popup ---------- ");
 
         // Initialize WebDriverWait to wait for the alert popup to become visible
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -1407,7 +1408,8 @@ public void selectPriceRange1(WebDriver driver, int low, int high) throws Interr
     try {
         Thread.sleep(5000); // Pause to allow for page load or other operations (ideally replace with explicit wait)
         // Log the low and high price range values
-        logger.info("---- Price Range Low-High value is ----  {}" + low + " " + high);
+        logger.info("---- Price Range Low-High value is ---- {} {}", low, high);
+
 
         // Initialize WebDriverWait to wait for the price filter elements to become visible
         WebDriverWait wait1 = new WebDriverWait(driver, Duration.ofSeconds(50));
@@ -1425,8 +1427,7 @@ public void selectPriceRange1(WebDriver driver, int low, int high) throws Interr
         int maxSlider = maxPriceSlider.getSize().width;
 
         // Log the dimensions of the sliders
-        logger.info(String.format("min-max slider values are %d and %d", minSlider, maxSlider));
-
+        logger.info("min-max slider values are {} and {}", minSlider, maxSlider);
         // Create an Actions object to perform drag-and-drop operations
         Actions move = new Actions(driver);
         // Move the min slider to the right by a factor of its width (11 times)
@@ -1443,15 +1444,14 @@ public void selectPriceRange1(WebDriver driver, int low, int high) throws Interr
         assert (filteredResults.isDisplayed());
     } catch (Exception e) {
         // Log any exceptions that occur during this process
-        logger.info("selectPriceRange error : {}" + e);
-    }
+    	logger.info("selectPriceRange error", e);    }
 }
 
 public void selectPriceRange2(WebDriver driver, int low, int high) throws InterruptedException {
     try {
         Thread.sleep(5000); // Pause to allow for page load or other operations (ideally replace with explicit wait)
         // Log the low and high price range values
-        logger.info("---- Price Range Low-High value is ----  {}" + low + " " + high);
+        logger.info("---- Price Range Low-High value is ---- {} {}", low, high);
 
         // Initialize WebDriverWait to wait for the price filter sliders to become visible
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(50));
@@ -1466,7 +1466,7 @@ public void selectPriceRange2(WebDriver driver, int low, int high) throws Interr
 
         // Get the width of the minimum price slider
         int sliderWidth = minPriceSlider.getSize().width;
-        logger.info("Slider width: {}" + sliderWidth);
+        logger.info("Slider width: {}", sliderWidth);
 
         // Calculate offsets for dragging the sliders based on the input price range
         int minSliderOffset = (int) (sliderWidth * (low / 100.0)); // Calculate offset for the minimum price
@@ -1487,13 +1487,13 @@ public void selectPriceRange2(WebDriver driver, int low, int high) throws Interr
 
         // Verify that filtered results are displayed
         if (filteredResults.isDisplayed()) {
-            logger.info("Filtered results displayed successfully. {}");
+            logger.info("Filtered results displayed successfully");
         } else {
-            logger.info("Filtered results not displayed.{}");
+            logger.info("Filtered results not displayed");
         }
     } catch (Exception e) {
         // Log any exceptions that occur during this process
-        logger.info("selectPriceRange error: {}" + e);
+        logger.info("selectPriceRange error: ",e);
     }
 }
 
@@ -1556,7 +1556,7 @@ public void selectDynamicTimeRange(WebDriver driver) throws InterruptedException
 
 public void enterLocalTaxes(String localTax)   {
     // Log the local tax value being entered
-    logger.info("---- enterLocalTaxes value is ---- {}" + localTax);
+    logger.info("---- enterLocalTaxes value is ---- {}",localTax);
     
     // Click on the local tax input field and enter the tax value
     localTaxLocator.click();
@@ -1589,7 +1589,7 @@ public void selectPercentOrFlat(WebDriver driver, boolean isPercentToggle, Strin
 
 public void enterFlatValue(WebDriver driver, String flat)   {
     // Log the flat value being entered
-    logger.info("---- enterFlatValue value is ---- {}" + flat);
+    logger.info("---- enterFlatValue value is ---- {}",flat);
     
     // Initialize WebDriverWait to wait for the input field to be visible
     WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
@@ -1686,7 +1686,7 @@ public void checkFareDetails(WebDriver driver) throws InterruptedException {
        
         WebElement localTaxElement = driver.findElement(By.xpath(
             "//div[@class='theme4_flight_base_ticket_price__OWEX3']//input[@placeholder='Enter Amount']"));
-        logger.info("Local taxes if applicable: {}" + localTaxElement.getText());
+        logger.info("Local taxes if applicable: {}",localTaxElement.getText());
         fareDetails.put("Local Taxes (if applicable)", Double.parseDouble(localTaxElement.getAttribute("value").trim().replace(",", "")));
     }
 
