@@ -8,6 +8,8 @@ import baseclass.Baseclass;
 import io.cucumber.java.After; // Annotation for methods that run after each scenario
 import io.cucumber.java.AfterAll; // Annotation for methods that run after all scenarios
 import io.cucumber.java.Before; // Annotation for methods that run before each scenario
+
+import org.apache.commons.mail.EmailException;
 import org.apache.logging.log4j.LogManager; // For logging
 import org.apache.logging.log4j.Logger; // Logger class for logging
 
@@ -55,11 +57,16 @@ public class Hookes extends Baseclass {
 
     // @AfterAll: This method runs after all test scenarios are completed (static because it applies to all tests)
     @AfterAll
-    public static void sendEmailAfterAllTests() throws Exception {
-        // Sends an email report once all scenarios are executed
-        EmailReport sm = new EmailReport(); // Creates an instance of the Emailreport class
-        // Calls the mail method to send the test execution report
-        sm.mail();
-        logger.info("Email report sent after all tests.");
+    public static void sendEmailAfterAllTests() throws EmailException {
+        try {
+            // Sends an email report once all scenarios are executed
+            EmailReport sm = new EmailReport(); // Creates an instance of the EmailReport class
+            // Calls the mail method to send the test execution report
+            sm.mail();
+            logger.info("Email report sent after all tests.");
+        } catch (Exception e) {
+            // Wrap the caught exception in your custom exception and throw it
+            throw new EmailException("Failed to send email after all tests.", e);
+        }
     }
 }

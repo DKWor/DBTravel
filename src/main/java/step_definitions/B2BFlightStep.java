@@ -33,7 +33,7 @@ public class B2BFlightStep extends Baseclass {
 
 	@Then("^User select the trip and pass origin and destination from given sheetName (.+) and rowNumber (.+)$")
 	public void userSelectTripAndPassOriginDestination(int sheetName, int rowNumber)
-			throws InvalidFormatException, IOException {
+			throws InvalidFormatException, IOException, InterruptedException {
 		reader = new ExcelReader();
 		testData = reader.getData(CommonMethods.getExcelPath(), sheetName);
 		row = rowNumber;
@@ -70,7 +70,7 @@ public class B2BFlightStep extends Baseclass {
 
 	@Then("select the supplier from list")
 	public void selectSupplierFromList() throws InterruptedException {
-		home.selectsupplier(driver);
+		home.selectsupplierlist(driver);
 	}
 
 	@Then("The user should able to select Business, First Class, Premium Economy cabin class details")
@@ -122,7 +122,7 @@ public class B2BFlightStep extends Baseclass {
 
 
 	@Then("select the Flight and click on book")
-	public void selectRefundableFlight() throws InterruptedException   {
+	public void selectRefundableFlight() throws InterruptedException     {
 		String tripType = testData.get(row).get(TRIPTYPE);
 		String fareType = testData.get(row).get("FARE_TYPE");
 		boolean searchType = Boolean.parseBoolean(testData.get(row).get("Advanced_Search"));

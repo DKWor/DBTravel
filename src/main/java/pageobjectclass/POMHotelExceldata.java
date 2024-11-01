@@ -561,7 +561,7 @@ public class PomHotelExcelData { // Class for handling hotel data and interactio
     }
 
     // Method to select hotel star ratings based on user input
-    public void selecttherating(WebDriver driver, String starratings) throws InterruptedException {
+    public void selecttheratinglist(WebDriver driver, String starratings) throws InterruptedException {
         Thread.sleep(500); // Wait for half a second to ensure the UI is ready
         selectStarRating.click(); // Click on the star rating selection element
         Thread.sleep(500); // Wait for the star rating options to appear
@@ -619,7 +619,7 @@ public class PomHotelExcelData { // Class for handling hotel data and interactio
         }
 
         // Log the selected city name for verification
-        logger.info("The city name is :", city);
+        logger.info("The city name is: {}", city);
     }
 
 	
@@ -1735,7 +1735,7 @@ room5selectAge.click();
 	    ((JavascriptExecutor) driver).executeScript(CLICK_SCRIPT, freeBreakfast);
 	}
 
-	public void clickStarRating(WebDriver driver) throws InterruptedException
+	public void clickStarRating(WebDriver driver)  
 	{
 	    try {
 	        // Initialize WebDriverWait for waiting for elements to be visible
@@ -2028,8 +2028,8 @@ room5selectAge.click();
 		     }
 
 		     if (ticketFound) {
-		         logger.info("Ticket matching the Fare Type found and clicked.{}");
-		     } else {
+		    	 logger.info("Ticket matching the Fare Type found and clicked.");
+		    	 } else {
 		   	 
 		    	 logger.error("The matching ticket is not found {}",fareType);
 			     // Fail the test case
@@ -2062,7 +2062,7 @@ room5selectAge.click();
 	}
 
 	// Method to add a fixed type markup based on percentage or flat value
-	public void AddMarkupinFixedtype(WebDriver driver, boolean ispersent, String percentflatvalue)   {     
+	public void addMarkupInFixedType(WebDriver driver, boolean ispersent, String percentflatvalue)   {     
 	    // Check if the markup is based on percentage
 	    if (ispersent) {
 	        // Initialize WebDriverWait to wait for a maximum of 100 seconds for the popup to become visible

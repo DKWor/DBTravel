@@ -8,14 +8,12 @@ import java.util.List; // Used for handling lists of elements
 import java.util.Properties; // Used for reading from property files
 import java.util.concurrent.TimeUnit; // Handles timeouts
 
-import org.apache.commons.lang.RandomStringUtils; // Generates random strings
-import org.apache.commons.mail.MultiPartEmail;
+
 import org.apache.poi.EncryptedDocumentException; // Handles encrypted document exceptions
 import org.apache.poi.ss.usermodel.Sheet; // Represents an Excel sheet
 import org.apache.poi.ss.usermodel.WorkbookFactory; // Creates workbook from Excel files
 import org.openqa.selenium.*; // WebDriver and Selenium utilities
 import org.openqa.selenium.interactions.Actions; // Used for performing complex actions like scrolling
-import org.openqa.selenium.io.FileHandler; // Used to copy files
 import org.openqa.selenium.support.ui.ExpectedConditions; // Used for explicit waits
 import org.openqa.selenium.support.ui.WebDriverWait; // Manages waiting for elements
 
@@ -27,7 +25,7 @@ public class CommonMethods {
 
 
 	// Scrolls to make a specific element visible on the page
-	public static void ScrollingView(WebDriver driver, WebElement element) {
+	public static void scrollingView(WebDriver driver, WebElement element) {
 	    JavascriptExecutor js = (JavascriptExecutor) driver;
 	    js.executeScript("arguments[0].scrollIntoView(true)", element);
 	}
@@ -56,13 +54,13 @@ public class CommonMethods {
 
 
 	// Waits for an element to be visible and clickable, then clicks it
-	public static void waitForElementToBeVisible(WebDriver driver, WebElement element, int timeout) {
+	public static void waitForElementToBeVisible(WebDriver driver, WebElement element ,int time) {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
 		WebElement element1 = wait.until(ExpectedConditions.elementToBeClickable(element));
 		element1.click();
 	}
 	// Method to return the path to the Excel file
-	public static String getExcelPath() throws IOException {
+	public static String getExcelPath()   {
 	    return System.getProperty("user.dir") + resoursePath() + "dbtravel.xlsx";
 	}
 

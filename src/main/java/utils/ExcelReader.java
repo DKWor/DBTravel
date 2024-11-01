@@ -29,12 +29,12 @@ public class ExcelReader {
     }
 
     // Get the sheet by name
-    private Sheet getSheetByName(String excelFilePath, String sheetName) throws IOException, InvalidFormatException {
+    private Sheet getSheetByName(String excelFilePath, String sheetName) throws IOException {
         return getWorkBook(excelFilePath).getSheet(sheetName);
     }
 
     // Get the sheet by index
-    private Sheet getSheetByIndex(String excelFilePath, int sheetNumber) throws IOException, InvalidFormatException {
+    private Sheet getSheetByIndex(String excelFilePath, int sheetNumber) throws IOException {
         return getWorkBook(excelFilePath).getSheetAt(sheetNumber);
     }
 

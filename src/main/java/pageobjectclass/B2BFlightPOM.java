@@ -314,7 +314,7 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
     }
 
     // Method to select the city based on the type of trip (Round-Way, One-Way, Multicity)
-    public void selectthecity(WebDriver driver, String way, String origin, String destination) {
+    public void selectthecity(WebDriver driver, String way, String origin, String destination) throws InterruptedException {
         // Check if the trip is of type Round-Way, Half-Round-Trip, or One-Way
         if (way.equalsIgnoreCase(ROUNDWAY) || way.equalsIgnoreCase(HALFROUNDTRIP) || way.equalsIgnoreCase(ONEWAY)) {
             handleTripSelection(driver, way, origin, destination); // Handle selection for the trip
@@ -324,7 +324,7 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
     }
 
     // Private method to handle the selection of round-trip or one-way trips
-    private void handleTripSelection(WebDriver driver, String way, String origin, String destination) {
+    private void handleTripSelection(WebDriver driver, String way, String origin, String destination) throws InterruptedException {
         // Click the round-trip radio button if applicable
         if (way.equalsIgnoreCase(ROUNDWAY) || way.equalsIgnoreCase(HALFROUNDTRIP)) {
             roundTrip.click();
@@ -339,7 +339,7 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
     }
 
     // Private method to handle multicity trip selection
-    private void handleMulticitySelection(WebDriver driver, String origin, String destination) {
+    private void handleMulticitySelection(WebDriver driver, String origin, String destination) throws InterruptedException {
         multicity.click(); // Click the multicity radio button
         waitForElement(driver, By.xpath(ORIGIN_INPUT_XPATH), 2); // Wait for the origin field
         sendKeysWithAutoSuggest(driver, ORIGIN_INPUT_XPATH, origin); // Handle auto-suggest for the origin
@@ -353,7 +353,7 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
     }
 
     // Private method to send keys to an input field with auto-suggest functionality
-    private void sendKeysWithAutoSuggest(WebDriver driver, String xpath, String input) {
+    private void sendKeysWithAutoSuggest(WebDriver driver, String xpath, String input) throws InterruptedException {
         try {
             // Locate the element again just before sending keys to avoid stale reference
             WebElement element = driver.findElement(By.xpath(xpath));
@@ -361,11 +361,8 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
             Thread.sleep(1000); // Pause to allow for suggestions to load
             CommonMethods.autosuggest(driver, input); // Trigger the auto-suggest method
         } catch (InterruptedException e) {
-            // Optionally handle the exception (e.g., logging)
-            Thread.currentThread().interrupt(); // Re-interrupt
-            throw new RuntimeException("Thread was interrupted", e); // Rethrow as a runtime exception
-
-                }
+            throw new InterruptedException("Thread was interrupted"); // Rethrow as a dedicated exception
+  }
     }
 
     // Private method to wait for an element to become visible
@@ -548,7 +545,9 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
 
         // Check if the selected class is BUSINESS_CLASS
         } else if (classess.equalsIgnoreCase(BUSINESS_CLASS)) {
-        	logger.info("%s %s".formatted(SELECTED_CLASS_LOG_MESSAGE, businessClass.getText())); // Log the selected class
+        	 // Log the selected class
+        	logger.info("{}{}", SELECTED_CLASS_LOG_MESSAGE, businessClass.getText()); // Log the selected class
+
             WebElement element1 = businessClass; // Reference to the Business class element
             ((JavascriptExecutor) driver).executeScript(CLICK_SCRIPT, element1); // Click on the Business class element
             ((JavascriptExecutor) driver).executeScript(CLICK_SCRIPT, apply); // Click on the apply button
@@ -1013,7 +1012,7 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
 						for (int i = 0; i < suppliername.size(); i++) {
 							WebElement searchText = suppliername.get(i);
 							String currentdt = searchText.getText();
-							logger.info("The Suppliesr check : {}"+currentdt);
+							logger.info("The Supplies check: {}", currentdt);
 							if (currentdt.equalsIgnoreCase(suppliers)) {
 								suppliername.get(i).click();
 								CommonMethods.scrollDown1(driver);
@@ -1266,7 +1265,7 @@ public void selectFareTypeFlighthalfroundtrip(WebDriver driver, String fareType)
         ((JavascriptExecutor) driver).executeScript(CLICK_SCRIPT, elemnet);
     }}
 
-public void selectsupplier(WebDriver driver) throws InterruptedException {
+public void selectsupplierlist(WebDriver driver) throws InterruptedException {
     // Initialize WebDriverWait to wait for elements
     WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     

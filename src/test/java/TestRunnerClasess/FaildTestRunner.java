@@ -31,16 +31,16 @@ public class FaildTestRunner extends AbstractTestNGCucumberTests {
 
 
 	@AfterClass
-	public static void SendingMail() throws AddressException, IOException, MessagingException {
+	public static void SendingMail()  {
 
 		Runtime r = Runtime.getRuntime();
 		r.addShutdownHook(new Thread() {
+			@Override
 			public void run() {
 				EmailReport sm = new EmailReport();
 				try {
 					sm.mail();
 					System.out.println("Report has been sent");
-					Thread.sleep(5000);
 				} catch (Exception e) {
 					e.printStackTrace();
 					System.out.println(e);

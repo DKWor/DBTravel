@@ -80,10 +80,9 @@ public class SdHotelExcel extends Baseclass{
 		 	row=rowNumber;
 		 	
 		 	String  areaname = testData.get(row).get("HOTEL_NAME");
-			String faretype = testData.get(row).get(FARETYPE);
+			String fareType = testData.get(row).get(FARETYPE);
 			
-			logger.info("My FARE TYPE IS :"+faretype);
-
+			 logger.info("My FARE TYPE IS :{}", fareType);
 		 	
 		 	home.searchselectCity(driver, areaname);
 		
@@ -100,7 +99,7 @@ public class SdHotelExcel extends Baseclass{
 	public void userselectthestarrating() throws InterruptedException {
 	 	
 		String starrating = testData.get(row).get("STAR_RATING");
-	 	home.selecttherating(driver,starrating);
+	 	home.selecttheratinglist(driver,starrating);
 
 	}
 	
@@ -122,10 +121,10 @@ public class SdHotelExcel extends Baseclass{
 	   @Then("User select the fare type Refundable frome Advanced Search")
 	    public void userselectthefaretypeRefundablefromeAdvancedSearch() throws InterruptedException {
 	    	
-		   
-		   String faretype = testData.get(row).get(FARETYPE);
-		   logger.info("FARE_TYPE :"+faretype);
-	    	home.selecttheFareType(faretype);
+			String fareType = testData.get(row).get(FARETYPE);
+			
+			 logger.info("My FARE TYPE IS :{}", fareType);
+	    	home.selecttheFareType(fareType);
 	    }
 	
 	@Then("User select the Adult and child and room as per requirment")
@@ -220,11 +219,11 @@ public class SdHotelExcel extends Baseclass{
 		   boolean isPercentage = Boolean.parseBoolean(testData.get(row).get("isPercentage"));
 		 	String percentageorflat = testData.get(row).get("Percentage");
 
-	    	home.AddMarkupinFixedtype(driver,isPercentage,percentageorflat);
+	    	home.addMarkupInFixedType(driver,isPercentage,percentageorflat);
 	    }
 	   
 	   @Then("Add local taxes")
-	    public void addlocaltaxes() throws InterruptedException {
+	    public void addlocaltaxes()   {
 		 	String localtax = testData.get(row).get("LOCAL_TAX");
 	    	home.addLocalTaxes(driver,localtax);
 	    }
