@@ -16,10 +16,10 @@ import org.openqa.selenium.firefox.FirefoxOptions;  // FirefoxOptions to set Fir
 import com.aventstack.extentreports.ExtentReports;  // For reporting test results (Extent Reports)
 
 import io.github.bonigarcia.wdm.WebDriverManager;  // WebDriverManager to manage driver binaries automatically
-import utils.commonMethodes;  // Import custom utility class for common methods
+import utils.CommonMethods;  // Import custom utility class for common methods
 
 // Baseclass extends the utility class CommonMethodes, providing basic setup for WebDriver across multiple browsers
-public class Baseclass extends commonMethodes {
+public class Baseclass extends CommonMethods {
 
 	 protected static WebDriver driver; // WebDriver instance that will be used throughout the class
     ExtentReports extent;  // ExtentReports instance for generating reports
@@ -42,15 +42,15 @@ public class Baseclass extends commonMethodes {
         switch (environment.toLowerCase()) {
             case "uatb2b":
                 // Fetch UATB2B URL from the property file
-                url = commonMethodes.readDataFromPropertyFile("UATB2BURL");
+                url = CommonMethods.readDataFromPropertyFile("UATB2BURL");
                 break;
             case "prodb2b2":
                 // Fetch PRODB2BURL2 from the property file
-                url = commonMethodes.readDataFromPropertyFile("PRODB2BURL2");
+                url = CommonMethods.readDataFromPropertyFile("PRODB2BURL2");
                 break;
             case "prodb2b":
                 // Fetch PRODB2B URL from the property file
-                url = commonMethodes.readDataFromPropertyFile("PRODB2BURL");
+                url = CommonMethods.readDataFromPropertyFile("PRODB2BURL");
                 break;
             default:
                 // Log an error and throw an exception if the environment is unsupported
@@ -59,7 +59,7 @@ public class Baseclass extends commonMethodes {
         }
 
         // Fetch the browser type from the properties file and convert it to lowercase for consistency
-        String browser = commonMethodes.readDataFromPropertyFile("browser").toLowerCase();
+        String browser = CommonMethods.readDataFromPropertyFile("browser").toLowerCase();
         logger.info("Launching browser: {}", browser);  // Log the browser being used
 
         // Switch case to initialize the correct WebDriver based on the browser type
@@ -70,7 +70,7 @@ public class Baseclass extends commonMethodes {
                 // Create an instance of ChromeOptions to configure Chrome-specific settings
                 ChromeOptions chromeOptions = new ChromeOptions();
                 // Check if headless mode is enabled in the properties file, and set the option if true
-                if (commonMethodes.readDataFromPropertyFile("headless").equalsIgnoreCase("true")) {
+                if (CommonMethods.readDataFromPropertyFile("headless").equalsIgnoreCase("true")) {
                     chromeOptions.addArguments(HEAD_LESS);
                 }
                 // Allow cross-origin requests, which can be required in certain testing scenarios

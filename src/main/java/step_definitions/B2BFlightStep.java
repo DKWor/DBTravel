@@ -11,13 +11,13 @@ import baseclass.Baseclass;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import pageobjectclass.B2BFlightPOM;
-import utils.commonMethodes;
-import utils.excelReader;
+import utils.CommonMethods;
+import utils.ExcelReader;
 
 public class B2BFlightStep extends Baseclass {
 
 	private B2BFlightPOM home;
-	private excelReader reader;
+	private ExcelReader reader;
 	private List<Map<String, String>> testData;
 	private int row;
  
@@ -33,9 +33,9 @@ public class B2BFlightStep extends Baseclass {
 
 	@Then("^User select the trip and pass origin and destination from given sheetName (.+) and rowNumber (.+)$")
 	public void userSelectTripAndPassOriginDestination(int sheetName, int rowNumber)
-			throws InvalidFormatException, IOException, InterruptedException {
-		reader = new excelReader();
-		testData = reader.getData(commonMethodes.Excelpath(), sheetName);
+			throws InvalidFormatException, IOException {
+		reader = new ExcelReader();
+		testData = reader.getData(CommonMethods.getExcelPath(), sheetName);
 		row = rowNumber;
 
 		String tripType = testData.get(row).get(TRIPTYPE);
@@ -62,8 +62,7 @@ public class B2BFlightStep extends Baseclass {
 	}
 
 	@Then("select the class for trip")
-	public void selectClassForTrip() throws InterruptedException {
-		String tripType = testData.get(row).get(TRIPTYPE);
+	public void selectClassForTrip()   {
 		String flightClass = testData.get(row).get(CLASS);
 
 		home.selectClassforTrip(driver, flightClass);
@@ -92,9 +91,8 @@ public class B2BFlightStep extends Baseclass {
 	}
 
 	@And("User clicks on the search button for flight")
-	public void clickOnSearchButtonForFlight() throws InterruptedException {
+	public void clickOnSearchButtonForFlight()   {
 		home = new B2BFlightPOM(driver);
-		String tripType = testData.get(row).get(TRIPTYPE);
 		home.clickSearch();
 	}
 	
@@ -124,7 +122,7 @@ public class B2BFlightStep extends Baseclass {
 
 
 	@Then("select the Flight and click on book")
-	public void selectRefundableFlight() throws InterruptedException {
+	public void selectRefundableFlight() throws InterruptedException   {
 		String tripType = testData.get(row).get(TRIPTYPE);
 		String fareType = testData.get(row).get("FARE_TYPE");
 		boolean searchType = Boolean.parseBoolean(testData.get(row).get("Advanced_Search"));
@@ -155,7 +153,7 @@ public class B2BFlightStep extends Baseclass {
 	}
 
 	@Then("user select marktype radio button")
-	public void selectMarkUpType() throws InterruptedException {
+	public void selectMarkUpType()   {
 		boolean markType = Boolean.parseBoolean(testData.get(row).get("isMark_Down"));
 
 		home.selectMarkType(driver, markType);
@@ -173,7 +171,7 @@ public class B2BFlightStep extends Baseclass {
  
 
 	@Then("user enter flat value in text box")
-	public void enterFlatValue() throws InterruptedException {
+	public void enterFlatValue()   {
 		String flat = testData.get(row).get("FLAT");
 
 		home.enterFlatValue(driver, flat);
@@ -191,7 +189,7 @@ public class B2BFlightStep extends Baseclass {
 	}
 
 	@Then("user enter local taxes")
-	public void enterLocalTaxValues() throws InterruptedException {
+	public void enterLocalTaxValues()   {
 		String localTax = testData.get(row).get("LOCAL_TAX");
 		logger.info("Local tax value is --- {}", localTax);
 

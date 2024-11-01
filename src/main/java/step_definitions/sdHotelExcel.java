@@ -14,19 +14,19 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import pageobjectclass.PomHotelExcelData;
-import utils.commonMethodes;
-import utils.excelReader;
+import utils.CommonMethods;
+import utils.ExcelReader;
 
-public class sdHotelExcel extends Baseclass{
+public class SdHotelExcel extends Baseclass{
 	 
 	
 	PomHotelExcelData home;
-	excelReader reder;
+	ExcelReader reder;
 	List<Map<String, String>> testData;
 	 private int row;
 		private static final String FARETYPE = "FARE_TYPE";
 		
-		private static final Logger logger = LogManager.getLogger(sdHotelExcel.class);
+		private static final Logger logger = LogManager.getLogger(SdHotelExcel.class);
 
 
 	 
@@ -48,7 +48,7 @@ public class sdHotelExcel extends Baseclass{
 	    }
 	    
 	    @Then("User selct the Hotel option on home page")
-	    public void userSelectsHotelOption() throws InterruptedException   {
+	    public void userSelectsHotelOption() throws InterruptedException     {
 	    	home=new PomHotelExcelData(driver);
 	    	home.clickOnHotel();
 	    }
@@ -62,7 +62,7 @@ public class sdHotelExcel extends Baseclass{
 	    
 	    
 	    @Then("selec the Advanced Search")
-	    public void selectheAdvanced_Search() throws InterruptedException {
+	    public void selectheAdvancedSearch() throws InterruptedException {
 	    	home=new PomHotelExcelData(driver);
 	    	home.selectAdvancedSearch();
 	    }
@@ -73,8 +73,8 @@ public class sdHotelExcel extends Baseclass{
 	@Then("^User pass the cityname for hotlbooking from given sheetName (.+) and rowNumber (.+)$")
 	public void userpassthecitynameforhotlbookingfromgivensheetnameandrownumber(Integer sheetNumber, Integer rowNumber) throws InvalidFormatException, IOException, InterruptedException {
 		 
-		  reder=new excelReader();
-		 	 testData=reder.getData(commonMethodes.Excelpath(), sheetNumber);
+		  reder=new ExcelReader();
+		 	 testData=reder.getData(CommonMethods.getExcelPath(), sheetNumber);
 		 	 
 		 	 
 		 	row=rowNumber;
@@ -120,7 +120,7 @@ public class sdHotelExcel extends Baseclass{
 	}
 	
 	   @Then("User select the fare type Refundable frome Advanced Search")
-	    public void userselectthefaretypeRefundablefromeAdvanced_Search() throws InterruptedException {
+	    public void userselectthefaretypeRefundablefromeAdvancedSearch() throws InterruptedException {
 	    	
 		   
 		   String faretype = testData.get(row).get(FARETYPE);
@@ -148,7 +148,7 @@ public class sdHotelExcel extends Baseclass{
 	  
 	  
 	  @And("User select the Quick filter")
-	    public void uselecttheQuickfilter() throws InterruptedException {
+	    public void uselecttheQuickfilter()   {
 
 	    	 home.clickQuickfilter(driver);
 	    	 }
@@ -166,26 +166,26 @@ public class sdHotelExcel extends Baseclass{
 	    	 }
 	 
 	  @And("User select the Amenities")
-	    public void userselecttheAmenities() throws InterruptedException {
+	    public void userselecttheAmenities()   {
 
 	    	 home.clickPriceAmenities(driver);
 	    	 }
 	  
 	  
 	  @And("User select the Vacation Type filter")
-	    public void User_select_the_Vacation_Type_filter() throws InterruptedException {
+	    public void userselecttheVacationTypefilter()   {
 
 	    	 home.clickPriceVacationTypefilter(driver);
 	    	 }
 	  
 	  @And("User select the Property Type filter")
-	    public void userselectthePropertyType_filter() throws InterruptedException {
+	    public void userselectthePropertyTypefilter()   {
 
 	    	 home.clickPricePropertyTypefilter(driver);
 	    	 }
 	  
 	  @Then("User selects the hotel")
-	    public void userSelectsHotel() throws InterruptedException {
+	    public void userSelectsHotel()   {
 	    	home.selectHotel(driver);
 	    }
 	   @And("User selects the refundable room")
@@ -205,18 +205,18 @@ public class sdHotelExcel extends Baseclass{
 	    }
 	   
 	   @And("User handle the Room not available Popup")
-	    public void userhandletheRoomnotavailablePopup() throws InterruptedException {
+	    public void userhandletheRoomnotavailablePopup()   {
 	    	home.handelroomnotavailablePopup(driver);
 	    }  
 	   
 	   @Then("Add Mark Up or Makr Down")
 	    public void addMarkUporMakrDown() throws InterruptedException {
 			boolean markType = Boolean.parseBoolean(testData.get(row).get("isMark_Down"));
-	    	home.AddMarkupinpercentage(driver,markType);
+	    	home.addMarkupInPercentage(driver,markType);
 	    } 
 	   
 	   @Then("Add Percentage or Flat")
-	    public void addPercentageorFlat() throws InterruptedException {
+	    public void addPercentageorFlat()   {
 		   boolean isPercentage = Boolean.parseBoolean(testData.get(row).get("isPercentage"));
 		 	String percentageorflat = testData.get(row).get("Percentage");
 
@@ -226,16 +226,16 @@ public class sdHotelExcel extends Baseclass{
 	   @Then("Add local taxes")
 	    public void addlocaltaxes() throws InterruptedException {
 		 	String localtax = testData.get(row).get("LOCAL_TAX");
-	    	home.Addlocaltaxes(driver,localtax);
+	    	home.addLocalTaxes(driver,localtax);
 	    }
 	   
 	   @Then("Calculate_the_AmountOnReviewPage")
-	    public void calculatetheAmountOnReviewPage() throws InterruptedException {
+	    public void calculatetheAmountOnReviewPage()   {
 	    	home.calculatetheAmountOnReviewPage(driver);
 	    }
 	   
 	   @Then("Calculate_the_AmountOn_ConformationPage")
-	    public void calculatetheAmountOnConformationPage() throws InterruptedException {
+	    public void calculatetheAmountOnConformationPage()   {
 	    	home.calculatetheAmountOnReviewPage(driver);
 	    }
 	   

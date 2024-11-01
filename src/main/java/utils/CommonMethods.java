@@ -19,27 +19,17 @@ import org.openqa.selenium.io.FileHandler; // Used to copy files
 import org.openqa.selenium.support.ui.ExpectedConditions; // Used for explicit waits
 import org.openqa.selenium.support.ui.WebDriverWait; // Manages waiting for elements
 
-public class commonMethodes {
+public class CommonMethods {
 
 	static String resourcePath = null; // Stores the resource path
 	static Boolean isflag = false; // Flag to indicate resource path type
 
-	// Method to take a screenshot of the current page
-	public static void Takescreenshot(WebDriver driver, String name) throws IOException {
-		// Generates a random string to append to the screenshot file name
-		String generatedString = RandomStringUtils.randomAlphabetic(5);
-		// Takes a screenshot of the current page
-		File srs = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-		// Specifies the destination path where the screenshot will be saved
-		File dest = new File("C:\\Users\\ADMIN\\libs\\sourceFile\\kavita" + generatedString + ".jpg");
-		// Copies the screenshot to the destination file
-		FileHandler.copy(srs, dest);
-	}
+
 
 	// Scrolls to make a specific element visible on the page
-	public static void ScrollingView(WebDriver driver, WebElement Elements) {
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].scrollIntoView(true)", Elements);
+	public static void ScrollingView(WebDriver driver, WebElement element) {
+	    JavascriptExecutor js = (JavascriptExecutor) driver;
+	    js.executeScript("arguments[0].scrollIntoView(true)", element);
 	}
 
 	// Method for implicitly waiting for elements to load
@@ -48,11 +38,12 @@ public class commonMethodes {
 	}
 
 	// Reads data from an Excel sheet (specified row and cell)
-	public static String Readexcelsheet(int Row, int Cell) throws EncryptedDocumentException, IOException {
+	public static String readExcelSheet(int row, int cell) throws EncryptedDocumentException, IOException {
+	    // Your code to read from the Excel sheet would go here.
 		File myfile = new File("C:\\Users\\ADMIN\\libs\\UPSTOK.xlsx"); // File path
 		Sheet sheet = WorkbookFactory.create(myfile).getSheet("Sheet1"); // Access the first sheet
-		String value = sheet.getRow(Row).getCell(Cell).getStringCellValue(); // Get the cell value
-		return value;
+	    return sheet.getRow(row).getCell(cell).getStringCellValue(); // Immediately return the cell value
+
 	}
 
 	// Reads data from a property file based on the given key
@@ -60,8 +51,7 @@ public class commonMethodes {
 		Properties prop = new Properties(); // Creates a Properties object
 		FileInputStream myfile = new FileInputStream(System.getProperty("user.dir") + resoursePath() + "myproperty.properties"); // Property file path
 		prop.load(myfile); // Loads the properties file
-		String value = prop.getProperty(email); // Reads the value for the given key
-		return value;
+		return prop.getProperty(email); // Directly return the value for the given key
 	}
 
 
@@ -71,15 +61,13 @@ public class commonMethodes {
 		WebElement element1 = wait.until(ExpectedConditions.elementToBeClickable(element));
 		element1.click();
 	}
-
 	// Method to return the path to the Excel file
-	public static String Excelpath() throws IOException {
-		String excelpath = System.getProperty("user.dir") + resoursePath() + "dbtravel.xlsx";
-		return excelpath;
+	public static String getExcelPath() throws IOException {
+	    return System.getProperty("user.dir") + resoursePath() + "dbtravel.xlsx";
 	}
 
 	// Scrolls to a specific element using Actions
-	public static void ScrollToElement(WebDriver driver, WebElement element) {
+	public static void scrollToElement(WebDriver driver, WebElement element) {
 		Actions act = new Actions(driver);
 		act.scrollToElement(element).perform(); // Scrolls to the specified element
 	}
@@ -185,7 +173,7 @@ public class commonMethodes {
 	}
 
 	// Returns the resource path based on the isflag value
-	public static String resoursePath() throws IOException {
+	public static String resoursePath()   {
 		if (isflag) {
 			resourcePath = "/";
 		} else {
@@ -195,12 +183,12 @@ public class commonMethodes {
 	}
 
 	// Handles selecting a city from an auto-suggest list
-	public static void Autosuggest(WebDriver driver, String city) {
+	public static void autosuggest(WebDriver driver, String city) {
 		// Finds all the auto-suggest options
-		List<WebElement> ORN = driver.findElements(By.xpath("//div[@class='theme4_flight_autocomplete_tag__Fhkr6']"));
+		List<WebElement> orn = driver.findElements(By.xpath("//div[@class='theme4_flight_autocomplete_tag__Fhkr6']"));
 
-		if (!ORN.isEmpty()) {
-			for (WebElement searchText : ORN) {
+		if (!orn.isEmpty()) {
+			for (WebElement searchText : orn) {
 				String text = searchText.getText();
 				if (text.equalsIgnoreCase(city)) {
 					((JavascriptExecutor) driver).executeScript("arguments[0].click();", searchText); // Clicks the matching city

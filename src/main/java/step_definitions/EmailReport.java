@@ -10,7 +10,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import baseclass.Baseclass;
-import utils.commonMethodes;
 
 // emailreport class is responsible for sending automated test reports via email
 public class EmailReport extends Baseclass {

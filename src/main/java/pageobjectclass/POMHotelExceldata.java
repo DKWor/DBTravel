@@ -27,7 +27,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions; // For waiting until a
 import org.openqa.selenium.support.ui.WebDriverWait; // For waiting for a specified time.
 import org.testng.Assert; // For assertion methods in test cases.
 
-import utils.commonMethodes; // Importing common methods used across tests.
+import utils.CommonMethods; // Importing common methods used across tests.
 
 
 public class PomHotelExcelData { // Class for handling hotel data and interactions in the hotel booking system
@@ -476,9 +476,9 @@ public class PomHotelExcelData { // Class for handling hotel data and interactio
             case "prodb2b2": 
                 WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(100)); // Initialize WebDriverWait
                 WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(EMAIL_INPUT_XPATH))); // Wait for email input field
-                email.sendKeys(commonMethodes.readDataFromPropertyFile("usernameB2B2")); // Enter username
+                email.sendKeys(CommonMethods.readDataFromPropertyFile("usernameB2B2")); // Enter username
                 Thread.sleep(100); // Wait for a short duration
-                pass.sendKeys(commonMethodes.readDataFromPropertyFile("passB2B2")); // Enter password
+                pass.sendKeys(CommonMethods.readDataFromPropertyFile("passB2B2")); // Enter password
                 Thread.sleep(100); // Wait for a short duration
                 login.click(); // Click on the login button
                 Thread.sleep(5000); // Wait for the login process to complete
@@ -487,9 +487,9 @@ public class PomHotelExcelData { // Class for handling hotel data and interactio
             case "prodb2b": 
                 WebDriverWait wait1 = new WebDriverWait(driver, Duration.ofSeconds(100));
                 WebElement popup1 = wait1.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(EMAIL_INPUT_XPATH))); // Wait for email input field
-                email.sendKeys(commonMethodes.readDataFromPropertyFile("usernameB2B")); // Enter username
+                email.sendKeys(CommonMethods.readDataFromPropertyFile("usernameB2B")); // Enter username
                 Thread.sleep(100); // Wait for a short duration
-                pass.sendKeys(commonMethodes.readDataFromPropertyFile("passB2B")); // Enter password
+                pass.sendKeys(CommonMethods.readDataFromPropertyFile("passB2B")); // Enter password
                 Thread.sleep(100); // Wait for a short duration
                 login.click(); // Click on the login button
                 Thread.sleep(5000); // Wait for the login process to complete
@@ -498,9 +498,9 @@ public class PomHotelExcelData { // Class for handling hotel data and interactio
             case "uatb2b":
                 WebDriverWait wait2 = new WebDriverWait(driver, Duration.ofSeconds(100));
                 WebElement popup2 = wait2.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(EMAIL_INPUT_XPATH))); // Wait for email input field
-                email.sendKeys(commonMethodes.readDataFromPropertyFile("usernameB2BUAT")); // Enter username
+                email.sendKeys(CommonMethods.readDataFromPropertyFile("usernameB2BUAT")); // Enter username
                 Thread.sleep(100); // Wait for a short duration
-                pass.sendKeys(commonMethodes.readDataFromPropertyFile("passB2BUAT")); // Enter password
+                pass.sendKeys(CommonMethods.readDataFromPropertyFile("passB2BUAT")); // Enter password
                 Thread.sleep(100); // Wait for a short duration
                 login.click(); // Click on the login button
                 Thread.sleep(5000); // Wait for the login process to complete
@@ -634,7 +634,7 @@ public class PomHotelExcelData { // Class for handling hotel data and interactio
     
 
         // Wait for the departure calendar element to be visible.
-        commonMethodes.waitForElementToBeVisible(driver, departureCalander, 1);
+        CommonMethods.waitForElementToBeVisible(driver, departureCalander, 1);
         Thread.sleep(1000); // Sleep for a brief moment to allow UI to settle.
         
         // Select the departure date using the selectDate method.
@@ -643,7 +643,7 @@ public class PomHotelExcelData { // Class for handling hotel data and interactio
         Thread.sleep(1000); // Sleep for a brief moment to allow UI to settle.
         
         // Wait for the return calendar element to be visible.
-        commonMethodes.waitForElementToBeVisible(driver, returnCalander, 3);
+        CommonMethods.waitForElementToBeVisible(driver, returnCalander, 3);
         Thread.sleep(500); // Sleep for a brief moment to allow UI to settle.
         
         // Select the return date using the selectDate method.
@@ -692,7 +692,7 @@ public class PomHotelExcelData { // Class for handling hotel data and interactio
                 break;
             } else {
         
-                commonMethodes.waitForElementToBeVisible(driver, nextMonthLable, 3);
+                CommonMethods.waitForElementToBeVisible(driver, nextMonthLable, 3);
             }
         }
 
@@ -733,7 +733,7 @@ public class PomHotelExcelData { // Class for handling hotel data and interactio
 	
     public void selectroomPass(WebDriver driver, String adultString, String childString, String roomString) throws InterruptedException {
         // Method implementation
-		commonMethodes.waitForElementToBeVisible(driver, passanger, 1);
+		CommonMethods.waitForElementToBeVisible(driver, passanger, 1);
 		String stringadult =adultString;
 		Integer adult = Integer.valueOf(stringadult);
 		logger.info("No of  Adult is : {}",stringadult);
@@ -1711,7 +1711,7 @@ room5selectAge.click();
 	    WebElement element = search;
 	    
 	    // Scroll up the view to ensure the search element is in view
-	    commonMethodes.scrollUp(driver);
+	    CommonMethods.scrollUp(driver);
 	    
 	    // Pause for a short duration to allow the page to load
 	    Thread.sleep(500);	
@@ -1855,7 +1855,7 @@ room5selectAge.click();
 	public void clickSearchForRounttrip(WebDriver driver) throws InterruptedException
 	{
 	    // Wait for the search element to be visible
-	    commonMethodes.waitForElementToBeVisible(driver, search, 1);
+	    CommonMethods.waitForElementToBeVisible(driver, search, 1);
 	    
 	    // Pause for 5 seconds to allow the page to load
 	    Thread.sleep(5000);
@@ -1952,7 +1952,6 @@ room5selectAge.click();
 		             // Interact with the tickets
 		             for (int i = 0; i < tickets.size(); i++) {
 		                 WebElement ticket = tickets.get(i);
-		                 WebElement selectButton = selectors.get(i);
 
 		                 String text = ticket.getText();
 		                 logger.info("The ticket Fare Type is: {}",text);
@@ -2042,7 +2041,7 @@ room5selectAge.click();
 	
 	
 	// Method to add a percentage markup based on whether it is a markdown
-	public void AddMarkupinpercentage(WebDriver driver, boolean isMarkDown) throws InterruptedException {
+	public void addMarkupInPercentage(WebDriver driver, boolean isMarkDown) throws InterruptedException {
 		    // Check if it is a markdown operation
 	    if (isMarkDown) {
 	        // Initialize WebDriverWait to wait for a maximum of 100 seconds for the popup to become visible
@@ -2091,8 +2090,9 @@ room5selectAge.click();
 	}
 	
 	// Method to add local taxes by sending a specified tax value to the input field
-	public void Addlocaltaxes(WebDriver driver, String LOCAL_TAX) throws InterruptedException {
-	    // Initialize WebDriverWait to wait for a maximum of 100 seconds for the popup to become visible
+	public void addLocalTaxes(WebDriver driver, String localTax)   {
+	    // Your method implementation here
+		    // Initialize WebDriverWait to wait for a maximum of 100 seconds for the popup to become visible
 	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(100));
 	    
 	    // Wait until the specific popup element is visible
@@ -2102,7 +2102,7 @@ room5selectAge.click();
 	    ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", passlocaltaxes);
 	    
 	    // Send the specified local tax value to the input field
-	    passlocaltaxes.sendKeys(LOCAL_TAX);
+	    passlocaltaxes.sendKeys(localTax);
 	}
 
 	// Method to calculate the total amount displayed on the review page
@@ -2181,8 +2181,9 @@ room5selectAge.click();
 	    System.out.println("Final Total Amount: " + finalTotalAmount + " INR ");
 
 	    // Verify the total amount displayed on the review page
-	    if (driver.findElements(By.xpath("//div[@class='theme4_booking_summary_grid_container__nXlBT']//p[normalize-space()='Total :']")).size() > 0) {
-	        double totalAmt = Double.parseDouble(driver.findElement(By.xpath("//div[@class='theme4_booking_summary_grid_container__nXlBT']//div[@class='theme4_total_amount_1__p6YOz']")).getText().trim().replace(",", "").replace("INR", ""));
+	 // Verify the total amount displayed on the review page
+	    if (!driver.findElements(By.xpath("//div[@class='theme4_booking_summary_grid_container__nXlBT']//p[normalize-space()='Total :']")).isEmpty()) {
+	       double totalAmt = Double.parseDouble(driver.findElement(By.xpath("//div[@class='theme4_booking_summary_grid_container__nXlBT']//div[@class='theme4_total_amount_1__p6YOz']")).getText().trim().replace(",", "").replace("INR", ""));
 	        System.out.println("Final Amount after all calculation: " + finalTotalAmount);
 	        System.out.println("Total amount is: " + totalAmt);
 
@@ -2194,8 +2195,8 @@ room5selectAge.click();
 	        System.out.println("totalAmt: " + value1);
 
 	        // Calculate the difference between calculated total and displayed total
-	        double Diff = finalTotalAmount - totalAmt;
-	        System.out.println("The Value Difference is: " + Diff);
+	        double diff = finalTotalAmount - totalAmt;
+	        System.out.println("The Value Difference is: " + diff);
 
 	        // Assert that both amounts are equal
 	        Assert.assertEquals(value1, value);
@@ -2217,7 +2218,7 @@ room5selectAge.click();
 	    }
 	    
 	    // Process room selection
-	    commonMethodes.scrollDown(driver);
+	    CommonMethods.scrollDown(driver);
 	    Thread.sleep(300);
 
 	    for (int i = 1; i <= room; i++) {
@@ -2274,7 +2275,7 @@ room5selectAge.click();
 
 	    // Loop through the number of rooms and fill details for each adult
 	    for (int i = 1; i <= room; i++) {
-	        commonMethodes.scrollDown(driver); // Scroll down to make sure elements are visible
+	        CommonMethods.scrollDown(driver); // Scroll down to make sure elements are visible
 	        Thread.sleep(500); // Allow time for scrolling effect
 	        fillAdultDetails(driver, i); // Call method to fill details for the current room
 	    }
@@ -2366,9 +2367,9 @@ room5selectAge.click();
 	    Thread.sleep(500); // Allow time for UI elements to load
 
 	    // Scroll down to ensure the continue button is visible
-	    commonMethodes.scrollDown(driver);
+	    CommonMethods.scrollDown(driver);
 	    Thread.sleep(500); // Allow time for scrolling effect
-	    commonMethodes.scrollDown(driver); // Scroll down again if necessary
+	    CommonMethods.scrollDown(driver); // Scroll down again if necessary
 	    // Thread.sleep(500); // Additional wait can be added if needed
 
 	    continueBooking.click(); // Click on the continue booking button
@@ -2385,7 +2386,7 @@ room5selectAge.click();
 	    if (room == 1) {
 	        Thread.sleep(500); // Additional wait
 
-	        commonMethodes.scrollDown2(driver); // Scroll down specifically for the continue button
+	        CommonMethods.scrollDown2(driver); // Scroll down specifically for the continue button
 	        Thread.sleep(500); // Allow time for scrolling effect
 	        continubutton.click(); // Click on the continue button
 

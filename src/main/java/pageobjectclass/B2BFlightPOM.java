@@ -31,7 +31,7 @@ import org.testng.Assert; // For TestNG assertions
 
 import baseclass.Baseclass;
 import bsh.Console; // For console output (if needed)
-import utils.commonMethodes; // For common utility methods
+import utils.CommonMethods; // For common utility methods
 
 public class B2BFlightPOM { // Page Object Model class for B2B Flight functionality
 
@@ -359,10 +359,13 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
             WebElement element = driver.findElement(By.xpath(xpath));
             element.sendKeys(input); // Send the input value to the field
             Thread.sleep(1000); // Pause to allow for suggestions to load
-            commonMethodes.Autosuggest(driver, input); // Trigger the auto-suggest method
-        } catch (Exception e) {
-            // Log any exceptions encountered during interaction
-        	logger.error("Error while sending keys to {}", xpath, e);        }
+            CommonMethods.autosuggest(driver, input); // Trigger the auto-suggest method
+        } catch (InterruptedException e) {
+            // Optionally handle the exception (e.g., logging)
+            Thread.currentThread().interrupt(); // Re-interrupt
+            throw new RuntimeException("Thread was interrupted", e); // Rethrow as a runtime exception
+
+                }
     }
 
     // Private method to wait for an element to become visible
@@ -402,7 +405,7 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
             // Handle selection for round-trip, half-round-trip, or multicity
             if (way.equalsIgnoreCase(ROUNDWAY) || way.equalsIgnoreCase(HALFROUNDTRIP) || way.equalsIgnoreCase(MUTICITY)) {
                 // Wait for the departure calendar to be visible before selecting a date
-                commonMethodes.waitForElementToBeVisible(driver, departureCalander, 1);
+                CommonMethods.waitForElementToBeVisible(driver, departureCalander, 1);
                 Thread.sleep(1000); // Allow time for the calendar to load
                 
                 // Select the departure date based on the randomly generated day
@@ -410,16 +413,16 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
                 Thread.sleep(1000); // Wait after selecting the departure date
                 
                 // Wait for the return calendar to be visible
-                commonMethodes.waitForElementToBeVisible(driver, returnCalander, 3);
+                CommonMethods.waitForElementToBeVisible(driver, returnCalander, 3);
                 Thread.sleep(500); // Allow time for the calendar to load
-                commonMethodes.scrollDown1(driver); // Scroll down if necessary
+                CommonMethods.scrollDown1(driver); // Scroll down if necessary
                 Thread.sleep(500); // Wait for scrolling to complete
                 
                 // Select the return date based on the randomly generated day
                 selectDate(driver, rmonth, strNumber1, way);
             } else { // Handle one-way trips
                 // Wait for the departure calendar to be visible before selecting a date
-                commonMethodes.waitForElementToBeVisible(driver, departureCalander, 1);
+                CommonMethods.waitForElementToBeVisible(driver, departureCalander, 1);
                 Thread.sleep(1000); // Allow time for the calendar to load
                 
                 // Select the departure date based on the randomly generated day
@@ -429,7 +432,7 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
 
         } else if (way.equalsIgnoreCase(ROUNDWAY) || way.equalsIgnoreCase(HALFROUNDTRIP) || way.equalsIgnoreCase(MUTICITY)) {
             // If not searching by type, still handle selection for round-trip, half-round-trip, or multicity
-            commonMethodes.waitForElementToBeVisible(driver, departureCalander, 1);
+            CommonMethods.waitForElementToBeVisible(driver, departureCalander, 1);
             Thread.sleep(1000); // Allow time for the calendar to load
             
             // Select the departure date based on the randomly generated day
@@ -437,11 +440,11 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
             Thread.sleep(1000); // Wait after selecting the departure date
 
             // Wait for the return calendar to be visible and select the return date
-            commonMethodes.waitForElementToBeVisible(driver, returnCalander, 3);
+            CommonMethods.waitForElementToBeVisible(driver, returnCalander, 3);
             selectDate(driver, rmonth, strNumber1, way); // Select the return date
         } else {
             // Handle one-way trips again if none of the previous conditions were met
-            commonMethodes.waitForElementToBeVisible(driver, departureCalander, 1);
+            CommonMethods.waitForElementToBeVisible(driver, departureCalander, 1);
             Thread.sleep(1000); // Allow time for the calendar to load
             
             // Select the departure date based on the randomly generated day
@@ -495,7 +498,7 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
             } else {
                 // If the month is not found, click the next button to move forward in the calendar
            
-                commonMethodes.waitForElementToBeVisible(driver, nextMonthLable, 3); // Wait for the next month label to be visible
+                CommonMethods.waitForElementToBeVisible(driver, nextMonthLable, 3); // Wait for the next month label to be visible
             }
         }
 
@@ -573,33 +576,33 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
         if (way.contentEquals(ROUNDWAY)) {
             // Handle class selection for Round-Way trips
             if (classess.equalsIgnoreCase(CLASS_ECONOMY)) {
-                commonMethodes.waitForElementToBeVisible(driver, apply, 2); // Wait for the apply button to be visible
+                CommonMethods.waitForElementToBeVisible(driver, apply, 2); // Wait for the apply button to be visible
                 logger.info("We select Economy class"); // Log the selected class
 
             // Check if the selected class is BUSINESS_CLASS
             } else if (classess.equalsIgnoreCase(BUSINESS_CLASS)) {
                 businessClass.click(); // Click on the Business class option
-                commonMethodes.waitForElementToBeVisible(driver, apply, 2); // Wait for the apply button to be visible
+                CommonMethods.waitForElementToBeVisible(driver, apply, 2); // Wait for the apply button to be visible
                 logger.info(LOG_FORMAT, SELECTED_CLASS_LOG_MESSAGE, businessClass); // Log the selected class
 
             // Check if the selected class is FIRST_CLASS
             } else if (classess.equalsIgnoreCase(FIRST_CLASS)) {
                 firstClass.click(); // Click on the First Class option
-                commonMethodes.waitForElementToBeVisible(driver, apply, 2); // Wait for the apply button to be visible
+                CommonMethods.waitForElementToBeVisible(driver, apply, 2); // Wait for the apply button to be visible
                 logger.info(LOG_FORMAT, SELECTED_CLASS_LOG_MESSAGE, firstClass); // Log the selected class
 
 
             // Check if the selected class is PREMIUM_ECONOMY
             } else if (classess.equalsIgnoreCase(PREMIUM_ECONOMY)) {
                 premiumEconomy.click(); // Click on the Premium Economy option
-                commonMethodes.waitForElementToBeVisible(driver, apply, 2); // Wait for the apply button to be visible
+                CommonMethods.waitForElementToBeVisible(driver, apply, 2); // Wait for the apply button to be visible
                 logger.info(LOG_FORMAT, SELECTED_CLASS_LOG_MESSAGE, premiumEconomy); // Log the selected class
             }
         } else if (way.equals(ONEWAY)) { // Handle class selection for One-Way trips
             ((JavascriptExecutor) driver).executeScript("window.scrollBy(0,500)", ""); // Scroll down the page
             // Check if the selected class is CLASS_ECONOMY
             if (classess.equalsIgnoreCase(CLASS_ECONOMY)) {
-                commonMethodes.waitForElementToBeVisible(driver, apply, 2); // Wait for the apply button to be visible
+                CommonMethods.waitForElementToBeVisible(driver, apply, 2); // Wait for the apply button to be visible
                 logger.info("We select Economy class"); // Log the selected class
 
                 flightSearch.click(); // Click on the flight search button
@@ -611,7 +614,7 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
             // Check if the selected class is BUSINESS_CLASS
             } else if (classess.equalsIgnoreCase(BUSINESS_CLASS)) {
                 businessClass.click(); // Click on the Business class option
-                commonMethodes.waitForElementToBeVisible(driver, apply, 2); // Wait for the apply button to be visible
+                CommonMethods.waitForElementToBeVisible(driver, apply, 2); // Wait for the apply button to be visible
                 flightSearch.click(); // Click on the flight search button
 
                 Thread.sleep(4000); // Wait for 4 seconds
@@ -623,7 +626,7 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
             // Check if the selected class is FIRST_CLASS
             } else if (classess.equalsIgnoreCase(FIRST_CLASS)) {
                 firstClass.click(); // Click on the First Class option
-                commonMethodes.waitForElementToBeVisible(driver, apply, 2); // Wait for the apply button to be visible
+                CommonMethods.waitForElementToBeVisible(driver, apply, 2); // Wait for the apply button to be visible
                 flightSearch.click(); // Click on the flight search button
 
                 Thread.sleep(4000); // Wait for 4 seconds
@@ -635,7 +638,7 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
             // Check if the selected class is PREMIUM_ECONOMY
             } else if (classess.equalsIgnoreCase(PREMIUM_ECONOMY)) {
                 premiumEconomy.click(); // Click on the Premium Economy option
-                commonMethodes.waitForElementToBeVisible(driver, apply, 2); // Wait for the apply button to be visible
+                CommonMethods.waitForElementToBeVisible(driver, apply, 2); // Wait for the apply button to be visible
                 flightSearch.click(); // Click on the flight search button
 
                 Thread.sleep(4000); // Wait for 4 seconds
@@ -651,9 +654,9 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
              {
 
         // Scroll down to ensure passenger selection elements are visible
-        commonMethodes.scrollDown2(driver);
+        CommonMethods.scrollDown2(driver);
         Thread.sleep(500); // Wait for a short period to allow scrolling to finish
-        commonMethodes.waitForElementToBeVisible(driver, passanger, 2); // Wait for the passenger element to be visible
+        CommonMethods.waitForElementToBeVisible(driver, passanger, 2); // Wait for the passenger element to be visible
 
         // Convert input strings for the number of adults, children, and infants into integers
         Integer adult = Integer.valueOf(adultString); // Number of adults
@@ -663,19 +666,19 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
 
         // Loop to select the specified number of adult passengers
         for (int i = 1; i < adult; i++) {
-            commonMethodes.waitForElementToBeVisible(driver, adults, 10); // Wait for adult selection element to be visible
+            CommonMethods.waitForElementToBeVisible(driver, adults, 10); // Wait for adult selection element to be visible
         }
         Thread.sleep(500); // Allow time for UI updates
 
         // Loop to select the specified number of child passengers
         for (int i = 0; i < childs; i++) {
-            commonMethodes.waitForElementToBeVisible(driver, child, 10); // Wait for child selection element to be visible
+            CommonMethods.waitForElementToBeVisible(driver, child, 10); // Wait for child selection element to be visible
         }
         Thread.sleep(500); // Allow time for UI updates
 
         // Loop to select the specified number of infant passengers
         for (int i = 0; i < infents; i++) {
-            commonMethodes.waitForElementToBeVisible(driver, infent, 10); // Wait for infant selection element to be visible
+            CommonMethods.waitForElementToBeVisible(driver, infent, 10); // Wait for infant selection element to be visible
         }
         Thread.sleep(1000); // Allow time for UI updates
     }
@@ -910,9 +913,9 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
             List<WebElement> rediobutton = driver.findElements(By.xpath("//div[@class='theme4_flight_cabin_class_list__tLDeD']//input[@type='radio']"));
             List<WebElement> cabinclasses = driver.findElements(By.xpath("//label[@class='theme4_flight_cabin_class_ele__hsTDk theme4_CabinLabel__9y5cf']"));
 
-            // Check if there are any cabin classes available
-            if (cabinclasses.size() > 0) {
-                // Iterate through the cabin classes to find a match
+         // Check if there are any cabin classes available
+            if (!cabinclasses.isEmpty()) {
+                // Your code here for when there are cabin classes available
                 for (int i = 0; i < cabinclasses.size(); i++) {
                     WebElement searchText = cabinclasses.get(i);
                     String currentdt = searchText.getText();
@@ -993,7 +996,7 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
 		Thread.sleep(500);
 		logger.info("The Currrant Supplier is : {}",suppliers);
         
-        commonMethodes.scrollDown1(driver);
+        CommonMethods.scrollDown1(driver);
 			   	 WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));   	 
 			   	 WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(NAME_INPUT_XPATH)));
 			   	 		
@@ -1013,7 +1016,7 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
 							logger.info("The Suppliesr check : {}"+currentdt);
 							if (currentdt.equalsIgnoreCase(suppliers)) {
 								suppliername.get(i).click();
-								commonMethodes.scrollDown1(driver);
+								CommonMethods.scrollDown1(driver);
 								supplier.click();
 								break;
 							}
@@ -1119,7 +1122,7 @@ public void checksearchresult(WebDriver driver) throws InterruptedException {
     WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(SEARCH_BUTTON_XPATH)));
     
     // Scroll down to ensure the element is in view
-    commonMethodes.scrollDown2(driver);
+    CommonMethods.scrollDown2(driver);
 
     // Find the heading element that shows search results
     WebElement ele = driver.findElement(By.xpath("/html[1]/body[1]/div[1]/div[1]/div[1]/main[1]/div[2]/div[3]/h1[1]"));
@@ -1142,12 +1145,13 @@ public void selectFareTypeFlight(WebDriver driver, String fareType, Boolean sear
     // Log the current fare type and trip type
     logger.info("Current fare Type is : {}" ,fareType);
     logger.info("Current Trip Type is : {}" ,way);
-    // If the search type is true, wait for the search button to be visible
+ // Wait for the search button to be visible if searchType is true
     if (searchType) {
+        // Code to wait for the search button to be visible
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(50));
         WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(SEARCH_BUTTON_XPATH)));
         Thread.sleep(500);
-        commonMethodes.scrollDown3(driver);
+        CommonMethods.scrollDown3(driver);
         // Wait for the 'Airlines' element to be visible
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(AIRLINES_XPATH)));
     } else {
@@ -1157,7 +1161,7 @@ public void selectFareTypeFlight(WebDriver driver, String fareType, Boolean sear
                 WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(50));
                 WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//button[@class='theme4_btn_primary__aMZOB theme4_booknow_btn_mg__f0haC'][normalize-space()='Book'])[1]")));
                 Thread.sleep(100);
-                commonMethodes.scrollDown2(driver);
+                CommonMethods.scrollDown2(driver);
                 Thread.sleep(100);
             } catch (InterruptedException e) {
                 // Log error and fail the test case if no results found
@@ -1279,7 +1283,6 @@ public void selectsupplier(WebDriver driver) throws InterruptedException {
     // Find all checkbox elements for suppliers
     List<WebElement> checkBoxList = driver.findElements(
             By.xpath("//ul[@class='multiSelectDropDown_dropdown_value_container__vWFcB']//li//span[2]"));
-    int checkBoxListSize = checkBoxList.size(); // Get the number of checkboxes
 
     // Find all supplier name elements
     List<WebElement> supplierNames = driver.findElements(
