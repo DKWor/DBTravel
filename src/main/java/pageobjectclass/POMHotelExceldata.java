@@ -56,7 +56,7 @@ public class PomHotelExcelData { // Class for handling hotel data and interactio
 
 
 
-;
+
 
 
 
@@ -532,7 +532,7 @@ public class PomHotelExcelData { // Class for handling hotel data and interactio
     }
 
     // Method for selecting advanced search options
-    public void selectAdvancedSearch(WebDriver driver) throws InterruptedException {
+    public void selectAdvancedSearch() throws InterruptedException {
         advancedSearch.click(); // Click on advanced search button
         Thread.sleep(500); // Wait for a short duration
     }
@@ -619,7 +619,7 @@ public class PomHotelExcelData { // Class for handling hotel data and interactio
         }
 
         // Log the selected city name for verification
-        logger.info("The city name is :" + city);
+        logger.info("The city name is :", city);
     }
 
 	
@@ -629,18 +629,7 @@ public class PomHotelExcelData { // Class for handling hotel data and interactio
     public void selectDatefortrip(WebDriver driver,String month, String rmonth, String departureDate,
                                    String returnDate) throws InterruptedException {
         
-        // Create a Random object to generate random numbers.
-        Random random = new Random();
-
-        // Define ranges for generating random departure and return dates.
-        int min = 1; // Minimum value for departure date
-        int max = 15; // Maximum value for departure date
-        int min1 = 16; // Minimum value for return date
-        int max1 = 30; // Maximum value for return date
-
-        // Generate random dates within the specified ranges.
-        int randomNumberInRange = random.nextInt(max - min) + min; // Random departure date
-        int randomNumberInRange1 = random.nextInt(max1 - min1) + min1; // Random return date
+     
         
     
 
@@ -680,9 +669,9 @@ public class PomHotelExcelData { // Class for handling hotel data and interactio
         // Infinite loop until the desired month is found in the calendar.
         int index;
         while (true) {
-            logger.info("checking while loop {}");
+            logger.info("checking while loop");
             String text = driver.findElement(By.xpath("//h3")).getText(); // Get the current displayed month.
-            logger.info("while current month is {}" + text);
+            logger.info("while current month is {}",text);
 
             // Find all month/year labels in the calendar header.
             List<WebElement> monthYearLabels = driver
@@ -691,12 +680,12 @@ public class PomHotelExcelData { // Class for handling hotel data and interactio
             // Check if the desired month is found in the labels.
             boolean isMonthFound = monthYearLabels.stream().anyMatch(ele -> ele.getText().equalsIgnoreCase(month));
 
-            logger.info("while given input month is {}" + month);
-            logger.info("isMonthFound status is {}" + isMonthFound);
+            logger.info("while given input month is {}",month);
+            logger.info("isMonthFound status is {}",isMonthFound);
 
             // Get the index of the matching month.
             index = getIndexOfMatchingElement(monthYearLabels, month);
-            logger.info("index value is {}" + index);
+            logger.info("index value is {}",index);
 
             // If the desired month is found, exit the loop.
             if (isMonthFound) {
@@ -712,7 +701,7 @@ public class PomHotelExcelData { // Class for handling hotel data and interactio
             // Select a date from the left side of the calendar.
             List<WebElement> letftSideDates = driver.findElements(By.xpath(
                     "//div[@class='theme4_calendar_whole_body__8QLJU'][1]//div[@class='theme4_calendar_day_list__fSlRj']//div[@class='theme4_day_cell_center__uTvYe']//span[@class='']"));
-            logger.info("user given date is 1 option {}" + date);
+            logger.info("user given date is 1 option {}",date);
 
             // Filter the left side dates to find the matching date and click it.
             letftSideDates.stream().filter(ele -> ele.getText().contentEquals(date)).findFirst().ifPresent(element -> {
@@ -727,7 +716,7 @@ public class PomHotelExcelData { // Class for handling hotel data and interactio
             List<WebElement> rightSideDates = driver.findElements(By.xpath(
                     "//div[@class='theme4_calendar_whole_body__8QLJU'][2]//div[@class='theme4_calendar_day_list__fSlRj']//div[@class='theme4_day_cell_center__uTvYe']//span[@class='']"));
 
-            logger.info("user given date is 2 option {}" + date);
+            logger.info("user given date is 2 option {}",date);
             
         
 
@@ -747,16 +736,16 @@ public class PomHotelExcelData { // Class for handling hotel data and interactio
 		commonMethodes.waitForElementToBeVisible(driver, passanger, 1);
 		String stringadult =adultString;
 		Integer adult = Integer.valueOf(stringadult);
-		logger.info("No of  Adult is : {}"+stringadult);
+		logger.info("No of  Adult is : {}",stringadult);
 		
 		String stringchild = childString;
 		Integer child = Integer.valueOf(stringchild);
-		logger.info("No of  child is : {}"+stringchild);
+		logger.info("No of  child is : {}",stringchild);
 
 		String stringroom=roomString;
 		Integer room = Integer.valueOf(stringroom);
 		Thread.sleep(500);
-		logger.info("No of  room is :{}"+stringroom);
+		logger.info("No of  room is :{}",stringroom);
 
 		
 		if(room==1)
@@ -1763,7 +1752,7 @@ room5selectAge.click();
 	        
 	    } catch (Exception e) {
 	        // Log if the element is not available for selecting the hotel
-	        logger.info("The element is not available for select Hotel {}");
+	        logger.info("The element is not available for select Hotel");
 	    }
 	}
 
@@ -1887,7 +1876,7 @@ room5selectAge.click();
 	        
 	    } catch (Exception e) {
 	        // Log the error if no matching fare type is found
-	        logger.error("Error: No matching fare type found for{}");
+	        logger.error("Error: No matching fare type found for");
 	        
 	        // Fail the test case and close the driver
 	        Assert.fail("Error: No matching fare type found for: ");
@@ -1909,7 +1898,7 @@ room5selectAge.click();
 	        
 	    } catch (Exception e) {
 	        // Log if the popup is not available
-	        logger.info("The popup is not Available {}");
+	        logger.info("The popup is not Available");
 	    }
 	}
 
@@ -1931,7 +1920,7 @@ room5selectAge.click();
 		     Thread.sleep(500);
 
 		     String name = hotelName.getText();
-		     logger.info("The Currant Hotel Name is : {}"+name);
+		     logger.info("The Currant Hotel Name is : {}",name);
 		     
 		     Thread.sleep(500);
 
@@ -1942,7 +1931,7 @@ room5selectAge.click();
 		  // Locate the list of rooms
 		     List<WebElement> rooms = driver.findElements(By.xpath(STARTING_FROM_XPATH));
 
-		     logger.info("Number of rooms: {}" + rooms.size());
+		     logger.info("Number of rooms: {}",rooms.size());
 
 		     boolean ticketFound = false;
 
@@ -1966,8 +1955,8 @@ room5selectAge.click();
 		                 WebElement selectButton = selectors.get(i);
 
 		                 String text = ticket.getText();
-		                 logger.info("The ticket Fare Type is: {}" + text);
-		                 logger.info("The ticket Fare Type from the excel sheet is: {}" + fareType);
+		                 logger.info("The ticket Fare Type is: {}",text);
+		                 logger.info("The ticket Fare Type from the excel sheet is: {}",fareType);
 
 		                 if (text.equals(fareType)) {
 		                     try {
@@ -1983,7 +1972,7 @@ room5selectAge.click();
 		                         continueIteration = false; // Stop the outer loop
 		                         break; // Exit the  inner loop if the ticket is found
 		                     } catch (Exception e) {
-		                         logger.info("Failed to click the select button: {}" + e.getMessage());
+		                         logger.info("Failed to click the select button: {}", e.getMessage());
 		                     }
 		                 }
 		             }
@@ -2021,18 +2010,18 @@ room5selectAge.click();
 		        	                 // Re-locate the list of rooms after clicking next
 		        	                 List<WebElement> room = driver.findElements(By.xpath(STARTING_FROM_XPATH));
 
-		        	                 logger.info("Number of rooms after clicking next: {}" + room.size());
+		        	                 logger.info("Number of rooms after clicking next: {}",room.size());
 		        	             } catch (Exception e) {
-		        	                 logger.info("Failed to find rooms after clicking next: {}" + e.getMessage());
+		        	                 logger.info("Failed to find rooms after clicking next: {}" , e.getMessage());
 		        	                 continueIteration = false; // Stop the loop if rooms are not found after clicking next
 		        	             }
 		        	         } catch (Exception e) {
-		        	             logger.info("Failed to find or click the next button using XPath: {}" + nextButtonXPath);
+		        	             logger.info("Failed to find or click the next button using XPath: {}" , nextButtonXPath);
 		        	             continueIteration = false; // Stop the loop if next button is not found or fails to click
 		        	         }
 
 		        	     } catch (Exception e) {
-		        	         logger.info("Exception occurred: {}" + e.getMessage());
+		        	         logger.info("Exception occurred: {}" , e.getMessage());
 		        	         continueIteration = false; // Stop the loop in case of an exception
 		        	     }
 		        	 }
@@ -2043,7 +2032,7 @@ room5selectAge.click();
 		         logger.info("Ticket matching the Fare Type found and clicked.{}");
 		     } else {
 		   	 
-		    	 logger.error("The matching ticket is not found {}"+fareType);
+		    	 logger.error("The matching ticket is not found {}",fareType);
 			     // Fail the test case
 			        Assert.fail("Error: The matching ticket is not found  for :"+fareType);
 			        driver.close();		     }
@@ -2187,26 +2176,26 @@ room5selectAge.click();
 	    double finalTotalAmount = fareDetails.values().stream().mapToDouble(Double::doubleValue).sum();
 
 	    // Log the fare details and total amount
-	    logger.info("Fare Details:");
-	    fareDetails.forEach((label, value) -> logger.info(label + ": " + value + " INR "));
-	    logger.info("Final Total Amount: " + finalTotalAmount + " INR ");
+	    System.out.println("Fare Details:");
+	    fareDetails.forEach((label, value) ->  System.out.println(label + ": " + value + " INR "));
+	    System.out.println("Final Total Amount: " + finalTotalAmount + " INR ");
 
 	    // Verify the total amount displayed on the review page
 	    if (driver.findElements(By.xpath("//div[@class='theme4_booking_summary_grid_container__nXlBT']//p[normalize-space()='Total :']")).size() > 0) {
 	        double totalAmt = Double.parseDouble(driver.findElement(By.xpath("//div[@class='theme4_booking_summary_grid_container__nXlBT']//div[@class='theme4_total_amount_1__p6YOz']")).getText().trim().replace(",", "").replace("INR", ""));
-	        logger.info("Final Amount after all calculation: " + finalTotalAmount);
-	        logger.info("Total amount is: " + totalAmt);
+	        System.out.println("Final Amount after all calculation: " + finalTotalAmount);
+	        System.out.println("Total amount is: " + totalAmt);
 
 	        // Compare finalTotalAmount with the displayed total amount and log the values
 	        BigDecimal value = new BigDecimal(finalTotalAmount).setScale(3, RoundingMode.HALF_UP);
-	        logger.info("finalTotalAmount: " + value);
+	        System.out.println("finalTotalAmount: " + value);
 	        
 	        BigDecimal value1 = new BigDecimal(totalAmt).setScale(3, RoundingMode.HALF_UP);
-	        logger.info("totalAmt: " + value1);
+	        System.out.println("totalAmt: " + value1);
 
 	        // Calculate the difference between calculated total and displayed total
 	        double Diff = finalTotalAmount - totalAmt;
-	        logger.info("The Value Difference is: " + Diff);
+	        System.out.println("The Value Difference is: " + Diff);
 
 	        // Assert that both amounts are equal
 	        Assert.assertEquals(value1, value);

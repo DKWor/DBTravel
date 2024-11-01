@@ -64,7 +64,7 @@ public class sdHotelExcel extends Baseclass{
 	    @Then("selec the Advanced Search")
 	    public void selectheAdvanced_Search() throws InterruptedException {
 	    	home=new PomHotelExcelData(driver);
-	    	home.selectAdvancedSearch(driver);
+	    	home.selectAdvancedSearch();
 	    }
 	    
 	    

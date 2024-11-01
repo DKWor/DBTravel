@@ -89,6 +89,12 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
 	    private static final String MIN_PRICE_SLIDER_XPATH = "MIN_PRICE_SLIDER_XPATH";
 	    
 	    private static final String MARK_VALUE_XPATH = "//input[@id='markValue']";
+	    
+	    private static final String LOG_FORMAT = "{} {}";
+	    
+	    
+	    private static final String DEPARTURE_CHECK_MESSAGE = "The Departure check : {}";
+
 
 
 
@@ -532,7 +538,7 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
 
         // Check if the selected class is CLASS_ECONOMY
         if (classess.equalsIgnoreCase(CLASS_ECONOMY)) {
-        	logger.info("{} {}", SELECTED_CLASS_LOG_MESSAGE, economy.getText()); // Log the selected class
+        	logger.info(LOG_FORMAT, SELECTED_CLASS_LOG_MESSAGE, economy.getText()); // Log the selected class
             WebElement element1 = economy; // Reference to the Economy class element
             ((JavascriptExecutor) driver).executeScript(CLICK_SCRIPT, element1); // Click on the Economy class element
             ((JavascriptExecutor) driver).executeScript(CLICK_SCRIPT, apply); // Click on the apply button
@@ -574,20 +580,20 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
             } else if (classess.equalsIgnoreCase(BUSINESS_CLASS)) {
                 businessClass.click(); // Click on the Business class option
                 commonMethodes.waitForElementToBeVisible(driver, apply, 2); // Wait for the apply button to be visible
-                logger.info("{} {}", SELECTED_CLASS_LOG_MESSAGE, businessClass); // Log the selected class
+                logger.info(LOG_FORMAT, SELECTED_CLASS_LOG_MESSAGE, businessClass); // Log the selected class
 
             // Check if the selected class is FIRST_CLASS
             } else if (classess.equalsIgnoreCase(FIRST_CLASS)) {
                 firstClass.click(); // Click on the First Class option
                 commonMethodes.waitForElementToBeVisible(driver, apply, 2); // Wait for the apply button to be visible
-                logger.info("{} {}", SELECTED_CLASS_LOG_MESSAGE, firstClass); // Log the selected class
+                logger.info(LOG_FORMAT, SELECTED_CLASS_LOG_MESSAGE, firstClass); // Log the selected class
 
 
             // Check if the selected class is PREMIUM_ECONOMY
             } else if (classess.equalsIgnoreCase(PREMIUM_ECONOMY)) {
                 premiumEconomy.click(); // Click on the Premium Economy option
                 commonMethodes.waitForElementToBeVisible(driver, apply, 2); // Wait for the apply button to be visible
-                logger.info("{} {}", SELECTED_CLASS_LOG_MESSAGE, premiumEconomy); // Log the selected class
+                logger.info(LOG_FORMAT, SELECTED_CLASS_LOG_MESSAGE, premiumEconomy); // Log the selected class
             }
         } else if (way.equals(ONEWAY)) { // Handle class selection for One-Way trips
             ((JavascriptExecutor) driver).executeScript("window.scrollBy(0,500)", ""); // Scroll down the page
@@ -610,7 +616,7 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
 
                 Thread.sleep(4000); // Wait for 4 seconds
 
-                logger.info("{} {}", SELECTED_CLASS_LOG_MESSAGE, businessClass); // Log the selected class
+                logger.info(LOG_FORMAT, SELECTED_CLASS_LOG_MESSAGE, businessClass); // Log the selected class
                 String text = classElement.getText(); // Get the text of the class element
                 Assert.assertEquals(text, BUSINESS_CLASS); // Validate that the selected class is Business
 
@@ -622,7 +628,7 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
 
                 Thread.sleep(4000); // Wait for 4 seconds
 
-                logger.info("{} {}", SELECTED_CLASS_LOG_MESSAGE, firstClass); // Log the selected class
+                logger.info(LOG_FORMAT, SELECTED_CLASS_LOG_MESSAGE, firstClass); // Log the selected class
                 String text = classElement.getText(); // Get the text of the class element
                 Assert.assertEquals(text, FIRST_CLASS); // Validate that the selected class is First Class
 
@@ -633,7 +639,7 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
                 flightSearch.click(); // Click on the flight search button
 
                 Thread.sleep(4000); // Wait for 4 seconds
-                logger.info("{} {}", SELECTED_CLASS_LOG_MESSAGE, premiumEconomy); // Log the selected class
+                logger.info(LOG_FORMAT, SELECTED_CLASS_LOG_MESSAGE, premiumEconomy); // Log the selected class
                 String text = classElement.getText(); // Get the text of the class element
                 Assert.assertEquals(text, PREMIUM_ECONOMY); // Validate that the selected class is Premium Economy
             }
@@ -1036,7 +1042,7 @@ public void selectDepartureTime(WebDriver driver,String departure,String way) th
 		for (int i = 0; i < allDeparture.size(); i++) {
 			WebElement searchText = allDeparture.get(i);
 			String currentdt = searchText.getText();
-			logger.info("The Departure check : {}"+currentdt);
+			logger.info(DEPARTURE_CHECK_MESSAGE,currentdt);
 			if (currentdt.equalsIgnoreCase(departure)) {
 				allDeparture.get(i).click();
 				break;
@@ -1059,7 +1065,7 @@ public void selectDepartureTime(WebDriver driver,String departure,String way) th
 			for (int i = 0; i < allDeparture.size(); i++) {
 				WebElement searchText = allDeparture.get(i);
 				String currentdt = searchText.getText();
-				logger.info("The Departure check : {}"+currentdt);
+				logger.info(DEPARTURE_CHECK_MESSAGE,currentdt);
 				if (currentdt.equalsIgnoreCase(departure)) {
 					allDeparture.get(i).click();
 					break;
@@ -1072,7 +1078,7 @@ public void selectDepartureTime(WebDriver driver,String departure,String way) th
 
 		returnDepartureTime.click();
 		Thread.sleep(500);
-	    logger.info("The Currrant Departure Time is :",departure);
+	    logger.info("The Currrant Departure Time is : {}",departure);
 		// All RBD Names
 		List<WebElement> allDeparture1= driver.findElements(By.xpath(DEPARTURE_XPATH));
 		if (!allDeparture.isEmpty()){
@@ -1080,7 +1086,7 @@ public void selectDepartureTime(WebDriver driver,String departure,String way) th
 			for (int i = 0; i < allDeparture1.size(); i++) {
 				WebElement searchText = allDeparture1.get(i);
 				String currentdt = searchText.getText();
-				logger.info("The Departure check : {}"+currentdt);
+				logger.info(DEPARTURE_CHECK_MESSAGE,currentdt);
 				if (currentdt.equalsIgnoreCase(departure)) {
 					allDeparture1.get(i).click();
 					break;
@@ -1136,7 +1142,6 @@ public void selectFareTypeFlight(WebDriver driver, String fareType, Boolean sear
     // Log the current fare type and trip type
     logger.info("Current fare Type is : {}" ,fareType);
     logger.info("Current Trip Type is : {}" ,way);
-
     // If the search type is true, wait for the search button to be visible
     if (searchType) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(50));
@@ -1156,7 +1161,7 @@ public void selectFareTypeFlight(WebDriver driver, String fareType, Boolean sear
                 Thread.sleep(100);
             } catch (InterruptedException e) {
                 // Log error and fail the test case if no results found
-            	logger.error("Error: No results found for fare type: {0}", fareType);
+            	logger.error("Error: No results found for fare type: {}", fareType);
                 Assert.fail("Error: No results found " + fareType);
                 driver.close();
             }
@@ -1565,7 +1570,7 @@ public void enterLocalTaxes(String localTax)   {
 
 public void selectPercentOrFlat(WebDriver driver, boolean isPercentToggle, String percentage) throws InterruptedException {
     // Log whether the selection is for a percentage or a flat rate
-    logger.info("Is Percentage : {}" + isPercentToggle);
+    logger.info("Is Percentage : {}",isPercentToggle);
     
     // If the selection is not a percentage
     if (!isPercentToggle) {
