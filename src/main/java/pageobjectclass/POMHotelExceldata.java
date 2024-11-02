@@ -38,7 +38,6 @@ public class PomHotelExcelData { // Class for handling hotel data and interactio
  // Define a constant for the JavaScript click script
     private static final String CLICK_SCRIPT = "arguments[0].click();";
     
-    private static final String SCROLL_TO_ELEMENT_SCRIPT = "arguments[0].scrollIntoView(true);";
     
  // Define a constant for the JavaScript command
     private static final String SCROLL_SCRIPT = "document.querySelector('div[class=\"theme4_hotel_room_list_main__jYmrt\"]').scrollTop=100";
@@ -54,6 +53,30 @@ public class PomHotelExcelData { // Class for handling hotel data and interactio
  // Define the XPath expression as a constant
     private static final String POPUP_XPATH1 = "/html[1]/body[1]/div[1]/div[1]/div[1]/main[1]/div[1]/div[1]/div[1]/div[3]/div[1]/div[1]/div[1]/div[2]/h2[1]";
 
+    private static final String  SCROLLINTOVIEW="arguments[0].scrollIntoView(true);";
+    
+ // Define the constant at the beginning of your class
+    private static final String SCROLL_SCRIPT300 = "window.scrollBy(0,300)";
+    
+    private static final String POP_UP_NOT_PRESENT_MESSAGE = "Pop-up not present";
+    
+    private static final String PANCARD = "HHJPK4959B";
+    
+    private static final String SURNAME = "Karande";
+    
+    private static final String MY_EMAIL = "bhwbdbwwb@gmail.com";
+    
+    private static final String NAME = "Digambar";
+    
+    
+    private static final String MB_NUMBER = "1561485648451";
+
+
+
+    
+    
+
+    
 
 
 
@@ -475,7 +498,7 @@ public class PomHotelExcelData { // Class for handling hotel data and interactio
         switch (environment.toLowerCase()) { // Switch case for different environments
             case "prodb2b2": 
                 WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(100)); // Initialize WebDriverWait
-                WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(EMAIL_INPUT_XPATH))); // Wait for email input field
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(EMAIL_INPUT_XPATH))); // Wait for email input field
                 email.sendKeys(CommonMethods.readDataFromPropertyFile("usernameB2B2")); // Enter username
                 Thread.sleep(100); // Wait for a short duration
                 pass.sendKeys(CommonMethods.readDataFromPropertyFile("passB2B2")); // Enter password
@@ -486,7 +509,7 @@ public class PomHotelExcelData { // Class for handling hotel data and interactio
               
             case "prodb2b": 
                 WebDriverWait wait1 = new WebDriverWait(driver, Duration.ofSeconds(100));
-                WebElement popup1 = wait1.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(EMAIL_INPUT_XPATH))); // Wait for email input field
+                wait1.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(EMAIL_INPUT_XPATH))); // Wait for email input field
                 email.sendKeys(CommonMethods.readDataFromPropertyFile("usernameB2B")); // Enter username
                 Thread.sleep(100); // Wait for a short duration
                 pass.sendKeys(CommonMethods.readDataFromPropertyFile("passB2B")); // Enter password
@@ -497,7 +520,7 @@ public class PomHotelExcelData { // Class for handling hotel data and interactio
               
             case "uatb2b":
                 WebDriverWait wait2 = new WebDriverWait(driver, Duration.ofSeconds(100));
-                WebElement popup2 = wait2.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(EMAIL_INPUT_XPATH))); // Wait for email input field
+                wait2.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(EMAIL_INPUT_XPATH))); // Wait for email input field
                 email.sendKeys(CommonMethods.readDataFromPropertyFile("usernameB2BUAT")); // Enter username
                 Thread.sleep(100); // Wait for a short duration
                 pass.sendKeys(CommonMethods.readDataFromPropertyFile("passB2BUAT")); // Enter password
@@ -599,7 +622,7 @@ public class PomHotelExcelData { // Class for handling hotel data and interactio
 
         // Initialize WebDriverWait to wait for the autocomplete suggestions to be visible
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-        WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='theme4_hotel_autocomplete_name__d_Rwx']"))); // Wait for the popup to appear
+         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='theme4_hotel_autocomplete_name__d_Rwx']"))); // Wait for the popup to appear
         
         // Retrieve all suggested city names
         List<WebElement> autosuggest = driver.findElements(By.xpath("//div[@class='theme4_hotel_autocomplete_name__d_Rwx']"));
@@ -705,7 +728,7 @@ public class PomHotelExcelData { // Class for handling hotel data and interactio
 
             // Filter the left side dates to find the matching date and click it.
             letftSideDates.stream().filter(ele -> ele.getText().contentEquals(date)).findFirst().ifPresent(element -> {
-                ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element); // Scroll to the element.
+                ((JavascriptExecutor) driver).executeScript(SCROLLINTOVIEW, element); // Scroll to the element.
                 WebDriverWait wait1 = new WebDriverWait(driver, Duration.ofSeconds(30)); // Wait for the element to be clickable.
                 wait1.until(ExpectedConditions.elementToBeClickable(element));
                 element.click(); // Click on the element.
@@ -721,7 +744,7 @@ public class PomHotelExcelData { // Class for handling hotel data and interactio
         
 
             rightSideDates.stream().filter(ele -> ele.getText().contentEquals(date)).findFirst().ifPresent(element -> {
-                ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element); // Scroll to the element.
+                ((JavascriptExecutor) driver).executeScript(SCROLLINTOVIEW, element); // Scroll to the element.
                 WebDriverWait wait2 = new WebDriverWait(driver, Duration.ofSeconds(30)); // Wait for the element to be clickable.
                 wait2.until(ExpectedConditions.elementToBeClickable(element));
                 element.click(); // Click on the element.
@@ -885,7 +908,7 @@ public class PomHotelExcelData { // Class for handling hotel data and interactio
 			
 			addroom2.click();
 			Thread.sleep(100);
-			((JavascriptExecutor) driver).executeScript("window.scrollBy(0,300)", "");
+			((JavascriptExecutor) driver).executeScript(SCROLL_SCRIPT300, "");
 			Thread.sleep(500);
 
 		
@@ -1023,7 +1046,7 @@ public class PomHotelExcelData { // Class for handling hotel data and interactio
 			
 			addroom2.click();
 			Thread.sleep(100);
-			((JavascriptExecutor) driver).executeScript("window.scrollBy(0,300)", "");
+			((JavascriptExecutor) driver).executeScript(SCROLL_SCRIPT300, "");
 			Thread.sleep(500);
 
 		
@@ -1231,7 +1254,7 @@ public class PomHotelExcelData { // Class for handling hotel data and interactio
 			
 			addroom2.click();
 			Thread.sleep(100);
-			((JavascriptExecutor) driver).executeScript("window.scrollBy(0,300)", "");
+			((JavascriptExecutor) driver).executeScript(SCROLL_SCRIPT300, "");
 			Thread.sleep(500);
 
 		
@@ -1726,10 +1749,10 @@ room5selectAge.click();
 	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(100));
 	    
 	    // Wait until the specific popup element is visible
-	    WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(POPUP_XPATH)));
+	    wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(POPUP_XPATH)));
 	    
 	    // Scroll the view to the free breakfast filter
-	    ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", freeBreakfast);
+	    ((JavascriptExecutor) driver).executeScript(SCROLLINTOVIEW, freeBreakfast);
 	    
 	    // Click on the free breakfast filter
 	    ((JavascriptExecutor) driver).executeScript(CLICK_SCRIPT, freeBreakfast);
@@ -1742,10 +1765,10 @@ room5selectAge.click();
 	        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(100));
 	        
 	        // Wait until the specific popup element is visible
-	        WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(POPUP_XPATH)));
+	        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(POPUP_XPATH)));
 	        
 	        // Scroll the view to the star rating element
-	        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", selectstar);
+	        ((JavascriptExecutor) driver).executeScript(SCROLLINTOVIEW, selectstar);
 	        
 	        // Click on the star rating filter
 	        ((JavascriptExecutor) driver).executeScript(CLICK_SCRIPT, selectstar);
@@ -1763,10 +1786,10 @@ room5selectAge.click();
 	        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(100));
 	        
 	        // Wait until the specific popup element is visible
-	        WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(POPUP_XPATH)));
+	        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(POPUP_XPATH)));
 	        
 	        // Scroll to the drag start element to set price range
-	        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", dragStart);
+	        ((JavascriptExecutor) driver).executeScript(SCROLLINTOVIEW, dragStart);
 	        
 	        // Short pause before interacting with the element
 	        Thread.sleep(500);
@@ -1796,10 +1819,10 @@ room5selectAge.click();
 	        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(100));
 	        
 	        // Wait until the specific popup element is visible
-	        WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(POPUP_XPATH)));
+	        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(POPUP_XPATH)));
 	        
 	        // Scroll to the amenities element
-	        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", amenities);
+	        ((JavascriptExecutor) driver).executeScript(SCROLLINTOVIEW, amenities);
 	        
 	        // Click on the amenities filter
 	        ((JavascriptExecutor) driver).executeScript(CLICK_SCRIPT, amenities);
@@ -1817,10 +1840,10 @@ room5selectAge.click();
 	        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(100));
 	        
 	        // Wait until the specific popup element is visible
-	        WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(POPUP_XPATH)));
+	        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(POPUP_XPATH)));
 	        
 	        // Scroll to the vacation type filter
-	        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", vacationType);
+	        ((JavascriptExecutor) driver).executeScript(SCROLLINTOVIEW, vacationType);
 	        
 	        // Click on the vacation type filter
 	        ((JavascriptExecutor) driver).executeScript(CLICK_SCRIPT, vacationType);
@@ -1838,10 +1861,10 @@ room5selectAge.click();
 	        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(100));
 	        
 	        // Wait until the specific popup element is visible
-	        WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(POPUP_XPATH)));
+	        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(POPUP_XPATH)));
 	        
 	        // Scroll to the property type filter
-	        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", propertyType);
+	        ((JavascriptExecutor) driver).executeScript(SCROLLINTOVIEW, propertyType);
 	        
 	        // Click on the property type filter
 	        ((JavascriptExecutor) driver).executeScript(CLICK_SCRIPT, propertyType);
@@ -1868,10 +1891,10 @@ room5selectAge.click();
 	        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(50));
 	        
 	        // Wait until the specific popup element is visible
-	        WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(POPUP_XPATH)));
+	        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(POPUP_XPATH)));
 	        
 	        // Scroll to the select hotel element and click it
-	        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", selectHotel);
+	        ((JavascriptExecutor) driver).executeScript(SCROLLINTOVIEW, selectHotel);
 	        ((JavascriptExecutor) driver).executeScript(CLICK_SCRIPT, selectHotel);
 	        
 	    } catch (Exception e) {
@@ -1891,7 +1914,7 @@ room5selectAge.click();
 	        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 	        
 	        // Wait until the specific popup element is visible
-	        WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='theme4_alertbutton__8zRK0']")));
+	        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='theme4_alertbutton__8zRK0']")));
 	        
 	        // Click on the close button of the popup
 	        driver.findElement(By.xpath("//div[@class='ModalPopupComponent_modal_close__fOtZP']//*[name()='svg']")).click();
@@ -1916,7 +1939,7 @@ room5selectAge.click();
 
 
 		   	 WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(100));
-		   	 WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//img[@alt='calender'])[1]")));
+		   	 wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//img[@alt='calender'])[1]")));
 		     Thread.sleep(500);
 
 		     String name = hotelName.getText();
@@ -1941,7 +1964,7 @@ room5selectAge.click();
 		     while (continueIteration) {
 		         // Iterate through each room
 		         for (WebElement room : rooms) {
-		             ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", room);
+		             ((JavascriptExecutor) driver).executeScript(SCROLLINTOVIEW, room);
 		             room.click();
 		           //  wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//div[contains(@class, 'theme4_fully_refundable__BXoIe')]"))); // Ensure the room details are fully expanded
 
@@ -1964,7 +1987,7 @@ room5selectAge.click();
 		                             // Directly click the select button if i == 0
 			 							((JavascriptExecutor) driver).executeScript(CLICK_SCRIPT, selectors.get(i));
 		                         } else {
-		                        	 ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);",selectors.get(i));
+		                        	 ((JavascriptExecutor) driver).executeScript(SCROLLINTOVIEW,selectors.get(i));
 		 							((JavascriptExecutor) driver).executeScript(CLICK_SCRIPT, selectors.get(i));
 		                         }
 		                         ticketFound = true;
@@ -1999,7 +2022,7 @@ room5selectAge.click();
 
 		        	         try {
 		        	             WebElement nextButton = driver.findElement(By.xpath(nextButtonXPath));
-		        	             ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", nextButton);
+		        	             ((JavascriptExecutor) driver).executeScript(SCROLLINTOVIEW, nextButton);
 		        	             nextButton.click();
 
 		        	             try {
@@ -2053,7 +2076,7 @@ room5selectAge.click();
 	        Thread.sleep(500);
 	        
 	        // Scroll to the selectMarkdown element and click it
-	        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", selectMarkdown);
+	        ((JavascriptExecutor) driver).executeScript(SCROLLINTOVIEW, selectMarkdown);
 	        ((JavascriptExecutor) driver).executeScript(CLICK_SCRIPT, selectMarkdown);
 	        
 	        // Sleep for 1000 milliseconds to ensure the click action is registered and UI is updated
@@ -2071,7 +2094,7 @@ room5selectAge.click();
 	        WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(POPUP_XPATH1)));
 	        
 	        // Scroll to the selectpercent element and click it
-	        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", selectpercent);
+	        ((JavascriptExecutor) driver).executeScript(SCROLLINTOVIEW, selectpercent);
 	        ((JavascriptExecutor) driver).executeScript(CLICK_SCRIPT, selectpercent);   
 	        
 	        // Enter the percentage flat value into the input field
@@ -2082,7 +2105,7 @@ room5selectAge.click();
 	        WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(POPUP_XPATH1)));
 	        
 	        // Scroll to the selectpercent element (not clicked in this case)
-	        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", selectpercent);
+	        ((JavascriptExecutor) driver).executeScript(SCROLLINTOVIEW, selectpercent);
 	        
 	        // Enter the percentage flat value into the input field
 	        passpercent.sendKeys(percentflatvalue); 
@@ -2099,7 +2122,7 @@ room5selectAge.click();
 	    WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(POPUP_XPATH1)));
 	    
 	    // Scroll to the passlocaltaxes input field to ensure it's in view
-	    ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", passlocaltaxes);
+	    ((JavascriptExecutor) driver).executeScript(SCROLLINTOVIEW, passlocaltaxes);
 	    
 	    // Send the specified local tax value to the input field
 	    passlocaltaxes.sendKeys(localTax);
@@ -2109,7 +2132,7 @@ room5selectAge.click();
 	public void calculatetheAmountOnReviewPage(WebDriver driver)   {
 
 	    // Scroll down to the fare detail section to ensure it's in view
-	    ((JavascriptExecutor) driver).executeScript("window.scrollBy(0,300)", "");
+	    ((JavascriptExecutor) driver).executeScript(SCROLL_SCRIPT300, "");
 
 	    // Initialize a map to store fare details and their corresponding values
 	    java.util.Map<String, Double> fareDetails = new java.util.HashMap<>();
@@ -2214,7 +2237,7 @@ room5selectAge.click();
 	        WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='theme5_alertbutton__AHGSE']")));
 	        popup.click();
 	    } catch (Exception e) {
-	        logger.info("Pop-up not present");
+	        logger.info(POP_UP_NOT_PRESENT_MESSAGE);
 	    }
 	    
 	    // Process room selection
@@ -2288,52 +2311,52 @@ room5selectAge.click();
 	        case 1:
 	            // Fill details for the first adult in room 1
 	            fillDetails(title1, mr1, firstname01, lastName1, email01, phoneno01, panno01, 
-	                        "Digambar", "Karande", "bhwbdbwwb@gmail.com", "1561485648451", "HHJPK4959B");
+	                        NAME, SURNAME, MY_EMAIL, MB_NUMBER, PANCARD);
 	            break;
 	        case 2:
 	            // Fill details for the first adult in room 2
 	            fillDetails(title1, mr1, firstname01, lastName1, email01, phoneno01, panno01, 
-	                        "Digambar", "Karande", "bhwbdbwwb@gmail.com", "1561485648451", "HHJPK4959B");
-	            ((JavascriptExecutor) driver).executeScript("window.scrollBy(0,300)", ""); // Scroll down for second adult
+	                        NAME, SURNAME, MY_EMAIL, MB_NUMBER, PANCARD);
+	            ((JavascriptExecutor) driver).executeScript(SCROLL_SCRIPT300, ""); // Scroll down for second adult
 	            Thread.sleep(500); // Allow time for scrolling effect
 	            // Fill details for the second adult in room 2
 	            fillDetails(title2, mr2, firstname02, lastName2, email02, phoneno02, panno02, 
-	                        "Omkar", "Karande", "bhwbdbwwb@gmail.com", "1561485648451", "HHJPK4959C");
+	                        "Omkar", SURNAME, MY_EMAIL, MB_NUMBER, "HHJPK4959C");
 	            break;
 	        case 3:
 	            // Fill details for the first adult in room 3
 	            fillDetails(title1, mr1, firstname01, lastName1, email01, phoneno01, panno01, 
-	                        "Digambar", "Karande", "bhwbdbwwb@gmail.com", "1561485648451", "HHJPK4959D");
-	            ((JavascriptExecutor) driver).executeScript("window.scrollBy(0,300)", ""); // Scroll down for second adult
+	                        NAME, SURNAME, MY_EMAIL, MB_NUMBER, "HHJPK4959D");
+	            ((JavascriptExecutor) driver).executeScript(SCROLL_SCRIPT300, ""); // Scroll down for second adult
 	            Thread.sleep(500); // Allow time for scrolling effect
 	            // Fill details for the second adult in room 3
 	            fillDetails(title2, mr2, firstname02, lastName2, email02, phoneno02, panno02, 
-	                        "Omkar", "Karande", "bhwbdbwwb@gmail.com", "1561485648451", "HHJPK4959E");
-	            ((JavascriptExecutor) driver).executeScript("window.scrollBy(0,300)", ""); // Scroll down for third adult
+	                        "Omkar", SURNAME, MY_EMAIL, MB_NUMBER, "HHJPK4959E");
+	            ((JavascriptExecutor) driver).executeScript(SCROLL_SCRIPT300, ""); // Scroll down for third adult
 	            Thread.sleep(500); // Allow time for scrolling effect
 	            // Fill details for the third adult in room 3
 	            fillDetails(title3, mr3, firstname03, lastName3, email03, phoneno03, panno03, 
-	                        "Vinod", "Karande", "bhwbdbwwb@gmail.com", "1561485648451", "HHJPK4959F");
+	                        "Vinod", SURNAME, MY_EMAIL, MB_NUMBER, "HHJPK4959F");
 	            break;
 	        case 4:
 	            // Fill details for the first adult in room 4
 	            fillDetails(title1, mr1, firstname01, lastName1, email01, phoneno01, panno01, 
-	                        "Digambar", "Karande", "bhwbdbwwb@gmail.com", "1561485648451", "HHJPK4959B");
-	            ((JavascriptExecutor) driver).executeScript("window.scrollBy(0,300)", ""); // Scroll down for second adult
+	                        NAME, SURNAME, MY_EMAIL, MB_NUMBER, PANCARD);
+	            ((JavascriptExecutor) driver).executeScript(SCROLL_SCRIPT300, ""); // Scroll down for second adult
 	            Thread.sleep(500); // Allow time for scrolling effect
 	            // Fill details for the second adult in room 4
 	            fillDetails(title2, mr2, firstname02, lastName2, email02, phoneno02, panno02, 
-	                        "Omkar", "Karande", "bhwbdbwwb@gmail.com", "1561485648451", "HHJPK4959C");
-	            ((JavascriptExecutor) driver).executeScript("window.scrollBy(0,300)", ""); // Scroll down for third adult
+	                        "Omkar", SURNAME, MY_EMAIL, MB_NUMBER, "HHJPK4959C");
+	            ((JavascriptExecutor) driver).executeScript(SCROLL_SCRIPT300, ""); // Scroll down for third adult
 	            Thread.sleep(500); // Allow time for scrolling effect
 	            // Fill details for the third adult in room 4
 	            fillDetails(title3, mr3, firstname03, lastName3, email03, phoneno03, panno03, 
-	                        "Vinod", "Karande", "bhwbdbwwb@gmail.com", "1561485648451", "HHJPK4959D");
-	            ((JavascriptExecutor) driver).executeScript("window.scrollBy(0,300)", ""); // Scroll down for fourth adult
+	                        "Vinod", SURNAME, MY_EMAIL, MB_NUMBER, "HHJPK4959D");
+	            ((JavascriptExecutor) driver).executeScript(SCROLL_SCRIPT300, ""); // Scroll down for fourth adult
 	            Thread.sleep(500); // Allow time for scrolling effect
 	            // Fill details for the fourth adult in room 4
 	            fillDetails(title4, mr4, firstname04, lastName4, email04, phoneno04, panno04, 
-	                        "Vinyak", "Karande", "bhwbdbwwb@gmail.com", "1561485648451", "HHJPK4959E");
+	                        "Vinyak", SURNAME, MY_EMAIL, MB_NUMBER, "HHJPK4959E");
 	            break;
 	        default:
 	            // Handle invalid room numbers
@@ -2397,7 +2420,7 @@ room5selectAge.click();
 	            WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//button[contains(text(),'Continue')])[1]")));
 	            popup.findElement(By.xpath("(//button[contains(text(),'Continue')])[1]")).click(); // Click the pop-up's continue button
 	        } catch (Exception e) {
-	            logger.info("Pop-up not present"); // Log if the pop-up does not appear
+	            logger.info(POP_UP_NOT_PRESENT_MESSAGE); // Log if the pop-up does not appear
 	        }
 	        Thread.sleep(15000); // Allow time for processing after clicking continue
 
@@ -2414,7 +2437,7 @@ room5selectAge.click();
 	            WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//button[contains(text(),'Continue')])[1]")));
 	            popup.findElement(By.xpath("(//button[contains(text(),'Continue')])[1]")).click(); // Click the pop-up's continue button
 	        } catch (Exception e) {
-	            logger.info("Pop-up not present"); // Log if the pop-up does not appear
+	            logger.info(POP_UP_NOT_PRESENT_MESSAGE); // Log if the pop-up does not appear
 	        }
 	        Thread.sleep(15000); // Allow time for processing after clicking continue
 
@@ -2431,7 +2454,7 @@ room5selectAge.click();
 	            WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//button[contains(text(),'Continue')])[1]")));
 	            popup.findElement(By.xpath("(//button[contains(text(),'Continue')])[1]")).click(); // Click the pop-up's continue button
 	        } catch (Exception e) {
-	            logger.info("Pop-up not present"); // Log if the pop-up does not appear
+	            logger.info(POP_UP_NOT_PRESENT_MESSAGE); // Log if the pop-up does not appear
 	        }
 	        Thread.sleep(15000); // Allow time for processing after clicking continue
 
@@ -2448,7 +2471,7 @@ room5selectAge.click();
 	            WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//button[contains(text(),'Continue')])[1]")));
 	            popup.findElement(By.xpath("(//button[contains(text(),'Continue')])[1]")).click(); // Click the pop-up's continue button
 	        } catch (Exception e) {
-	            logger.info("Pop-up not present"); // Log if the pop-up does not appear
+	            logger.info(POP_UP_NOT_PRESENT_MESSAGE); // Log if the pop-up does not appear
 	        }
 	        Thread.sleep(15000); // Allow time for processing after clicking continue
 	    }

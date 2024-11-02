@@ -12,6 +12,7 @@ import java.util.HashMap; // For storing key-value pairs
 import java.util.List; // For handling lists of objects
 import java.util.Map; // For storing mappings of keys to values
 import java.util.Random; // For generating random numbers
+import java.util.concurrent.TimeoutException;
 import java.text.MessageFormat;
 
 import org.apache.logging.log4j.Level;
@@ -86,7 +87,7 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
 	    private static final String REFUNDABLE_FARE_TYPE = "Refundable";
 	    
 	 // Define the XPath as a constant
-	    private static final String MIN_PRICE_SLIDER_XPATH = "MIN_PRICE_SLIDER_XPATH";
+	    private static final String MIN_PRICE_SLIDER_XPATH = "//div[@class='MuiBox-root jss1']//span[3]";
 	    
 	    private static final String MARK_VALUE_XPATH = "//input[@id='markValue']";
 	    
@@ -94,6 +95,13 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
 	    
 	    
 	    private static final String DEPARTURE_CHECK_MESSAGE = "The Departure check : {}";
+	    
+	    
+	    private static final String CABIN_CLASS_LOG_MESSAGE = "The current Cabin class is: {}";
+	    
+	    private static final String DEPARTURE_MESSAGE = "The Current Departure Time is : {}";
+
+
 
 
 
@@ -240,7 +248,7 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
     @FindBy(xpath = "//span[contains(text(),'Flights')]")
     private WebElement clickFlight; // WebElement for clicking on the flights tab
 
-    @FindBy(xpath="MIN_PRICE_SLIDER_XPATH")
+    @FindBy(xpath="//div[@class='MuiBox-root jss1']//span[3]")
     private WebElement dragStart; // WebElement for starting point of a drag operation
 
     @FindBy(xpath="//div[@class='MuiBox-root jss1']//span[4]")
@@ -376,23 +384,7 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
     public void selectDatefortrip(WebDriver driver, String way, String month, String rmonth, String departureDate,
             String returnDate, boolean searchType) throws InterruptedException {
 
-        // Create a Random object to generate random dates
-        Random random = new Random();
-
-        // Define ranges for random date selection
-        int min = 1; // Minimum day for the first half of the month
-        int max = 15; // Maximum day for the first half of the month
-        int min1 = 16; // Minimum day for the second half of the month
-        int max1 = 30; // Maximum day for the second half of the month
-
-        // Generate a random departure date in the range of 1-15
-        int randomNumberInRange = random.nextInt(max - min) + min;
-        // Generate a random return date in the range of 16-30
-        int randomNumberInRange1 = random.nextInt(max1 - min1) + min1;
-
-        // Convert random numbers to strings for use in date selection
-        String strNumber = String.valueOf(randomNumberInRange);
-        String strNumber1 = String.valueOf(randomNumberInRange1);
+  
 
         // Log the current journey type for debugging purposes
         logger.info("Current Journey is --- {}", way);
@@ -406,7 +398,7 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
                 Thread.sleep(1000); // Allow time for the calendar to load
                 
                 // Select the departure date based on the randomly generated day
-                selectDate(driver, month, strNumber, way);
+                selectDate(driver, month, departureDate, way);
                 Thread.sleep(1000); // Wait after selecting the departure date
                 
                 // Wait for the return calendar to be visible
@@ -416,14 +408,14 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
                 Thread.sleep(500); // Wait for scrolling to complete
                 
                 // Select the return date based on the randomly generated day
-                selectDate(driver, rmonth, strNumber1, way);
+                selectDate(driver, rmonth, returnDate, way);
             } else { // Handle one-way trips
                 // Wait for the departure calendar to be visible before selecting a date
                 CommonMethods.waitForElementToBeVisible(driver, departureCalander, 1);
                 Thread.sleep(1000); // Allow time for the calendar to load
                 
                 // Select the departure date based on the randomly generated day
-                selectDate(driver, month, strNumber, way);
+                selectDate(driver, month, departureDate, way);
                 Thread.sleep(1000); // Wait after selecting the departure date
             }
 
@@ -433,19 +425,19 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
             Thread.sleep(1000); // Allow time for the calendar to load
             
             // Select the departure date based on the randomly generated day
-            selectDate(driver, month, strNumber, way);
+            selectDate(driver, month, departureDate, way);
             Thread.sleep(1000); // Wait after selecting the departure date
 
             // Wait for the return calendar to be visible and select the return date
             CommonMethods.waitForElementToBeVisible(driver, returnCalander, 3);
-            selectDate(driver, rmonth, strNumber1, way); // Select the return date
+            selectDate(driver, rmonth, returnDate, way); // Select the return date
         } else {
             // Handle one-way trips again if none of the previous conditions were met
             CommonMethods.waitForElementToBeVisible(driver, departureCalander, 1);
             Thread.sleep(1000); // Allow time for the calendar to load
             
             // Select the departure date based on the randomly generated day
-            selectDate(driver, month, strNumber, way);
+            selectDate(driver, month, departureDate, way);
             Thread.sleep(1000); // Wait after selecting the departure date
         }
 
@@ -783,7 +775,7 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
         // Create an explicit wait for the advance search button to become visible
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
         // Locate the advance search button popup
-        WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@id='advanceSearchButton']//img")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@id='advanceSearchButton']//img")));
         
         // Click the advance search button using JavaScript
         ((JavascriptExecutor) driver).executeScript(CLICK_SCRIPT, advanceSearchButton);
@@ -796,102 +788,64 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
  // Method to select RBD classes based on the type of trip (One-Way or Round-Way)
     
     public void selectRBDClases(WebDriver driver, String rbd, String way) throws InterruptedException {
-    	
-        // Check if the trip type is One-Way
-    	
         if (way.contains(ONEWAY)) {
-            // Click on the RBD classes dropdown
-            rbdClasses.click();
-            Thread.sleep(500); // Wait for the dropdown to become responsive
-            logger.info(RBD_LOG_MESSAGE,rbd);
-            
-            // Set up an explicit wait for the popup containing RBD options
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));   
-            WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(NAME_INPUT_XPATH)));
-            
-            // Find all checkboxes and RBD names
-            List<WebElement> checkbox = driver.findElements(By.xpath(CHECKBOX_XPATH));
-            List<WebElement> rbdnamae = driver.findElements(By.xpath(RBD_NAME_XPATH));
-            
-            // Check if there are any RBD names available
-            if (!rbdnamae.isEmpty()){
-                // Iterate through the RBD names to find a match
-                for (int i = 0; i < rbdnamae.size(); i++) {
-                    WebElement searchText = rbdnamae.get(i);
-                    String currentdt = searchText.getText();
-                    // If the current RBD matches the input, click the corresponding checkbox
-                    if (currentdt.equalsIgnoreCase(rbd)) {
-                        checkbox.get(i).click();
-                        rbdClasses.click(); // Close the dropdown
-                        break; // Exit loop once the desired RBD is selected
-                    }
-                }
-            } else {
-                logger.info(CURRENT_RBD_NOT_AVAILABLE_MESSAGE);
-            }
-        } 
-        // Check if the trip type is Round-Way, Half-Round-Trip, or Multicity
-        else if (way.contains(ROUNDWAY) || way.contains(HALFROUNDTRIP) || way.contains(MUTICITY)) {
-            rbdClasses.click();
-            Thread.sleep(500);
-            logger.info(RBD_LOG_MESSAGE,rbd);
-            
-            // Set up an explicit wait for the popup containing RBD options
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));   
-            WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(NAME_INPUT_XPATH)));
-            
-            // Find all checkboxes and RBD names
-            List<WebElement> checkbox = driver.findElements(By.xpath(CHECKBOX_XPATH));
-            List<WebElement> rbdnamae = driver.findElements(By.xpath(RBD_NAME_XPATH));
-            
-            // Check if there are any RBD names available
-            if (!rbdnamae.isEmpty()){
-                // Iterate through the RBD names to find a match
-                for (int i = 0; i < rbdnamae.size(); i++) {
-                    WebElement searchText = rbdnamae.get(i);
-                    String currentdt = searchText.getText();
-                    // If the current RBD matches the input, click the corresponding checkbox
-                    if (currentdt.equalsIgnoreCase(rbd)) {
-                        checkbox.get(i).click();
-                        rbdClasses.click(); // Close the dropdown
-                        break; // Exit loop once the desired RBD is selected
-                    }
-                }
-            } else {
-                logger.info(CURRENT_RBD_NOT_AVAILABLE_MESSAGE);
-            }
-
+            selectRBDOption(driver, rbd);
+        } else if (way.contains(ROUNDWAY) || way.contains(HALFROUNDTRIP) || way.contains(MUTICITY)) {
+            selectRBDOption(driver, rbd);
             Thread.sleep(1000); // Allow some time for UI to settle
 
-            // Click on the return RBD classes dropdown
-            retunRBDClasses.click();
-            Thread.sleep(500);
-            logger.info(RBD_LOG_MESSAGE,rbd);
-            
-            // Find all checkboxes and RBD names for the return trip
-            List<WebElement> checkbox1 = driver.findElements(By.xpath(CHECKBOX_XPATH));
-            List<WebElement> rbdName = driver.findElements(By.xpath(RBD_NAME_XPATH));
-
-            // Check if there are any RBD names available for return trip
-            if (!rbdName.isEmpty()){
-                // Iterate through the RBD names to find a match for return trip
-                for (int i = 0; i < rbdName.size(); i++) {
-                    WebElement searchText = rbdName.get(i);
-                    String currentdt = searchText.getText();
-                    // If the current RBD is 'D', click the corresponding checkbox
-                    if (currentdt.equalsIgnoreCase("D")) {
-                        checkbox1.get(i).click();
-                        rbdClasses.click(); // Close the dropdown
-                        break; // Exit loop once the desired RBD is selected
-                    }
-                }
-            } else {
-                logger.info(CURRENT_RBD_NOT_AVAILABLE_MESSAGE);
-            }
+            // Select return RBD if applicable
+            selectReturnRBDOption(driver, "D");
         }
-
         Thread.sleep(1000); // Allow some time for UI to settle
     }
+
+    // Helper method to select the RBD option in the dropdown
+    private void selectRBDOption(WebDriver driver, String rbd) throws InterruptedException {
+        rbdClasses.click();
+        Thread.sleep(500); // Wait for the dropdown to become responsive
+        logger.info(RBD_LOG_MESSAGE, rbd);
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(NAME_INPUT_XPATH)));
+
+        List<WebElement> checkboxes = driver.findElements(By.xpath(CHECKBOX_XPATH));
+        List<WebElement> rbdNames = driver.findElements(By.xpath(RBD_NAME_XPATH));
+
+        if (!rbdNames.isEmpty()) {
+            selectMatchingRBD(checkboxes, rbdNames, rbd);
+        } else {
+            logger.info(CURRENT_RBD_NOT_AVAILABLE_MESSAGE);
+        }
+        rbdClasses.click(); // Close the dropdown
+    }
+
+    // Helper method to select the RBD option for the return trip
+    private void selectReturnRBDOption(WebDriver driver, String returnRBD) throws InterruptedException {
+        retunRBDClasses.click();
+        Thread.sleep(500); // Wait for the dropdown to become responsive
+        logger.info(RBD_LOG_MESSAGE, returnRBD);
+
+        List<WebElement> checkboxes = driver.findElements(By.xpath(CHECKBOX_XPATH));
+        List<WebElement> rbdNames = driver.findElements(By.xpath(RBD_NAME_XPATH));
+
+        if (!rbdNames.isEmpty()) {
+            selectMatchingRBD(checkboxes, rbdNames, returnRBD);
+        } else {
+            logger.info(CURRENT_RBD_NOT_AVAILABLE_MESSAGE);
+        }
+    }
+
+    // Helper method to find and select a matching RBD name
+    private void selectMatchingRBD(List<WebElement> checkboxes, List<WebElement> rbdNames, String targetRBD) {
+        for (int i = 0; i < rbdNames.size(); i++) {
+            if (rbdNames.get(i).getText().equalsIgnoreCase(targetRBD)) {
+                checkboxes.get(i).click();
+                break;
+            }
+        }
+    }
+
 
     
     
@@ -899,90 +853,48 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
     
     // Method to select cabin class based on trip type
     
-    public void selectCabin(WebDriver driver, String cabinclass, String way) throws InterruptedException {
-        // Check if the trip type is One-Way
+    public void selectCabin(WebDriver driver, String cabinClass, String way) throws InterruptedException {
         if (way.contains(ONEWAY)) {
-            cabin.click(); // Click on the cabin class dropdown
-            Thread.sleep(500);
-            
-            logger.info("The current Cabin class is: {}", cabinclass);
-
-            
-            // Find all radio buttons for cabin classes
-            List<WebElement> rediobutton = driver.findElements(By.xpath("//div[@class='theme4_flight_cabin_class_list__tLDeD']//input[@type='radio']"));
-            List<WebElement> cabinclasses = driver.findElements(By.xpath("//label[@class='theme4_flight_cabin_class_ele__hsTDk theme4_CabinLabel__9y5cf']"));
-
-         // Check if there are any cabin classes available
-            if (!cabinclasses.isEmpty()) {
-                // Your code here for when there are cabin classes available
-                for (int i = 0; i < cabinclasses.size(); i++) {
-                    WebElement searchText = cabinclasses.get(i);
-                    String currentdt = searchText.getText();
-                    // If the current cabin class matches the input, click it
-                    if (currentdt.equalsIgnoreCase(cabinclass)) {
-                        cabinclasses.get(i).click();
-                        break; // Exit loop once the desired cabin class is selected
-                    }
-                }
-            } else {
-                logger.info(CABIN_NOT_AVAILABLE_MESSAGE);
-            }
+            selectCabinClass(driver, cabinClass);
+        } else if (way.contains(ROUNDWAY) || way.contains(HALFROUNDTRIP) || way.contains(MUTICITY)) {
+            selectCabinClass(driver, cabinClass);
+            selectReturnCabinClass(driver, cabinClass);
         }
-        // Check if the trip type is Round-Way, Half-Round-Trip, or Multicity
-        else if (way.contains(ROUNDWAY) || way.contains(HALFROUNDTRIP) || way.contains(MUTICITY)) {
-            cabin.click(); // Click on the cabin class dropdown
-            Thread.sleep(500);
-            
-            logger.info("The current Cabin class is: {}", cabinclass);
-            
-            // Find all cabin classes
-            List<WebElement> cabinclasses = driver.findElements(By.xpath("//div[@class='theme4_flight_cabin_class_list__tLDeD']//label[@class='theme4_flight_cabin_class_ele__hsTDk theme4_CabinLabel__9y5cf']"));
-
-            // Check if there are any cabin classes available
-            if (!cabinclasses.isEmpty()) {
-                // Iterate through the cabin classes to find a match
-                for (int i = 0; i < cabinclasses.size(); i++) {
-                    WebElement searchText = cabinclasses.get(i);
-                    String currentdt = searchText.getText();
-                    // If the current cabin class matches the input, click it
-                    if (currentdt.equalsIgnoreCase(cabinclass)) {
-                        cabinclasses.get(i).click();
-                        break; // Exit loop once the desired cabin class is selected
-                    }
-                }
-            } else {
-                logger.info(CABIN_NOT_AVAILABLE_MESSAGE);
-            }
-
-            Thread.sleep(2000); // Allow some time for UI to settle
-            
-            // Click on the return cabin class dropdown
-            retunCabin.click();
-            Thread.sleep(500);
-            logger.info("The current Cabin class is: {}", cabinclass);
-            Thread.sleep(500);
-            
-            // Find all cabin classes for the return trip
-            List<WebElement> cabinclasses1 = driver.findElements(By.xpath("//div[@class='theme4_flight_cabin_class_list__tLDeD']//label[@class='theme4_flight_cabin_class_ele__hsTDk theme4_CabinLabel__9y5cf']"));
-
-            // Check if there are any cabin classes available for return trip
-            if (!cabinclasses.isEmpty()) {
-                // Iterate through the cabin classes to find a match for return trip
-                for (int i = 0; i < cabinclasses1.size(); i++) {
-                    WebElement searchText = cabinclasses1.get(i);
-                    String currentdt = searchText.getText();
-                    // If the current cabin class matches the input, click it
-                    if (currentdt.equalsIgnoreCase(cabinclass)) {
-                        cabinclasses1.get(i).click();
-                        break; // Exit loop once the desired cabin class is selected
-                    }
-                }
-            } else {
-                logger.info(CABIN_NOT_AVAILABLE_MESSAGE);
-            }
-        }
-        
         Thread.sleep(1000); // Allow some time for UI to settle
+    }
+
+    private void selectCabinClass(WebDriver driver, String cabinClass) throws InterruptedException {
+        cabin.click(); // Click on the cabin class dropdown
+        Thread.sleep(500);
+        
+        logger.info(CABIN_CLASS_LOG_MESSAGE, cabinClass);
+        
+        List<WebElement> cabinClasses = driver.findElements(By.xpath("//label[@class='theme4_flight_cabin_class_ele__hsTDk theme4_CabinLabel__9y5cf']"));
+        clickMatchingCabinClass(cabinClasses, cabinClass);
+    }
+
+    private void selectReturnCabinClass(WebDriver driver, String cabinClass) throws InterruptedException {
+        Thread.sleep(2000); // Allow some time for UI to settle
+        retunCabin.click(); // Click on the return cabin class dropdown
+        Thread.sleep(500);
+        
+        logger.info(CABIN_CLASS_LOG_MESSAGE, cabinClass);
+        
+        List<WebElement> returnCabinClasses = driver.findElements(By.xpath("//label[@class='theme4_flight_cabin_class_ele__hsTDk theme4_CabinLabel__9y5cf']"));
+        clickMatchingCabinClass(returnCabinClasses, cabinClass);
+    }
+
+    private void clickMatchingCabinClass(List<WebElement> cabinClasses, String cabinClass) {
+        if (!cabinClasses.isEmpty()) {
+            for (WebElement cabinOption : cabinClasses) {
+                if (cabinOption.getText().equalsIgnoreCase(cabinClass)) {
+                    cabinOption.click();
+                    break;
+                }
+            }
+        } else {
+            logger.info(CABIN_NOT_AVAILABLE_MESSAGE);
+        }
     }
 
 	
@@ -997,10 +909,10 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
         
         CommonMethods.scrollDown1(driver);
 			   	 WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));   	 
-			   	 WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(NAME_INPUT_XPATH)));
+			   	wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(NAME_INPUT_XPATH)));
 			   	 		
 					//All Checkbookes
-					List<WebElement> checkbox = driver.findElements(By.xpath("//div[@class='multiSelectDropDown_dropdown_container__eVuyi']//input[@type='checkbox']"));
+					
 
 					// All RBD Names
 					List<WebElement> suppliername= driver.findElements(By.xpath("//span[@class='multiSelectDropDown_advTitle__Wk02T']"));
@@ -1029,85 +941,48 @@ public class B2BFlightPOM { // Page Object Model class for B2B Flight functional
 	}
 	
 	
-public void selectDepartureTime(WebDriver driver,String departure,String way) throws InterruptedException {
-	
-		
-	if(way.contains(ONEWAY))
-	{		
-	departureTime.click();
-	Thread.sleep(500);
-	logger.info("The Currrant Departure Time is : {}",departure);
-	// All RBD Names
-	List<WebElement> allDeparture= driver.findElements(By.xpath(DEPARTURE_XPATH));
-	 if (!allDeparture.isEmpty()){
-		// Iterate through the list and find the matching fare type
-		for (int i = 0; i < allDeparture.size(); i++) {
-			WebElement searchText = allDeparture.get(i);
-			String currentdt = searchText.getText();
-			logger.info(DEPARTURE_CHECK_MESSAGE,currentdt);
-			if (currentdt.equalsIgnoreCase(departure)) {
-				allDeparture.get(i).click();
-				break;
-			}
-		}
-	} else {
-		logger.info(SUPPLIER_NOT_AVAILABLE_MESSAGE);
-	}
-	
-	}
-	else if(way.contains(ROUNDWAY)||way.contains(HALFROUNDTRIP)||way.contains(MUTICITY))
-	{		
-		departureTime.click();
-		Thread.sleep(500);
-		logger.info("The Currrant Departure Time is : {}",departure);
-		// All RBD Names
-		List<WebElement> allDeparture= driver.findElements(By.xpath(DEPARTURE_XPATH));
-		if (!allDeparture.isEmpty()) {
-			// Iterate through the list and find the matching fare type
-			for (int i = 0; i < allDeparture.size(); i++) {
-				WebElement searchText = allDeparture.get(i);
-				String currentdt = searchText.getText();
-				logger.info(DEPARTURE_CHECK_MESSAGE,currentdt);
-				if (currentdt.equalsIgnoreCase(departure)) {
-					allDeparture.get(i).click();
-					break;
-				}
-			}
-		} else {
-			logger.info(SUPPLIER_NOT_AVAILABLE_MESSAGE);
-		}
-		Thread.sleep(1000);
-
-		returnDepartureTime.click();
-		Thread.sleep(500);
-	    logger.info("The Currrant Departure Time is : {}",departure);
-		// All RBD Names
-		List<WebElement> allDeparture1= driver.findElements(By.xpath(DEPARTURE_XPATH));
-		if (!allDeparture.isEmpty()){
-			// Iterate through the list and find the matching fare type
-			for (int i = 0; i < allDeparture1.size(); i++) {
-				WebElement searchText = allDeparture1.get(i);
-				String currentdt = searchText.getText();
-				logger.info(DEPARTURE_CHECK_MESSAGE,currentdt);
-				if (currentdt.equalsIgnoreCase(departure)) {
-					allDeparture1.get(i).click();
-					break;
-				}
-			}
-		} else {
-			logger.info(SUPPLIER_NOT_AVAILABLE_MESSAGE);
-		}
-		
-		
+	public void selectDepartureTime(WebDriver driver, String departure, String way) throws InterruptedException {
+	    if (way.contains(ONEWAY)) {
+	        selectDeparture(driver, departure, false);
+	    } else if (way.contains(ROUNDWAY) || way.contains(HALFROUNDTRIP) || way.contains(MUTICITY)) {
+	        selectDeparture(driver, departure, true);
+	    }
 	}
 
-	
-	
-	
-	
-					
-			     
-		Thread.sleep(1000);
+	private void selectDeparture(WebDriver driver, String departure, boolean isRoundTrip) throws InterruptedException {
+	    departureTime.click();
+	    Thread.sleep(500);
+	    logger.info(DEPARTURE_MESSAGE, departure);
+
+	    if (!selectMatchingDeparture(driver, departure)) {
+	        logger.info(SUPPLIER_NOT_AVAILABLE_MESSAGE);
+	        return;
+	    }
+
+	    if (isRoundTrip) {
+	        Thread.sleep(1000);
+	        returnDepartureTime.click();
+	        Thread.sleep(500);
+	        logger.info("The Current Return Departure Time is : {}", departure);
+
+	        if (!selectMatchingDeparture(driver, departure)) {
+	            logger.info(SUPPLIER_NOT_AVAILABLE_MESSAGE);
+	        }
+	    }
+	    Thread.sleep(1000);
+	}
+
+	private boolean selectMatchingDeparture(WebDriver driver, String departure) {
+	    List<WebElement> allDeparture = driver.findElements(By.xpath(DEPARTURE_XPATH));
+	    for (WebElement element : allDeparture) {
+	        String currentdt = element.getText();
+	        logger.info(DEPARTURE_CHECK_MESSAGE, currentdt);
+	        if (currentdt.equalsIgnoreCase(departure)) {
+	            element.click();
+	            return true;
+	        }
+	    }
+	    return false;
 	}
 
 public void checksearchresult(WebDriver driver) throws InterruptedException {
@@ -1118,7 +993,7 @@ public void checksearchresult(WebDriver driver) throws InterruptedException {
     WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(100));
     
     // Wait for the 'Search' button to be visible
-    WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(SEARCH_BUTTON_XPATH)));
+    wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(SEARCH_BUTTON_XPATH)));
     
     // Scroll down to ensure the element is in view
     CommonMethods.scrollDown2(driver);
@@ -1142,108 +1017,107 @@ public void checksearchresult(WebDriver driver) throws InterruptedException {
 
 public void selectFareTypeFlight(WebDriver driver, String fareType, Boolean searchType, String way) throws InterruptedException {
     // Log the current fare type and trip type
-    logger.info("Current fare Type is : {}" ,fareType);
-    logger.info("Current Trip Type is : {}" ,way);
- // Wait for the search button to be visible if searchType is true
+    logFareAndTripType(fareType, way);
+
     if (searchType) {
-        // Code to wait for the search button to be visible
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(50));
-        WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(SEARCH_BUTTON_XPATH)));
-        Thread.sleep(500);
-        CommonMethods.scrollDown3(driver);
-        // Wait for the 'Airlines' element to be visible
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(AIRLINES_XPATH)));
+        handleSearchType(driver);
     } else {
-        // Handle different trip types for searching flights
-        if (way.contains(ONEWAY) || way.contains(ROUNDWAY) || way.contains(MUTICITY)) {
-            try {
-                WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(50));
-                WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//button[@class='theme4_btn_primary__aMZOB theme4_booknow_btn_mg__f0haC'][normalize-space()='Book'])[1]")));
-                Thread.sleep(100);
-                CommonMethods.scrollDown2(driver);
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                // Log error and fail the test case if no results found
-            	logger.error("Error: No results found for fare type: {}", fareType);
-                Assert.fail("Error: No results found " + fareType);
-                driver.close();
-            }
-        }
-    }
-
-    // Handle the selection of fare types based on trip type
-    if (way.contains(ONEWAY) || way.contains(ROUNDWAY) || way.contains(MUTICITY)) {
-        // Find all refundable and non-refundable flight elements
-        List<WebElement> fareTypes = driver.findElements(By.xpath("//div[@class='theme4_refundflight__Tk_cD']"));
-        // Find all 'Book' buttons
-        List<WebElement> bookButton = driver.findElements(By.xpath("//button[@class='theme4_btn_primary__aMZOB theme4_booknow_btn_mg__f0haC']"));
-
-        // Check if there are any flights found
-        if (!fareTypes.isEmpty()) {
-            boolean isMatchFound = false; // Flag to check if a fare type match is found
-
-            // Iterate through fare types and find a match
-            for (int i = 0; i < fareTypes.size(); i++) {
-                WebElement searchText = fareTypes.get(i);
-                String currentdt = searchText.getText();
-                if (currentdt.equalsIgnoreCase(fareType)) {
-                    logger.info("Fare type match condition true for: {}", currentdt);
-
-                    // Click the appropriate book button based on the match
-                    if (i == 0) {
-                        ((JavascriptExecutor) driver).executeScript(CLICK_SCRIPT, bookButton.get(i));
-                    } else {
-                        ((JavascriptExecutor) driver).executeScript(SCROLL_SCRIPT, bookButton.get(i));
-                        ((JavascriptExecutor) driver).executeScript(CLICK_SCRIPT, bookButton.get(i));
-                    }
-
-                    isMatchFound = true; // Set the flag to true if a match is found
-                    break;
-                }
-            }
-
-            // Log error and fail the test case if no matching fare type found
-            if (!isMatchFound) {
-                logger.error("Error: No matching fare type found for: {}" , fareType);
-                Assert.fail("Error: No matching fare type found for: {}" + fareType);
-                driver.close();
-            }
-        }
-
-        // Optional wait to observe the click action
-        Thread.sleep(5000);
-    } else if (way.contains(HALFROUNDTRIP)) {
-        // Handle the case for half-round trips
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(100));
-        WebElement radio1 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(RADIO_BUTTON_XPATH)));
-        Thread.sleep(1000);
-        
-        // Select refundable or non-refundable options based on fare type
-        if (fareType.contentEquals(REFUNDABLE_FARE_TYPE)) {
-            WebElement elemnet = radio1.findElement(By.xpath("((//div[@class='theme4_depart_from__IwDfX'])[5]//label[@class='theme4_checkbox_common__tRblA'])[1]"));
-            Thread.sleep(500);
-            ((JavascriptExecutor) driver).executeScript(SCROLL_SCRIPT, elemnet);
-            ((JavascriptExecutor) driver).executeScript(CLICK_SCRIPT, elemnet);
-            Thread.sleep(2000);
-        } else if (fareType.contentEquals("Non Refundable")) {
-            WebElement elemnet = radio1.findElement(By.xpath("((//div[@class='theme4_depart_from__IwDfX'])[5]//label[@class='theme4_checkbox_common__tRblA'])[2]"));
-            Thread.sleep(500);
-            ((JavascriptExecutor) driver).executeScript(SCROLL_SCRIPT, elemnet);
-            ((JavascriptExecutor) driver).executeScript(CLICK_SCRIPT, elemnet);
-            Thread.sleep(2000);
-        }
-        
-        // Click the relevant options to finalize the selection
-        driver.findElement(By.xpath(RADIO_BUTTON_XPATH)).click();
-        Thread.sleep(500);
-        driver.findElement(By.xpath("//div[@class='theme4_rightWd__kjlGu']//div[1]//div[1]//div[1]//div[2]//input[1]")).click();
-        Thread.sleep(1000);
-        driver.findElement(By.xpath("//button[normalize-space()='Book Now']")).click();
-        
-        // Optional wait for 5 seconds
-        Thread.sleep(5000);
+        handleTripTypeSelection(driver, fareType, way);
     }
 }
+
+private void logFareAndTripType(String fareType, String way) {
+    logger.info("Current fare Type is : {}", fareType);
+    logger.info("Current Trip Type is : {}", way);
+}
+
+private void handleSearchType(WebDriver driver) throws InterruptedException {
+    waitForElement(driver, By.xpath(SEARCH_BUTTON_XPATH), 50);
+    Thread.sleep(500);
+    CommonMethods.scrollDown3(driver);
+    waitForElement(driver, By.xpath(AIRLINES_XPATH), 50);
+}
+
+private void handleTripTypeSelection(WebDriver driver, String fareType, String way) throws InterruptedException {
+    if (way.matches(ONEWAY + "|" + ROUNDWAY + "|" + MUTICITY)) {
+        if (!handleFlightSearch(driver, fareType)) {
+            return; // Exit if no matching fare type found
+        }
+        Thread.sleep(5000); // Optional wait to observe the click action
+    } else if (way.contains(HALFROUNDTRIP)) {
+        handleHalfRoundTrip(driver, fareType);
+    }
+}
+
+private boolean handleFlightSearch(WebDriver driver, String fareType) throws InterruptedException {
+    try {
+        waitForElement(driver, By.xpath("(//button[@class='theme4_btn_primary__aMZOB theme4_booknow_btn_mg__f0haC'][normalize-space()='Book'])[1]"), 50);
+        Thread.sleep(100);
+        CommonMethods.scrollDown2(driver);
+        Thread.sleep(100);
+    } catch (InterruptedException e) {
+        logger.error("Error: No results found for fare type: {}", fareType);
+        Assert.fail("Error: No results found " + fareType);
+        driver.close();
+        return false;
+    }
+
+    return processFareTypes(driver, fareType);
+}
+
+private boolean processFareTypes(WebDriver driver, String fareType) {
+    List<WebElement> fareTypes = driver.findElements(By.xpath("//div[@class='theme4_refundflight__Tk_cD']"));
+    List<WebElement> bookButtons = driver.findElements(By.xpath("//button[@class='theme4_btn_primary__aMZOB theme4_booknow_btn_mg__f0haC']"));
+
+    if (!fareTypes.isEmpty()) {
+        for (int i = 0; i < fareTypes.size(); i++) {
+            if (fareTypes.get(i).getText().equalsIgnoreCase(fareType)) {
+                logger.info("Fare type match condition true for: {}", fareType);
+                scrollAndClick(driver, bookButtons.get(i));
+                return true; // Match found and clicked
+            }
+        }
+
+        logger.error("Error: No matching fare type found for: {}", fareType);
+        Assert.fail("Error: No matching fare type found for: " + fareType);
+        driver.close();
+    }
+
+    return false; // No fare types available
+}
+
+private void handleHalfRoundTrip(WebDriver driver, String fareType) throws InterruptedException {
+    waitForElement(driver, By.xpath(RADIO_BUTTON_XPATH), 100);
+    Thread.sleep(1000);
+
+    String fareXpath = fareType.equals(REFUNDABLE_FARE_TYPE) ?
+            "((//div[@class='theme4_depart_from__IwDfX'])[5]//label[@class='theme4_checkbox_common__tRblA'])[1]" :
+            "((//div[@class='theme4_depart_from__IwDfX'])[5]//label[@class='theme4_checkbox_common__tRblA'])[2]";
+
+    WebElement element = driver.findElement(By.xpath(fareXpath));
+    Thread.sleep(500);
+    scrollAndClick(driver, element);
+    Thread.sleep(2000);
+
+    finalizeSelection(driver);
+}
+
+private void finalizeSelection(WebDriver driver) throws InterruptedException {
+    driver.findElement(By.xpath(RADIO_BUTTON_XPATH)).click();
+    Thread.sleep(500);
+    driver.findElement(By.xpath("//div[@class='theme4_rightWd__kjlGu']//div[1]//div[1]//div[1]//div[2]//input[1]")).click();
+    Thread.sleep(1000);
+    driver.findElement(By.xpath("//button[normalize-space()='Book Now']")).click();
+    Thread.sleep(5000); // Optional wait for 5 seconds
+}
+
+
+
+private void scrollAndClick(WebDriver driver, WebElement element) {
+    ((JavascriptExecutor) driver).executeScript(SCROLL_SCRIPT, element);
+    ((JavascriptExecutor) driver).executeScript(CLICK_SCRIPT, element);
+}
+
 
 public void selectFareTypeFlighthalfroundtrip(WebDriver driver, String fareType) throws InterruptedException {
     // Initialize WebDriverWait for 100 seconds
@@ -1347,7 +1221,7 @@ public void loaderLoading(WebDriver driver, String markType)   {
 public void selectMarkType(WebDriver driver, boolean markType)   {
     // Wait for the markdown radio button to be visible
     WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(100));
-    WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@id='markdown']")));
+   wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@id='markdown']")));
     
     // Scroll down to ensure the element is in view
     ((JavascriptExecutor) driver).executeScript("window.scrollBy(0,100)", "");
@@ -1364,7 +1238,7 @@ public void selectStops(WebDriver driver, String noStops) throws InterruptedExce
 
     // Wait for the search button to be visible
     WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(100));
-    WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(SEARCH_BUTTON_XPATH)));
+     wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(SEARCH_BUTTON_XPATH)));
     Thread.sleep(1000); // Pause for a moment
     ((JavascriptExecutor) driver).executeScript("window.scrollBy(0,300)", ""); // Scroll down the page
     Thread.sleep(1000); // Pause for a moment
@@ -1422,7 +1296,7 @@ public void selectPriceRange1(WebDriver driver, int low, int high) throws Interr
         WebDriverWait wait1 = new WebDriverWait(driver, Duration.ofSeconds(50));
         // Find the minimum price slider
         WebElement minPriceSlider = wait1.until(
-                ExpectedConditions.presenceOfElementLocated(By.xpath("MIN_PRICE_SLIDER_XPATH")));
+                ExpectedConditions.presenceOfElementLocated(By.xpath(MIN_PRICE_SLIDER_XPATH)));
         
         // Find the maximum price slider
         WebDriverWait wait2 = new WebDriverWait(driver, Duration.ofSeconds(50));
@@ -1509,7 +1383,7 @@ public void selectDynamicPriceRange(WebDriver driver) throws InterruptedExceptio
     WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(100));
     
     // Wait for the 'Search' button to be visible and store the element
-    WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(SEARCH_BUTTON_XPATH)));
+    wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(SEARCH_BUTTON_XPATH)));
     
     Thread.sleep(500); // Pause to ensure the page is fully loaded
     ((JavascriptExecutor) driver).executeScript("window.scrollBy(0,350)", ""); // Scroll down the page
@@ -1538,7 +1412,7 @@ public void selectDynamicTimeRange(WebDriver driver) throws InterruptedException
     WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(100));
     
     // Wait for the 'Search' button to be visible and store the element
-    WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(SEARCH_BUTTON_XPATH)));
+     wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(SEARCH_BUTTON_XPATH)));
     
     Thread.sleep(500); // Pause to ensure the page is fully loaded
     ((JavascriptExecutor) driver).executeScript("window.scrollBy(0,350)", ""); // Scroll down the page
